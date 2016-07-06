@@ -1,9 +1,10 @@
 var chromedriver = require('chromedriver');
-var MomondoQuery = require('./momondo-query-string');
+var MomondoQuery = require('./src/momondo-query-string');
 var moment = require('moment');
 var webdriver = require('selenium-webdriver'),
     By = webdriver.By;
 /*until = webdriver.until;*/
+
 var TIMEOUT = 100000,
     PERIOD_COUNT = 5,
     DAYS_INTERVAL = 3;
