@@ -1,8 +1,8 @@
 var chromedriver = require("chromedriver");
 var MomondoQueryString = require("../src/MomondoQueryString");
-var moment = require("moment");
-var webdriver = require("selenium-webdriver"),
-    By = webdriver.By;
+var Moment = require("moment");
+var Webdriver = require("selenium-webdriver"),
+    By = Webdriver.By;
 //until = webdriver.until;
 
 const DATE_FORMAT = "DD-MM-YYYY";
@@ -13,9 +13,9 @@ class FlightScrapper {
 
         function calcDates(targetDate, periods, interval) {
             var result = [];
-            targetDate = targetDate != null ? new moment(targetDate) : new moment();
+            targetDate = targetDate != null ? new Moment(targetDate) : new Moment();
             for (var i = 0; i < periods; i++) {
-                targetDate = targetDate.add(interval, 'days');
+                targetDate = targetDate.add(interval, "days");
                 result.push(targetDate.format(DATE_FORMAT));
             }
             return result;
@@ -30,7 +30,7 @@ class FlightScrapper {
     }
 
     startBrowser(browser) {
-        var driver = new webdriver.Builder()
+        var driver = new Webdriver.Builder()
             .forBrowser(browser)
             .build();
         chromedriver.start();
