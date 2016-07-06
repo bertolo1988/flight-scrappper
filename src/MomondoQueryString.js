@@ -10,7 +10,7 @@ TK      - Traveling class, usually ECO for economic
 DO      - Direct flights only?true,falseNA - Nearest aeroports ? true, false
 */
 
-var BudgetEnum = {
+const BudgetEnum = {
     ECO: "ECO",
     ECO_PREMIUM: "FLX",
     BUSINESS: "BIZ",
@@ -40,7 +40,7 @@ class MomondoQueryString {
     toString() {
         var result = "",
             i = 0;
-        for (var propertyName in this.attributes) {
+        for (let propertyName in this.attributes) {
             if (result.length > 0) {
                 result = result + "&";
             }

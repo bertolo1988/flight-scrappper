@@ -6,5 +6,6 @@
     "node": true,
     "undef": true,
     "devel": true,
-    "unused": true
+    "unused": true,
+    "-W041": false
 }
