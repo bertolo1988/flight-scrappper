@@ -1,13 +1,13 @@
 var chromedriver = require('chromedriver');
-var MomondoQuery = require('./src/momondo-query-string');
+var MomondoQueryString = require('./src/MomondoQueryString');
 var moment = require('moment');
 var webdriver = require('selenium-webdriver'),
     By = webdriver.By;
 /*until = webdriver.until;*/
 
 var TIMEOUT = 100000,
-    PERIOD_COUNT = 5,
-    DAYS_INTERVAL = 3;
+    PERIOD_COUNT = 2,
+    DAYS_INTERVAL = 5;
 var momondoUrl = 'http://www.momondo.pt/flightsearch/?';
 var driver = new webdriver.Builder()
     .forBrowser('chrome')
@@ -36,7 +36,7 @@ function buildFlightsFromData(data, targetDate) {
 }
 
 function retrieveFlightData(fromAeroport, toAeroport, targetDate) {
-    var momondo = new MomondoQuery(fromAeroport, toAeroport, targetDate);
+    var momondo = new MomondoQueryString(fromAeroport, toAeroport, targetDate);
     var fullUrl = momondoUrl + momondo.toString();
 
     driver.get(fullUrl);
