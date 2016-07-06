@@ -1,3 +1,7 @@
+var chromedriver = require("chromedriver");
+var MomondoQueryString = require("../src/MomondoQueryString");
+var moment = require("moment");
+var webdriver = require("selenium-webdriver"),
     By = webdriver.By;
 //until = webdriver.until;
 
@@ -40,15 +44,24 @@ class FlightScrapper {
         driver.get(fullUrl);
 
         driver.wait(function() {
+            return driver.findElement(By.id("flight-tickets-sortbar-cheapest")).isDisplayed();
         }, timeoutTime);
 
+        driver.findElement(By.id("flight-tickets-sortbar-bestdeal")).click();
 
         driver.wait(function() {
+            return driver.findElement(By.id("searchProgressText")).getText().then(function(text) {
+                return text === "Pesquisa concluída";
             });
         }, timeoutTime);
 
+        var resultsBoardElement = driver.findElement(By.id("results-tickets"));
+        resultsBoardElement.findElements(By.css("div.result-box")).then(function(elements) {
             var resultBoxData = [];
             elements.forEach(function(val, idx) {
+                resultBoxData.push(elements[idx].findElement(By.css("div.names")).getText());
+                resultBoxData.push(elements[idx].findElement(By.css("div.price-pax .price span.value")).getText());
+                resultBoxData.push(elements[idx].findElement(By.css(".travel-time")).getText());
             });
             Promise.all(resultBoxData).then(function(args) {
                 let result = [];

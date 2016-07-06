@@ -1,3 +1,4 @@
+var FlightScrapper = require("./src/FlightScrapper");
 
 const HELP_TEXT = "Help text";
 const INVALID_args = "Invalid arguments! Try using -h to get some tips.";
