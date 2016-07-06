@@ -1,0 +1,13 @@
+{
+  "name": "flight-scrapper",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "keywords": [],
+  "author": "TiagoBertolo",
+  "dependencies": {
+    "chromedriver": "^2.21.2",
+    "moment": "^2.13.0",
+    "selenium-webdriver": "^2.53.2"
+  }
+}
