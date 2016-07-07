@@ -1,13 +1,16 @@
 {
-  "name": "flight-scrapper",
-  "version": "0.0.1",
-  "description": "",
-  "main": "app.js",
-  "keywords": [],
-  "author": "TiagoBertolo",
-  "dependencies": {
-    "chromedriver": "^2.21.2",
-    "moment": "^2.13.0",
-    "selenium-webdriver": "^2.53.2"
-  }
+    "name": "flight-scrapper",
+    "version": "0.0.1",
+    "description": "Web scrapper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database",
+    "main": "app.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bertolo1988/flight-scrapper"
+    },
+    "author": "bertolo1988",
+    "dependencies": {
+        "chromedriver": "^2.21.2",
+        "moment": "^2.13.0",
+        "selenium-webdriver": "^2.53.2"
+    }
 }
