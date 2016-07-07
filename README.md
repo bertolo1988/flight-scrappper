@@ -6,7 +6,7 @@
 Web scrapper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.
 
 ### Installing
-You need [node](http://nodejs.org/) and [npm](http://npmjs.org).
+You need [node](http://nodejs.org/) and [npm](http://npmjs.org). And then:
 
 `npm install`
 
@@ -39,4 +39,5 @@ Will result in 2 queries made 09/07/2005, 11/07/2005 in trips from Lisbon to Par
 ### Contributing
 
 Contributions, pull requests are welcome & appreciated!
-Send me an email if you want to make questions.
+
+Send [me](https://github.com/bertolo1988/) an email if you have questions regarding possible contributions.
