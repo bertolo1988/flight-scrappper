@@ -15,7 +15,7 @@ class FlightScrapper {
             var result = [];
             targetDate = targetDate != null ? new Moment(targetDate) : new Moment();
             for (var i = 0; i < periods; i++) {
-                targetDate = targetDate.add(interval, "days");
+                targetDate = targetDate.add(interval, "hours");
                 result.push(targetDate.format(DATE_FORMAT));
             }
             return result;
