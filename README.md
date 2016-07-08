@@ -78,7 +78,7 @@ The data will be stored in the 'flight-scrapper' database, 'flight-data' collect
 
 ## Tests
 
-	//TODO
+	`npm test`
 
 ## Contributing
 
