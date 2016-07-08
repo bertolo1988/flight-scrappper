@@ -1,4 +1,4 @@
-var test = require('unit.js');
+var test = require("unit.js");
 var FlightScrapper = require("../src/FlightScrapper");
 
 describe("FlightScrapper tests", function() {
