@@ -11,8 +11,6 @@ function run(args) {
     const DATE_FORMAT = "DD-MM-YYYY";
     const options = ["help", "database", "collection", "port", "timeout", "periods", "interval", "from", "to", "targetDate"];
 
-    args = args.splice(2, args.length);
-
     function calcDates(targetDate, periods, interval) {
         var result = [];
         targetDate = new Moment(targetDate, DATE_FORMAT);
@@ -54,6 +52,6 @@ function run(args) {
     }
 }
 
-run(process.argv);
+run(process.argv.splice(2, process.argv.length));
 
-exports.FlightScrapper = FlightScrapper.prototype.constructor;
+exports.FlightScrapper = run;
