@@ -1,8 +1,8 @@
 var chromedriver = require("chromedriver");
 var MomondoQueryString = require("../src/MomondoQueryString");
 var Flight = require("../src/Flight");
-var MongoClient = require('mongodb').MongoClient;
-var assert = require('assert');
+var MongoClient = require("mongodb").MongoClient;
+var assert = require("assert");
 var Webdriver = require("selenium-webdriver"),
     By = Webdriver.By;
 
