@@ -1,18 +1,56 @@
 var FlightScrapper = require("./src/FlightScrapper");
-
-const HELP_TEXT = "Run the application using 'node app -timeout -periods -interval -from -to -targetDate'\n\t-timeout \tthe number of seconds to wait for browser queries\n\t-periods \tthe number of times that the program will search for data\n\t-interval \tthe number of hours in between data searches\n\t-from \t\tfrom aeroport\n\t-to \t\tdestination aeroport\n\t-targetDate \tday in wich the first search will be made. \n\nExamples\n'node app.js 50 2 48 LIS PAR 07/07/2005' \n\t- will result in 2 queries made 09/07/2005, 11/07/2005 in trips from Lisbon to Paris using a 50 second timeout\n\n'node app.js -dev' \n\t- is included for development purposes and it is the same as running the following command 'node app.js 100 2 48 LIS PAR today";
-const INVALID_ARGS = "Invalid arguments! Try using -h to get some tips.";
+var Moment = require("moment");
 
 
 function run(args) {
-    if (args.length === 3 && args[2] === "-h") {
-        console.log(HELP_TEXT);
-    } else if (args.length === 3 && args[2] === "-dev") {
-        new FlightScrapper(100 * 1000, 2, 48, "LIS", "PAR").run();
-    } else if (args.length === 8) {
-        new FlightScrapper(args[2] * 1000, args[3], args[4], args[5], args[6], args[7]).run();
+
+    const HELP_TEXT = "\nIf an option is not defined, a default value will be used instead.\nThe following options are available:\n\tdatabase\tmongodb database to connect to\n\tcollection\tcollection to be used inside the database\n\tport\t\tto connecto to the database\n\ttimeout\t\tdefines the limit, in seconds, to wait for a web browser query\n\tperiods\t\tspecifies the number of queries that will be made\n\tinterval\tnumber of hours between the queries\n\tfrom\t\tdeparture aeroport\n\tto\t\tdestination\n\ttargetDate\ttargetDate + interval specify the date of the first query";
+    const HELP_EXAMPLES = "\n\n\nExamples:\n$ node app.js\nWill use default values\n\n$ node app.js targetDate=23-05-2017 from='NYC' periods=3\nWill use all default values while overriding targetDate, departure aeroport and periods. The data will be stored in the 'flight-scrapper' database, 'flight-data' collection using the '27017' port. The data will represent the available flights between New York ('NYC') and Paris ('PAR') in the following dates 25-05, 27-05, 29-05 of 2017. Note that the first date being queried is targetDate + interval.";
+    const HELP_NOTES = "\n\nNotes: In each query you will be shown, at start, wich are the values that are being used.\nRepository: 'https://github.com/bertolo1988/flight-scrapper'";
+    const INVALID_ARGUMENTS = "Invalid arguments error message!";
+    const DATE_FORMAT = "DD-MM-YYYY";
+    const options = ["help", "database", "collection", "port", "timeout", "periods", "interval", "from", "to", "targetDate"];
+
+    args = args.splice(2, args.length);
+
+    function calcDates(targetDate, periods, interval) {
+        var result = [];
+        targetDate = new Moment(targetDate, DATE_FORMAT);
+        for (var i = 0; i < periods; i++) {
+            targetDate = targetDate.add(interval, "hours");
+            result.push(targetDate.format(DATE_FORMAT));
+        }
+        return result;
+    }
+
+    var inputs = {
+        database: "flight-scrapper",
+        collection: "flight-data",
+        port: "27017",
+        timeout: 90,
+        periods: 2,
+        interval: 48,
+        from: "LIS",
+        to: "PAR",
+        targetDate: new Moment(new Date()).format(DATE_FORMAT).toString()
+    };
+
+    if (args.indexOf(options[0]) > -1) {
+        console.log(HELP_TEXT + HELP_EXAMPLES + HELP_NOTES);
     } else {
-        throw new Error(INVALID_ARGS);
+
+        for (let argument of args) {
+            let auxiliar = argument.split("=");
+            if (options.indexOf(auxiliar[0]) > -1) {
+                inputs[auxiliar[0]] = auxiliar[1];
+            } else {
+                throw new Error(INVALID_ARGUMENTS);
+            }
+        }
+        console.log("Executing with the following options :\n" + JSON.stringify(inputs));
+
+        var dates = calcDates(inputs.targetDate, parseInt(inputs.periods), parseInt(inputs.interval));
+        new FlightScrapper(inputs.database, inputs.collection, inputs.port, inputs.timeout, dates, inputs.from, inputs.to).run();
     }
 }
 

@@ -1,14 +1,10 @@
 var chromedriver = require("chromedriver");
 var MomondoQueryString = require("../src/MomondoQueryString");
 var Flight = require("../src/Flight");
-var Moment = require("moment");
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var Webdriver = require("selenium-webdriver"),
     By = Webdriver.By;
-
-const DATE_FORMAT = "DD-MM-YYYY";
-
 
 function insertFlights(database, collection, port, flights) {
 
@@ -29,20 +25,12 @@ function insertFlights(database, collection, port, flights) {
 
 class FlightScrapper {
 
-    constructor(timeout, periods, interval, from, to, targetDate) {
-
-        function calcDates(targetDate, periods, interval) {
-            var result = [];
-            targetDate = targetDate != null ? new Moment(targetDate) : new Moment();
-            for (var i = 0; i < periods; i++) {
-                targetDate = targetDate.add(interval, "hours");
-                result.push(targetDate.format(DATE_FORMAT));
-            }
-            return result;
-        }
-
-        this.timeoutTime = timeout;
-        this.dates = calcDates(targetDate, periods, interval);
+    constructor(database, collection, port, timeout, dates, from, to) {
+        this.database = database;
+        this.collection = collection;
+        this.port = port;
+        this.timeoutTime = parseInt(timeout) * 1000;
+        this.dates = dates;
         this.from = from;
         this.to = to;
         this.momondoUrl = "http://www.momondo.pt/flightsearch/?";
@@ -57,7 +45,7 @@ class FlightScrapper {
         return driver;
     }
 
-    retrieveFlightData(driver, fromAeroport, toAeroport, targetDate, timeoutTime) {
+    retrieveFlightData(driver, fromAeroport, toAeroport, targetDate, timeoutTime, database, collection, port) {
         var momondo = new MomondoQueryString(fromAeroport, toAeroport, targetDate);
         var fullUrl = this.momondoUrl + momondo.toString();
 
@@ -74,7 +62,6 @@ class FlightScrapper {
                 return text === "Pesquisa concluída";
             });
         }, timeoutTime);
-
         var resultsBoardElement = driver.findElement(By.id("results-tickets"));
         resultsBoardElement.findElements(By.css("div.result-box")).then(function(elements) {
             var resultBoxData = [];
@@ -88,7 +75,7 @@ class FlightScrapper {
                 for (let i = 0; i + 2 < args.length; i = i + 3) {
                     result.push(new Flight(args[i], targetDate, args[i + 1], args[i + 2]));
                 }
-                insertFlights("flight-scrapper", "flight-data", 27017, result);
+                insertFlights(database, collection, port, result);
             });
 
         });
@@ -97,7 +84,7 @@ class FlightScrapper {
     run() {
         var driver = this.startBrowser(this.browser);
         for (let targetDate of this.dates) {
-            this.retrieveFlightData(driver, this.from, this.to, targetDate, this.timeoutTime);
+            this.retrieveFlightData(driver, this.from, this.to, targetDate, this.timeoutTime, this.database, this.collection, this.port);
         }
         driver.quit();
         chromedriver.stop();
