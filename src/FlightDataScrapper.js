@@ -23,7 +23,7 @@ function insertFlights(database, collection, port, flights) {
 
 }
 
-class FlightScrapper {
+class FlightDataScrapper {
 
     constructor(database, collection, port, timeout, dates, from, to) {
         this.database = database;
@@ -91,4 +91,4 @@ class FlightScrapper {
     }
 }
 
-module.exports = FlightScrapper;
+module.exports = FlightDataScrapper;
