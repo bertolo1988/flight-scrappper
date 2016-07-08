@@ -20,13 +20,13 @@ or just clone this repository using:
 `git clone https://github.com/bertolo1988/flight-scrapper.git` 
 and then `npm install`
 
-## Help
+### Help
 
 You will find a brief explanation about the flags available using:
 
 `npm app.js help`
 
-## Running
+### Running
 
 First start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/);
 
