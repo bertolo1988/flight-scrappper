@@ -11,7 +11,8 @@ Web scrapper made with nodejs and webdriverjs that gathers flight data and store
 
 ## Requirements
 
- -  [mongodb database](https://www.mongodb.com/)
+ - [chrome](https://www.google.com/chrome/browser/desktop/index.html)
+ - [mongodb database](https://www.mongodb.com/)
  - [npm](http://npmjs.org)
  - [node](http://nodejs.org/)
 
