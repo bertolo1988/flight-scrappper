@@ -59,15 +59,15 @@ The following options are available:
 Will use the following default values:
 	
 	{
-	"database":"flight-scrapper",
-	"collection":"flight-data",
-	"port":"27017",
-	"timeout":90,
-	"periods":2,
-	"interval":48,
-	"from":"LIS",
-	"to":"PAR",
-	"targetDate":"08-07-2016"	
+		"database":"flight-scrapper",
+		"collection":"flight-data",
+		"port":"27017",
+		"timeout":90,
+		"periods":2,
+		"interval":48,
+		"from":"LIS",
+		"to":"PAR",
+		"targetDate":"08-07-2016"	
 	}
 
 ---
@@ -83,6 +83,6 @@ The data will be stored in the 'flight-scrapper' database, 'flight-data' collect
 
 ## Contributing
 
-Contributions, pull requests are welcome & appreciated!
+Contributions or pull requests are welcome & appreciated!
 
 Send [me](https://github.com/bertolo1988/) an email if you have questions regarding possible contributions.
