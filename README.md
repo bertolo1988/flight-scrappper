@@ -5,13 +5,13 @@
 
 Web scrapper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.
 
-### Requirements
+## Requirements
 
  -  [mongodb database](https://www.mongodb.com/)
  - [npm](http://npmjs.org)
  - [node](http://nodejs.org/)
 
-### Installing
+## Installing
 
 `npm install flight-scrapper`
 
@@ -20,20 +20,20 @@ or just clone this repository using:
 `git clone https://github.com/bertolo1988/flight-scrapper.git` 
 and then `npm install`
 
-### Help
+## Help
 
 You will find a brief explanation about the flags available using:
 
 `npm app.js help`
 
-### Running
+## Running
 
 First start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/);
 
 To start the flight-scrapper with the default values just type `node app.js`.
 If you want to define an option just use `node app.js option1=value options2=value`.
 
-### Options
+## Options
 
 If an option is not defined, a default value will be used instead.
 The following options are available:
@@ -49,7 +49,7 @@ The following options are available:
 	targetDate   targetDate + interval specify the date of the first query
 
 ---
-#### Example 1:
+##### Example 1:
 `$ node app.js`
 Will use the following default values:
 	
@@ -66,17 +66,17 @@ Will use the following default values:
 	}
 
 ---
-#### Example 2:
+##### Example 2:
 `$ node app.js targetDate=23-05-2017 from='NYC' periods=3`
 
 Will use all default values while overriding targetDate, departure aeroport and periods. 
 The data will be stored in the 'flight-scrapper' database, 'flight-data' collection using the '27017' port. The data will represent the available flights between New York ('NYC') and Paris ('PAR') in the following dates 25-05, 27-05, 29-05 of 2017. Note that the first date being queried is targetDate + interval.
 
-### Tests
+## Tests
 
 	//TODO
 
-### Contributing
+## Contributing
 
 Contributions, pull requests are welcome & appreciated!
 
