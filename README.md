@@ -1,7 +1,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3b112d983624adea191ba81a9713ba1)](https://www.codacy.com/app/tiagobertolo/flight-scrapper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrapper&amp;utm_campaign=Badge_Grade)
 [![Stories in Ready](https://badge.waffle.io/bertolo1988/flight-scrapper.png?label=ready&title=Ready)](https://waffle.io/bertolo1988/flight-scrapper)
-<!-- [![Build Status](https://travis-ci.org/bertolo1988/flight-scrapper.svg?branch=master)](https://travis-ci.org/bertolo1988/flight-scrapper)
- -->
+[![Build Status](https://travis-ci.org/bertolo1988/flight-scrapper.svg?branch=master)](https://travis-ci.org/bertolo1988/flight-scrapper)
+
 
 
 # flight-scrapper
@@ -34,7 +34,7 @@ You will find a brief explanation about the flags available using:
 
 First start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/);
 
-To start the flight-scrapper with the default values just type `node app.js`.
+To start the flight-scrapper with the default values just type `$ node app.js`.
 If you want to define an option just use `$ node app.js option1=value options2=value`.
 
 ## Options
