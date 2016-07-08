@@ -12,7 +12,16 @@
         "chromedriver": "^2.21.2",
         "moment": "^2.13.0",
         "mongodb": "^2.1.18",
-        "selenium-webdriver": "^2.53.2"
+        "selenium-webdriver": "^2.53.2",
+        "unit.js": "^2.0.0"
+    },
+    "devDependencies": {
+        "jshint": "^2.9.2",
+        "mocha": "^2.5.3"
+    },
+    "scripts": {
+        "pretest": "jshint app.js src/",
+        "test": "mocha test -R spec --recursive"
     },
     "license": "MIT"
 }
