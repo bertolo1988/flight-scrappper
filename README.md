@@ -53,7 +53,17 @@ The following options are available:
 `$ node app.js`
 Will use the following default values:
 	
-	{"database":"flight-scrapper","collection":"flight-data","port":"27017","timeout":90,"periods":2,"interval":48,"from":"LIS","to":"PAR","targetDate":"08-07-2016"}
+	{
+	"database":"flight-scrapper",
+	"collection":"flight-data",
+	"port":"27017",
+	"timeout":90,
+	"periods":2,
+	"interval":48,
+	"from":"LIS",
+	"to":"PAR",
+	"targetDate":"08-07-2016"	
+	}
 
 ---
 #### Example 2:
