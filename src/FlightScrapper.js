@@ -1,11 +1,31 @@
 var chromedriver = require("chromedriver");
 var MomondoQueryString = require("../src/MomondoQueryString");
+var Flight = require("../src/Flight");
 var Moment = require("moment");
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
 var Webdriver = require("selenium-webdriver"),
     By = Webdriver.By;
-//until = webdriver.until;
 
 const DATE_FORMAT = "DD-MM-YYYY";
+
+
+function insertFlights(database, collection, port, flights) {
+
+    MongoClient.connect("mongodb://localhost:" + port + "/" + database, function(err, db) {
+        assert.equal(err, null);
+        console.log("Successfully connected to " + database + " on " + port + "!");
+        db.collection(collection).insertMany(flights, function(err, res) {
+            assert.equal(err, null);
+            if (res != null) {
+                console.log("Successfully inserted data of " + res.insertedCount + " flights!");
+            }
+            db.close();
+            console.log("Closed connection...");
+        });
+    });
+
+}
 
 class FlightScrapper {
 
@@ -65,12 +85,12 @@ class FlightScrapper {
             });
             Promise.all(resultBoxData).then(function(args) {
                 let result = [];
-                for (let i = 0; i < args.length;) {
-                    var aux = args.splice(i, 3);
-                    result.push({ airline: aux[0], date: targetDate, price: aux[1], duration: aux[2] });
+                for (let i = 0; i + 2 < args.length; i = i + 3) {
+                    result.push(new Flight(args[i], targetDate, args[i + 1], args[i + 2]));
                 }
-                console.log(result);
+                insertFlights("flight-scrapper", "flight-data", 27017, result);
             });
+
         });
     }
 

@@ -7,10 +7,12 @@
         "type": "git",
         "url": "https://github.com/bertolo1988/flight-scrapper"
     },
-    "author": "bertolo1988",
+    "author": "bertolo1988 <tiagobertolo@gmail.com>",
     "dependencies": {
         "chromedriver": "^2.21.2",
         "moment": "^2.13.0",
+        "mongodb": "^2.1.18",
         "selenium-webdriver": "^2.53.2"
-    }
+    },
+    "license": "MIT"
 }
