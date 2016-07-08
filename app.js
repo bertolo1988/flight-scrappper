@@ -55,3 +55,5 @@ function run(args) {
 }
 
 run(process.argv);
+
+exports.FlightScrapper = FlightScrapper.prototype.constructor;
