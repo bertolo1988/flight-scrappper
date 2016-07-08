@@ -17,25 +17,25 @@ Web scrapper made with nodejs and webdriverjs that gathers flight data and store
 
 ## Installing
 
-`npm install flight-scrapper`
+`$ npm install flight-scrapper`
 
 or just clone this repository using:
 
 `git clone https://github.com/bertolo1988/flight-scrapper.git` 
-and then `npm install`
+and then `$ npm install`
 
 ## Help
 
 You will find a brief explanation about the flags available using:
 
-`npm app.js help`
+`$ npm app.js help`
 
 ## Running
 
 First start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/);
 
 To start the flight-scrapper with the default values just type `node app.js`.
-If you want to define an option just use `node app.js option1=value options2=value`.
+If you want to define an option just use `$ node app.js option1=value options2=value`.
 
 ## Options
 
@@ -78,7 +78,7 @@ The data will be stored in the 'flight-scrapper' database, 'flight-data' collect
 
 ## Tests
 
-	`npm test`
+`$ npm test`
 
 ## Contributing
 
