@@ -21,7 +21,7 @@ Web scrapper made with nodejs and webdriverjs that gathers flight data and store
 
 or just clone this repository using:
 
-`git clone https://github.com/bertolo1988/flight-scrapper.git` 
+`$ git clone https://github.com/bertolo1988/flight-scrapper.git` 
 and then `$ npm install`
 
 ## Help
