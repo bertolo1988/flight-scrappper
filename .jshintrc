@@ -1,11 +1,5 @@
 {
-    "browser": true,
-    "esnext": true,
-    "globals": {},
-    "esnext": true,
-    "node": true,
-    "undef": true,
-    "devel": true,
-    "unused": true,
-    "-W041": false
+    "esversion": 6,
+    "-W041": false,
+    "esnext": false
 }
