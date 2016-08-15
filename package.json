@@ -18,7 +18,8 @@
         "jshint": "2.9.2",
         "mocha": "2.5.3",
         "selenium-webdriver": "2.53.2",
-        "unit.js": "2.0.0"
+        "should": "11.0.0",
+        "supertest": "2.0.0"
     },
     "scripts": {
         "pretest": "jshint app.js src/",
