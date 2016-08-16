@@ -1,5 +1,5 @@
 var should = require('should');
-var FlightDataScrapper = require('../src/data-scrapper');
+var FlightDataScrapper = require('../dist/flight-scrapper');
 var supertest = require('supertest');
 var request = supertest('https://www.momondo.com');
 

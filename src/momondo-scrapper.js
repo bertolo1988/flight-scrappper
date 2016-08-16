@@ -9,18 +9,23 @@ var Moment = require('moment');
 var Webdriver = require('selenium-webdriver'),
     Until = Webdriver.until;
 By = Webdriver.By;
+var driver;
 
 function MomondoScrapper() {
 
-    function startBrowser(browser) {
-        var driver = new Webdriver.Builder()
+    function startBrowser() {
+        driver = new Webdriver.Builder()
             .forBrowser(Config.BROWSER)
             .build();
         chromedriver.start();
-        return driver;
     }
 
-    function retrieveFlightData(driver, persistData, fromAeroport, toAeroport, targetDate) {
+    function stopBrowser() {
+        driver.quit();
+        chromedriver.stop();
+    }
+
+    function retrieveFlightData(persistData, fromAeroport, toAeroport, targetDate) {
         var momondo = new MomondoQueryString(fromAeroport, toAeroport, targetDate);
         var fullUrl = 'http://www.momondo.co.uk/flightsearch/?' + momondo.toString();
         driver.get(fullUrl);
@@ -48,12 +53,11 @@ function MomondoScrapper() {
     }
 
     function scrap(from, to, dates, persistData) {
-        var driver = startBrowser(this.browser);
+        startBrowser();
         for (let targetDate of dates) {
-            retrieveFlightData(driver, persistData, from, to, targetDate);
+            retrieveFlightData(persistData, from, to, targetDate);
         }
-        driver.quit();
-        chromedriver.stop();
+        stopBrowser();
     }
 
     return { scrap: scrap };
