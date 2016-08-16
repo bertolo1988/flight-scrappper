@@ -12,7 +12,7 @@ Web scrapper made with nodejs and webdriverjs that gathers flight data and store
 ## Requirements
 
  - [chrome](https://www.google.com/chrome/browser/desktop/index.html)
- - [mongodb database](https://www.mongodb.com/)
+ - [mongodb](https://www.mongodb.com/)
  - [npm](http://npmjs.org/)
  - [node](http://nodejs.org/)
  - [gulp](http://gulpjs.com/)
@@ -27,46 +27,37 @@ Web scrapper made with nodejs and webdriverjs that gathers flight data and store
 
 Add a config.js file to the project folder with the following format and fields.
 
-var config = {
-    DATABASE: 'localhost:27017/flight-scrapper',
-    COLLECTION: 'flight-data',
-    DATE_FORMAT: 'DD-MM-YYYY',
-    TIMEOUT: 30000,
-    VERBOSE: true,
-    BROWSER: 'chrome'
-};
-module.exports = config;
-
-This fields are not going to change very often so i decided to separate them from the tool argument options.
+	var config = {
+	    DATABASE: 'localhost:27017/flight-scrapper',
+	    COLLECTION: 'flight-data',
+	    DATE_FORMAT: 'DD-MM-YYYY',
+	    TIMEOUT: 30000,
+	    VERBOSE: true,
+	    BROWSER: 'chrome'
+	};
+	module.exports = config;
 
 
 ## Options
 
 The following options can be defined as an argument of the `FlightScrapper.run()` method.
-This can be done by passing an array in the following format: `['option1=abc','options2=abc',...]`
+This can be done by passing an array in the following format: `['option1=abc','options2=abc',...]`.
+
 If an option is not defined, a default value will be used instead.
 These are the default values:
 
 	var options = {
-		periods: 1,
-		interval: 48,
-		from: 'LIS',
-		to: 'PAR',
-		targetDate: new Moment(new Date().toISOString())
+		periods: 1, 	//specifies the number of queries that will be made
+		interval: 48, 	//number of hours between the queries
+		from: 'LIS',	//departure aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
+		to: 'PAR',	//destination aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
+		targetDate: new Moment(new Date().toISOString()) //targetDate + interval specify the date of the first query
 	};
 
-The following options are available:
-
-	periods      specifies the number of queries that will be made
-	interval     number of hours between the queries
-	from         departure aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
-	to           destination aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
-	targetDate   targetDate + interval specify the date of the first query
-
-During the start, a new parameter will be generated and added to the options object it will be date. This array will contain dates in string form using the Config.DATE_FORMAT format.
+During the start, a new parameter will be generated and added to the options object it will be date. This array will contain dates in string form using the `Config.DATE_FORMAT` format.
 
  This dates are calculated from the `targetDate+options.interval in hours x options.periods` times.
-Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will generate an array  such as ['7/01/2000','09/01/2000'];
+Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will generate an array  such as ['7/01/2000','09/01/2000'].
 
 ## Running
 
@@ -75,8 +66,6 @@ First, start your [mongodb](https://www.mongodb.com/) database. You can find mor
 To start the flight-scrapper with the default values just type `$ node app.js`.
 If you want to define an option just use `$ node app.js option1=value options2=value`.
 
-
----
 ##### Example 1:
 `$ node app.js`
 Will use the following default values:
@@ -89,7 +78,6 @@ Will use the following default values:
 		"targetDate":"08-07-2016"	
 	}
 
----
 ##### Example 2:
 `$ node app.js targetDate=23-05-2017 from=NYC periods=3`
 
