@@ -57,11 +57,12 @@ These are the default values:
 During the start, a new parameter will be generated and added to the options object it will be date. This array will contain dates in string form using the `Config.DATE_FORMAT` format.
 
  This dates are calculated from the `targetDate+options.interval in hours x options.periods` times.
+ 
 Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will generate an array  such as ['7/01/2000','09/01/2000'].
 
 ## Running
 
-First, start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/)
+First, start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/).
 
 To start the flight-scrapper with the default values just type `$ node app.js`.
 If you want to define an option just use `$ node app.js option1=value options2=value`.
