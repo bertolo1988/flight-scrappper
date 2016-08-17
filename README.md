@@ -67,6 +67,8 @@ First, start your [mongodb](https://www.mongodb.com/) database. You can find mor
 To start the flight-scrapper with the default values just type `$ node app.js`.
 If you want to define an option just use `$ node app.js option1=value options2=value`.
 
+`FlightScrapper.run` will return a promise wich will resolve into the number of inserted documents or into an error.
+
 ##### Example 1:
 `$ node app.js`
 Will use the following default values:
