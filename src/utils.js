@@ -10,8 +10,10 @@ module.exports = {
     },
 
     printObjectProperties(obj) {
-        for (var propName in obj) {
-            printText(propName, obj[propName]);
+        for (let propName in obj) {
+            if ({}.hasOwnProperty.call(obj, propName)) {
+                this.printText(propName, obj[propName]);
+            }
         }
     },
 
