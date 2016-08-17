@@ -44,18 +44,21 @@ function FlightScrapper() {
     function persistFlightData(docs) {
         return new Promise(function(resolve, reject) {
             MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
-                should.not.exist(err);
-                Utils.printText('Successfully connected to ' + Config.DATABASE + '!');
-                let data = flatDataArray(docs);
-                db.collection(Config.COLLECTION).insertMany(data, function(err, res) {
-                    if (res != null) {
-                        db.close();
-                        Utils.printText('Closed database connection!');
-                        resolve(res.insertedCount);
-                    } else {
-                        reject(err);
-                    }
-                });
+                if (err != null) {
+                    reject(err);
+                } else {
+                    Utils.printText('Successfully connected to ' + Config.DATABASE + '!');
+                    let data = flatDataArray(docs);
+                    db.collection(Config.COLLECTION).insertMany(data, function(err, res) {
+                        if (res != null) {
+                            db.close();
+                            Utils.printText('Closed database connection!');
+                            resolve(res.insertedCount);
+                        } else {
+                            reject(err);
+                        }
+                    });
+                }
             });
         });
     }
@@ -67,10 +70,8 @@ function FlightScrapper() {
             MomondoScrapper.scrap(options.from, options.to, options.dates).then(function(flights) {
                 persistFlightData(flights).then(function(arg) {
                     resolve(arg);
-                }, function(e) {
-                    reject(e);
-                });
-            });
+                }, err => reject(err));
+            }, err => reject(err));
         });
     }
 

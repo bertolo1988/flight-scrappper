@@ -37,19 +37,23 @@ function MomondoScrapper() {
             }, Config.TIMEOUT);
             var resultsBoardElement = driver.findElement(By.id('results-tickets'));
             resultsBoardElement.findElements(By.css('div.result-box')).then(function(elements) {
-                var resultBoxData = [];
-                elements.forEach(function(val, idx) {
-                    resultBoxData.push(elements[idx].findElement(By.css('div.names')).getText());
-                    resultBoxData.push(elements[idx].findElement(By.css('div.price-pax .price span.value')).getText());
-                    resultBoxData.push(elements[idx].findElement(By.css('.travel-time')).getText());
-                });
-                Promise.all(resultBoxData).then(function(args) {
-                    let result = [];
-                    for (let i = 0; i + 2 < args.length; i = i + 3) {
-                        result.push(new Flight(args[i], targetDate, args[i + 1], args[i + 2]));
-                    }
-                    resolve(result);
-                });
+                if (elements.length > 0) {
+                    var resultBoxData = [];
+                    elements.forEach(function(val, idx) {
+                        resultBoxData.push(elements[idx].findElement(By.css('div.names')).getText());
+                        resultBoxData.push(elements[idx].findElement(By.css('div.price-pax .price span.value')).getText());
+                        resultBoxData.push(elements[idx].findElement(By.css('.travel-time')).getText());
+                    });
+                    Promise.all(resultBoxData).then(function(args) {
+                        let result = [];
+                        for (let i = 0; i + 2 < args.length; i = i + 3) {
+                            result.push(new Flight(args[i], targetDate, args[i + 1], args[i + 2]));
+                        }
+                        resolve(result);
+                    });
+                } else {
+                    reject(new Error('No results!'));
+                }
             });
         });
     }
@@ -63,9 +67,7 @@ function MomondoScrapper() {
             }
             Promise.all(dataPromises).then(function(args) {
                 resolve(args);
-            }, function(e) {
-                reject(e);
-            });
+            }, err => reject(err));
             stopBrowser();
         });
     }

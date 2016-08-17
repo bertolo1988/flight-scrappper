@@ -11,8 +11,7 @@ module.exports = {
 
     printObjectProperties(obj) {
         for (var propName in obj) {
-            console.log('A');
-            console.log(propName, obj[propName]);
+            printText(propName, obj[propName]);
         }
     },
 
