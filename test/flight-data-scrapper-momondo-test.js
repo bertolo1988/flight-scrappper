@@ -1,21 +1,15 @@
 var should = require('should');
-var FlightDataScrapper = require('../dist/flight-scrapper');
+var FlightScrapper = require('../dist/flight-scrapper');
 var supertest = require('supertest');
+var Config = require('../config');
 var request = supertest('https://www.momondo.com');
 
 describe('FlightScrapper tests', function() {
 
-    it('should get a 200 response from Momondo', function(done) {
-        request
-            .get('/')
-            .expect(200)
-            .expect('content-type', 'text/html; charset=utf-8')
-            .end(done);
-        done();
-    });
+    this.timeout(Config.TIMEOUT);
 
     it('should see data in the database', function(done) {
-        done();
+        FlightScrapper.run();
     });
 
 });

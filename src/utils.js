@@ -18,7 +18,7 @@ module.exports = {
 
     retrieveFlightDatesArray(fromDate, periods, interval) {
         var result = [];
-        var targetDate = new Moment(fromDate);
+        var targetDate = new Moment(fromDate, Config.DATE_FORMAT);
         for (var i = 0; i < periods; i++) {
             targetDate = targetDate.add(interval, 'hours');
             result.push(targetDate.format(Config.DATE_FORMAT));

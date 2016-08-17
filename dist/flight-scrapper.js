@@ -13,38 +13,65 @@ function FlightScrapper() {
             interval: 48,
             from: 'LIS',
             to: 'PAR',
-            targetDate: new Moment(new Date().toISOString())
+            targetDate: new Moment(new Date().toISOString()).format(Config.DATE_FORMAT)
         };
-
-        for (let argument of args) {
-            let auxiliar = argument.split('=');
-            if (auxiliar[0] in options) {
-                options[auxiliar[0]] = auxiliar[1];
-            } else {
-                throw new Error('Invalid arguments error message!');
+        if (args != null) {
+            for (let argument of args) {
+                let auxiliar = argument.split('=');
+                if (auxiliar[0] in options) {
+                    options[auxiliar[0]] = auxiliar[1];
+                } else {
+                    throw new Error('Invalid arguments error message!');
+                }
             }
         }
+
         options.dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
+
         return options;
     }
 
+    function flatDataArray(data) {
+        var result = [];
+        for (let doc of data) {
+            for (let flight of doc) {
+                result.push(flight);
+            }
+        }
+        return result;
+    }
+
     function persistFlightData(docs) {
-        MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
-            should.not.exist(err);
-            Utils.printText('Successfully connected to ' + Config.DATABASE + '!');
-            db.collection(Config.COLLECTION).insertMany(docs, function(err, res) {
+        return new Promise(function(resolve, reject) {
+            MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
                 should.not.exist(err);
-                Utils.printText('Successfully inserted data of ' + res.insertedCount + ' docs!');
-                db.close();
-                Utils.printText('Closed connection...');
+                Utils.printText('Successfully connected to ' + Config.DATABASE + '!');
+                let data = flatDataArray(docs);
+                db.collection(Config.COLLECTION).insertMany(data, function(err, res) {
+                    if (res != null) {
+                        db.close();
+                        Utils.printText('Closed database connection!');
+                        resolve(res.insertedCount);
+                    } else {
+                        reject(err);
+                    }
+                });
             });
         });
     }
 
     function run(args) {
-        var options = retrieveScrapperOptionsFromArgs(args);
-        Utils.printText('Executing with the following options :\n' + JSON.stringify(options, null, 2));
-        MomondoScrapper.scrap(options.from, options.to, options.dates, persistFlightData);
+        return new Promise(function(resolve, reject) {
+            var options = retrieveScrapperOptionsFromArgs(args);
+            Utils.printText('Executing with the following options :\n' + JSON.stringify(options, null, 2));
+            MomondoScrapper.scrap(options.from, options.to, options.dates).then(function(flights) {
+                persistFlightData(flights).then(function(arg) {
+                    resolve(arg);
+                }, function(e) {
+                    reject(e);
+                });
+            });
+        });
     }
 
     return { run: run };

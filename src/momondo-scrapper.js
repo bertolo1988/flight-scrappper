@@ -25,39 +25,49 @@ function MomondoScrapper() {
         chromedriver.stop();
     }
 
-    function retrieveFlightData(persistData, fromAeroport, toAeroport, targetDate) {
-        var momondo = new MomondoQueryString(fromAeroport, toAeroport, targetDate);
-        var fullUrl = 'http://www.momondo.co.uk/flightsearch/?' + momondo.toString();
-        driver.get(fullUrl);
-        driver.wait(function() {
-            return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
-                return text === 'Search complete';
-            });
-        }, Config.TIMEOUT);
-        var resultsBoardElement = driver.findElement(By.id('results-tickets'));
-        resultsBoardElement.findElements(By.css('div.result-box')).then(function(elements) {
-            var resultBoxData = [];
-            elements.forEach(function(val, idx) {
-                resultBoxData.push(elements[idx].findElement(By.css('div.names')).getText());
-                resultBoxData.push(elements[idx].findElement(By.css('div.price-pax .price span.value')).getText());
-                resultBoxData.push(elements[idx].findElement(By.css('.travel-time')).getText());
-            });
-            Promise.all(resultBoxData).then(function(args) {
-                let result = [];
-                for (let i = 0; i + 2 < args.length; i = i + 3) {
-                    result.push(new Flight(args[i], targetDate, args[i + 1], args[i + 2]));
-                }
-                persistData(result);
+    function retrieveFlightData(fromAeroport, toAeroport, targetDate) {
+        return new Promise(function(resolve, reject) {
+            var momondo = new MomondoQueryString(fromAeroport, toAeroport, targetDate);
+            var fullUrl = 'http://www.momondo.co.uk/flightsearch/?' + momondo.toString();
+            driver.get(fullUrl);
+            driver.wait(function() {
+                return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
+                    return text === 'Search complete';
+                });
+            }, Config.TIMEOUT);
+            var resultsBoardElement = driver.findElement(By.id('results-tickets'));
+            resultsBoardElement.findElements(By.css('div.result-box')).then(function(elements) {
+                var resultBoxData = [];
+                elements.forEach(function(val, idx) {
+                    resultBoxData.push(elements[idx].findElement(By.css('div.names')).getText());
+                    resultBoxData.push(elements[idx].findElement(By.css('div.price-pax .price span.value')).getText());
+                    resultBoxData.push(elements[idx].findElement(By.css('.travel-time')).getText());
+                });
+                Promise.all(resultBoxData).then(function(args) {
+                    let result = [];
+                    for (let i = 0; i + 2 < args.length; i = i + 3) {
+                        result.push(new Flight(args[i], targetDate, args[i + 1], args[i + 2]));
+                    }
+                    resolve(result);
+                });
             });
         });
     }
 
-    function scrap(from, to, dates, persistData) {
-        startBrowser();
-        for (let targetDate of dates) {
-            retrieveFlightData(persistData, from, to, targetDate);
-        }
-        stopBrowser();
+    function scrap(from, to, dates) {
+        return new Promise(function(resolve, reject) {
+            startBrowser();
+            var dataPromises = [];
+            for (let targetDate of dates) {
+                dataPromises.push(retrieveFlightData(from, to, targetDate));
+            }
+            Promise.all(dataPromises).then(function(args) {
+                resolve(args);
+            }, function(e) {
+                reject(e);
+            });
+            stopBrowser();
+        });
     }
 
     return { scrap: scrap };
