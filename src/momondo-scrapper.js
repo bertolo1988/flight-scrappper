@@ -67,7 +67,7 @@ function MomondoScrapper() {
             }
             Promise.all(dataPromises).then(function(args) {
                 resolve(args);
-            }, err => reject(err));
+            }, (err) => reject(err));
             stopBrowser();
         });
     }

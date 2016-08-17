@@ -70,8 +70,8 @@ function FlightScrapper() {
             MomondoScrapper.scrap(options.from, options.to, options.dates).then(function(flights) {
                 persistFlightData(flights).then(function(arg) {
                     resolve(arg);
-                }, err => reject(err));
-            }, err => reject(err));
+                }, (err) => reject(err));
+            }, (err) => reject(err));
         });
     }
 
