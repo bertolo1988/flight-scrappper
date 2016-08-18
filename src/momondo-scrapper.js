@@ -40,9 +40,9 @@ function momondoScrapper() {
         return resultBoxData;
     }
 
-    function retrieveFlightData(fromAeroport, toAeroport, targetDate) {
+    function retrieveFlightData(fromAeroport, toAeroport, targetDate, currency) {
         return new Promise(function(resolve, reject) {
-            var momondo = new MomondoQueryString(fromAeroport, toAeroport, targetDate);
+            var momondo = new MomondoQueryString(fromAeroport, toAeroport, targetDate, currency);
             var fullUrl = 'http://www.momondo.co.uk/flightsearch/?' + momondo.toString();
             driver.get(fullUrl);
             driver.wait(function() {
@@ -64,12 +64,12 @@ function momondoScrapper() {
         });
     }
 
-    function scrap(from, to, dates) {
+    function scrap(from, to, dates, currency) {
         return new Promise(function(resolve, reject) {
             startBrowser();
             var dataPromises = [];
             for (let targetDate of dates) {
-                dataPromises.push(retrieveFlightData(from, to, targetDate));
+                dataPromises.push(retrieveFlightData(from, to, targetDate, currency));
             }
             Promise.all(dataPromises).then(function(args) {
                 resolve(args);

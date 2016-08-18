@@ -11,6 +11,7 @@ function flightScrapper() {
       interval: 48,
       from: 'LIS',
       to: 'PAR',
+      currency: 'USD',
       targetDate: new Moment(new Date().toISOString()).format(Config.DATE_FORMAT)
     };
     if (args != null) {
@@ -65,7 +66,7 @@ function flightScrapper() {
     return new Promise(function(resolve, reject) {
       var options = retrieveScrapperOptionsFromArgs(args);
       Utils.printText('Executing with the following options :\n' + JSON.stringify(options, null, 2));
-      MomondoScrapper.scrap(options.from, options.to, options.dates).then(function(flights) {
+      MomondoScrapper.scrap(options.from, options.to, options.dates, options.currency).then(function(flights) {
         persistFlightData(flights).then(function(arg) {
           resolve(arg);
         }, (err) => reject(err));

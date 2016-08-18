@@ -45,16 +45,17 @@ If an option is not defined, a default value will be used instead.
 These are the default values:
 
 	var options = {
-		periods: 1, 	//specifies the number of queries that will be made
-		interval: 48, 	//number of hours between the queries
-		from: 'LIS',	//departure aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
-		to: 'PAR',	//destination aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
+		periods: 1, 		//specifies the number of queries that will be made
+		interval: 48, 		//number of hours between the queries
+		from: 'LIS',		//departure aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
+		to: 'PAR',			//destination aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
+		currency: 'USD', 	//EUR,USD,GBP
 		targetDate: new Moment(new Date().toISOString()) //targetDate + interval specify the date of the first query
 	};
 
-During the start, a new parameter will be generated and added to the options object it will be date. This array will contain dates in string form using the `Config.DATE_FORMAT` format.
+During the start, a new parameter `dates` will be generated and added to the options object. This array will contain dates in string form in the `Config.DATE_FORMAT` format.
 
- This dates are calculated from the `targetDate+options.interval in hours x options.periods` times.
+ This dates are calculated with the followin formula `targetDate+options.interval + (hours x options.periods)` times.
  
 Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will generate an array  such as ['7/01/2000','09/01/2000'].
 
@@ -72,12 +73,13 @@ If you want to define an option just use `$ node app.js option1=value options2=v
 Will use the following default values:
 	
 	{
-		"periods":2,
-		"interval":48,
-		"from":"LIS",
-		"to":"PAR",
-		"targetDate":"08-07-2016"	
-	}
+  		"periods": 1,
+  		"interval": 48,
+  		"from": "LIS",
+  		"to": "PAR",
+  		"currency": "USD",
+  		"targetDate": "18-08-2016",
+  	}
 
 ##### Example 2:
 `$ node app.js targetDate=23-05-2017 from=NYC periods=3`

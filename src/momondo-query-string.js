@@ -7,7 +7,10 @@ SD0     - Destiny aeroport code
 SDP0    - Departure date
 AD      - Passengers
 TK      - Traveling class, usually ECO for economic
-DO      - Direct flights only?true,falseNA - Nearest aeroports ? true, false
+DO      - Direct flights only? true,false
+NA      - Nearest aeroports? true, false
+currency- EUR,USD,GBP...
+simigvis- ?
 */
 
 const BudgetEnum = {
@@ -26,10 +29,7 @@ function addQueryStringAnd(string) {
 
 class MomondoQueryString {
 
-  constructor(from, to, fromDate) {
-    this.from = from;
-    this.to = to;
-    this.fromDate = fromDate;
+  constructor(from, to, fromDate, currency) {
     this.attributes = {};
     this.attributes.search = 'true';
     this.attributes.tripType = '1';
@@ -41,7 +41,8 @@ class MomondoQueryString {
     this.attributes.budget = BudgetEnum.ECO;
     this.attributes.directFlight = 'false';
     this.attributes.nearestAeroport = 'false';
-    this.translations = ['Search', 'TripType', 'SegNo', 'SO0', 'SD0', 'SDP0', 'AD', 'TK', 'DO', 'NA'];
+    this.attributes.currency = currency;
+    this.translations = ['Search', 'TripType', 'SegNo', 'SO0', 'SD0', 'SDP0', 'AD', 'TK', 'DO', 'NA', 'currency'];
   }
 
   toString() {
