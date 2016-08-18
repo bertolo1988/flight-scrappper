@@ -1,7 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3b112d983624adea191ba81a9713ba1)](https://www.codacy.com/app/tiagobertolo/flight-scrapper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrapper&amp;utm_campaign=Badge_Grade)
 [![Stories in Ready](https://badge.waffle.io/bertolo1988/flight-scrapper.png?label=ready&title=Ready)](https://waffle.io/bertolo1988/flight-scrapper)
-[![Build Status](https://travis-ci.org/bertolo1988/flight-scrapper.svg?branch=master)](https://travis-ci.org/bertolo1988/flight-scrapper)
-
 
 
 # flight-scrapper
@@ -31,7 +29,7 @@ Add a config.js file to the project folder with the following format and fields.
 	    DATABASE: 'localhost:27017/flight-scrapper',
 	    COLLECTION: 'flight-data',
 	    DATE_FORMAT: 'DD-MM-YYYY',
-	    TIMEOUT: 30000,
+	    TIMEOUT: 40000,
 	    VERBOSE: true,
 	    BROWSER: 'chrome'
 	};
