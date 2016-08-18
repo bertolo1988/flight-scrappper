@@ -1,5 +1,12 @@
 {
     "esversion": 6,
+    "browser":true,
+    "node":true,
+    "forin": true,
+    "freeze": true,
     "-W041": false,
-    "esnext": false
+    "unused": true,
+    "maxdepth": 3,
+    "maxstatements": 15,
+    "predef": [ "require","process","console","module","describe","it" ]
 }

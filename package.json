@@ -1,30 +1,29 @@
 {
-    "name": "flight-scrapper",
-    "version": "0.0.5-SNAPSHOT",
-    "description": "Web scrapper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.",
-    "main": "dist/flight-scrapper.js",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/bertolo1988/flight-scrapper"
-    },
-    "homepage": "https://github.com/bertolo1988/flight-scrapper",
-    "author": "bertolo1988 <tiagobertolo@gmail.com> (https://github.com/bertolo1988)",
-    "dependencies": {
-        "chromedriver": "2.21.2",
-        "moment": "2.13.0",
-        "mongodb": "2.1.18"
-    },
-    "devDependencies": {
-        "jshint": "2.9.2",
-        "mocha": "2.5.3",
-        "selenium-webdriver": "2.53.2",
-        "should": "11.0.0",
-        "supertest": "2.0.0"
-    },
-    "scripts": {
-        "pretest": "jshint app.js src/",
-        "test": "mocha test --recursive",
-        "start": "node app.js"
-    },
-    "license": "MIT"
+  "name": "flight-scrapper",
+  "version": "0.0.5-SNAPSHOT",
+  "description": "Web scrapper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.",
+  "main": "dist/flight-scrapper.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bertolo1988/flight-scrapper"
+  },
+  "homepage": "https://github.com/bertolo1988/flight-scrapper",
+  "author": "bertolo1988 <tiagobertolo@gmail.com> (https://github.com/bertolo1988)",
+  "dependencies": {
+    "chromedriver": "2.21.2",
+    "moment": "2.13.0",
+    "mongodb": "2.1.18"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.2",
+    "mocha": "2.5.3",
+    "selenium-webdriver": "2.53.2",
+    "should": "11.0.0"
+  },
+  "scripts": {
+    "lint": "jshint --show-non-errors --exclude ./node_modules .",
+    "test": "npm run lint && mocha test --recursive",
+    "start": "node app.js"
+  },
+  "license": "MIT"
 }

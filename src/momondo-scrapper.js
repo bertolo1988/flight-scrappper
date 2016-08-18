@@ -1,18 +1,12 @@
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
 var Flight = require('../src/flight');
-var MongoClient = require('mongodb').MongoClient;
-var should = require('should');
 var Config = require('../config');
-var Utils = require('../src/utils');
-var Moment = require('moment');
-var Webdriver = require('selenium-webdriver'),
-    Until = Webdriver.until;
-By = Webdriver.By;
+var Webdriver = require('selenium-webdriver');
+var By = Webdriver.By;
 var driver;
 
 function MomondoScrapper() {
-
     function startBrowser() {
         driver = new Webdriver.Builder()
             .forBrowser(Config.BROWSER)
@@ -72,7 +66,9 @@ function MomondoScrapper() {
         });
     }
 
-    return { scrap: scrap };
+    return {
+        scrap
+    };
 }
 
 module.exports = MomondoScrapper();

@@ -1,25 +1,21 @@
-var should = require('should');
 var FlightScrapper = require('../dist/flight-scrapper');
-var supertest = require('supertest');
 var Config = require('../config');
-var request = supertest('https://www.momondo.com');
+require('should');
 
 describe('FlightScrapper tests', function() {
+  this.timeout(Config.TIMEOUT);
 
-    this.timeout(Config.TIMEOUT);
-
-    it('should retrieve 15 results', function(done) {
-        FlightScrapper.run().then(function(resp) {
-            resp.should.be.exactly(15);
-            done();
-        });
+  it('should retrieve 15 results', (done) => {
+    FlightScrapper.run().then((resp) => {
+      resp.should.be.exactly(15);
+      done();
     });
+  });
 
-    it('should get "No results" error', function(done) {
-        FlightScrapper.run(["to=PHI"]).then({}, function(err) {
-            (err instanceof Error).should.be.true();
-            done();
-        });
+  it('should get "No results" error', (done) => {
+    FlightScrapper.run(['to=PHI']).then({}, (err) => {
+      (err instanceof Error).should.be.true();
+      done();
     });
-
+  });
 });
