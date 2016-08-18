@@ -17,6 +17,13 @@ const BudgetEnum = {
   FIRST_CLASS: 'FST'
 };
 
+function addQueryStringAnd(string) {
+  if (string.length > 0) {
+    string += '&';
+  }
+  return string;
+}
+
 class MomondoQueryString {
 
   constructor(from, to, fromDate) {
@@ -42,11 +49,9 @@ class MomondoQueryString {
     var i = 0;
     for (let propertyName in this.attributes) {
       if ({}.hasOwnProperty.call(this.attributes, propertyName)) {
-        if (result.length > 0) {
-          result = result + '&';
-        }
+        result = addQueryStringAnd(result);
         if (this.attributes[propertyName]) {
-          result = result + this.translations[i] + '=' + this.attributes[propertyName];
+          result += this.translations[i] + '=' + this.attributes[propertyName];
         }
         i++;
       }

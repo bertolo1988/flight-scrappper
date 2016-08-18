@@ -8,7 +8,7 @@ module.exports = {
     }
   },
 
-  printObjectProperties: function(obj) {
+  printObjectProperties(obj) {
     for (let propName in obj) {
       if ({}.hasOwnProperty.call(obj, propName)) {
         this.printText(propName, obj[propName]);
@@ -16,7 +16,7 @@ module.exports = {
     }
   },
 
-  retrieveFlightDatesArray: function(fromDate, periods, interval) {
+  retrieveFlightDatesArray(fromDate, periods, interval) {
     var result = [];
     var targetDate = new Moment(fromDate, Config.DATE_FORMAT);
     for (var i = 0; i < periods; i++) {

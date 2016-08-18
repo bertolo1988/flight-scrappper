@@ -6,7 +6,7 @@ var Webdriver = require('selenium-webdriver');
 var By = Webdriver.By;
 var driver;
 
-function MomondoScrapper() {
+function momondoScrapper() {
     function startBrowser() {
         driver = new Webdriver.Builder()
             .forBrowser(Config.BROWSER)
@@ -71,4 +71,4 @@ function MomondoScrapper() {
     };
 }
 
-module.exports = MomondoScrapper();
+module.exports = momondoScrapper();

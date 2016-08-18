@@ -4,7 +4,7 @@ var MomondoScrapper = require('../src/momondo-scrapper');
 var Config = require('../config');
 var Utils = require('../src/utils');
 
-function FlightScrapper() {
+function flightScrapper() {
   function retrieveScrapperOptionsFromArgs(args) {
     var options = {
       periods: 1,
@@ -78,4 +78,4 @@ function FlightScrapper() {
   };
 }
 
-module.exports = FlightScrapper();
+module.exports = flightScrapper();

@@ -4,7 +4,7 @@ var Utils = require('../src/utils');
 var Config = require('../config');
 
 describe('retrieveFlightDatesArray test', () => {
-  it('should generate 3 dates, in days 7, 9, 11-09-2015 from a moment', done => {
+  it('should generate 3 dates, in days 7, 9, 11-09-2015 from a moment', (done) => {
     let moment = new Moment('05-09-2015', Config.DATE_FORMAT);
     let dates = Utils.retrieveFlightDatesArray(moment, 3, 48);
     (dates[0]).should.be.equal('07-09-2015');
