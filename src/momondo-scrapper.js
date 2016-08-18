@@ -1,3 +1,4 @@
+require('should');
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
 var Flight = require('../src/flight');
@@ -34,16 +35,17 @@ function momondoScrapper() {
         }
     }
 
-    function parseFlightPromises(args, date, fromAeroport, toAeroport) {
+    function parseFlightPromises(args, date, from, to) {
+        (args.length % 6).should.be.exactly(0, 'Error: Six values should be scrapped by flight!');
         let result = [];
         for (let i = 0; i + 6 <= args.length; i += 6) {
             let airline = args[i];
-            let price = args[i + 1];
+            let amount = args[i + 1];
             let currency = args[i + 2];
             let departure = args[i + 3];
             let duration = args[i + 4];
-            let direct = parseFlightStops(args[i + 5]);
-            let flight = new Flight(date, airline, price, currency, departure, duration, direct, fromAeroport, toAeroport, new Date());
+            let stops = parseFlightStops(args[i + 5]);
+            let flight = new Flight(from, to, airline, stops, date, departure, duration, new Date(), amount, currency);
             result.push(flight);
         }
         return result;

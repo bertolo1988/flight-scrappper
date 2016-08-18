@@ -45,20 +45,20 @@ If an option is not defined, a default value will be used instead.
 These are the default values:
 
 	var options = {
-		periods: 1, 			//specifies the number of queries that will be made
-		interval: 48, 			//number of hours between the queries
-		from: 'LIS',			//departure aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
-		to: 'PAR',				//destination aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
-		currency: 'USD', 		//EUR,USD,GBP
-		directFlight: 'false',	// 'true' or 'false'
-		targetDate: new Moment(new Date().toISOString()) //targetDate + interval specify the date of the first query
+		periods: 1, 						//specifies the number of queries that will be made
+		interval: 48, 						//number of hours between the queries
+		from: 'LIS',						//departure aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
+		to: 'PAR',							//destination aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
+		currency: 'USD', 					//EUR,USD,GBP
+		directFlight: 'false',				// 'true' or 'false'
+		targetDate: getDefaultDateString()	//wich is new Date() + 2 days
 	};
 
-During the start, a new parameter `dates` will be generated and added to the options object. This array will contain dates in string form in the `Config.DATE_FORMAT` format.
+During the start, a new parameter `dates` will be generated. This array will contain dates in string form in the `Config.DATE_FORMAT` format.
 
- This dates are calculated with the followin formula `targetDate+options.interval + (hours x options.periods)` times.
+This dates are calculated with the followin formula `targetDate + options.interval x options.periods ` times.
  
-Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will generate an array  such as ['7/01/2000','09/01/2000'].
+Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will generate an array  such as ['5/01/2000','07/01/2000'].
 
 ## Running
 
@@ -67,33 +67,28 @@ First, start your [mongodb](https://www.mongodb.com/) database. You can find mor
 To start the flight-scrapper with the default values just type `$ node app.js`.
 If you want to define an option just use `$ node app.js option1=value options2=value`.
 
-`FlightScrapper.run` will return a promise wich will resolve into the number of inserted documents or into an error.
-
-##### Example 1:
-`$ node app.js`
-Will use the following default values.
-
-##### Example 2:
-`$ node app.js targetDate=23-05-2017 from=NYC periods=3`
-
-Will use all default values while overriding targetDate, departure aeroport and periods. 
-The data will represent the available flights between New York ('NYC') and Paris ('PAR') in the following dates 25-05, 27-05, 29-05 of 2017. Note that the first date being queried is targetDate + interval.
-
 ## Output
 
-The resulting data that will have the following fields:
+`FlightScrapper.run` will return a promise wich will resolve into the number of inserted documents or into an error.
+
+The resulting data that will be stored has the following fields:
 
 	{
 		_id, 		
 		from,
 		to,	
 		airline,
-		date,
-		departure,
-		duration,
-		queried,
-		price,
-		currency
+		stops,
+		time: {
+			date,
+			departure,
+			duration,
+			queried
+		},
+		price:{
+			amount,
+			currency
+		}
 	}
 
 ## Tests

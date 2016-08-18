@@ -1,15 +1,19 @@
 class Flight {
-	constructor(date, airline, price, currency, departure, duration, stops, from, to, queried) {
+	constructor(from, to, airline, stops, date, departure, duration, queried, amount, currency) {
 		this.from = from;
 		this.to = to;
 		this.airline = airline;
-		this.date = date;
-		this.departure = departure;
-		this.duration = duration;
 		this.stops = stops;
-		this.queried = queried;
-		this.price = price;
-		this.currency = currency;
+		this.time = {
+			date,
+			departure,
+			duration,
+			queried
+		};
+		this.price = {
+			amount,
+			currency
+		};
 	}
 }
 module.exports = Flight;

@@ -6,6 +6,10 @@ var Utils = require('../src/utils');
 
 function flightScrapper() {
 
+  function getDefaultDateString() {
+    return new Moment(new Date().toISOString()).add(2, 'days').format(Config.DATE_FORMAT);
+  }
+
   function retrieveScrapperOptionsFromArgs(args) {
     var options = {
       periods: 1,
@@ -14,7 +18,7 @@ function flightScrapper() {
       to: 'PAR',
       currency: 'USD',
       directFlight: 'false',
-      targetDate: new Moment(new Date().toISOString()).format(Config.DATE_FORMAT)
+      targetDate: getDefaultDateString()
     };
     if (args != null) {
       for (let argument of args) {
@@ -26,7 +30,6 @@ function flightScrapper() {
         }
       }
     }
-    options.dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
     return options;
   }
 
@@ -66,7 +69,9 @@ function flightScrapper() {
     return new Promise(function(resolve, reject) {
       var options = retrieveScrapperOptionsFromArgs(args);
       Utils.printText('Executing with the following options :\n' + JSON.stringify(options, null, 2));
-      MomondoScrapper.scrap(options.from, options.to, options.dates, options.currency, options.directFlight).then(function(flights) {
+      let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
+      Utils.printText('Querying for the following dates: ' + JSON.stringify(dates, null, 2));
+      MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight).then(function(flights) {
         persistFlightData(flights).then(function(arg) {
           resolve(arg);
         }, (err) => reject(err));
