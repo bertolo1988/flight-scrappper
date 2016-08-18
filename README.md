@@ -85,6 +85,23 @@ Will use the following default values:
 Will use all default values while overriding targetDate, departure aeroport and periods. 
 The data will represent the available flights between New York ('NYC') and Paris ('PAR') in the following dates 25-05, 27-05, 29-05 of 2017. Note that the first date being queried is targetDate + interval.
 
+## Output
+
+The resulting data that will have the following fields:
+
+	{
+		_id, 		
+		from,
+		to,	
+		airline,
+		date,
+		departure,
+		duration,
+		queried,
+		price,
+		currency
+	}
+
 ## Tests
 
 `$ npm test`
