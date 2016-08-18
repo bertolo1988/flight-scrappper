@@ -45,11 +45,12 @@ If an option is not defined, a default value will be used instead.
 These are the default values:
 
 	var options = {
-		periods: 1, 		//specifies the number of queries that will be made
-		interval: 48, 		//number of hours between the queries
-		from: 'LIS',		//departure aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
-		to: 'PAR',			//destination aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
-		currency: 'USD', 	//EUR,USD,GBP
+		periods: 1, 			//specifies the number of queries that will be made
+		interval: 48, 			//number of hours between the queries
+		from: 'LIS',			//departure aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
+		to: 'PAR',				//destination aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
+		currency: 'USD', 		//EUR,USD,GBP
+		directFlight: 'false',	// 'true' or 'false'
 		targetDate: new Moment(new Date().toISOString()) //targetDate + interval specify the date of the first query
 	};
 
@@ -70,16 +71,7 @@ If you want to define an option just use `$ node app.js option1=value options2=v
 
 ##### Example 1:
 `$ node app.js`
-Will use the following default values:
-	
-	{
-  		"periods": 1,
-  		"interval": 48,
-  		"from": "LIS",
-  		"to": "PAR",
-  		"currency": "USD",
-  		"targetDate": "18-08-2016",
-  	}
+Will use the following default values.
 
 ##### Example 2:
 `$ node app.js targetDate=23-05-2017 from=NYC periods=3`

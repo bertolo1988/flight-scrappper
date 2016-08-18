@@ -29,7 +29,7 @@ function addQueryStringAnd(string) {
 
 class MomondoQueryString {
 
-  constructor(from, to, fromDate, currency) {
+  constructor(from, to, fromDate, currency, directFlight) {
     this.attributes = {};
     this.attributes.search = 'true';
     this.attributes.tripType = '1';
@@ -39,7 +39,7 @@ class MomondoQueryString {
     this.attributes.fromDate = fromDate;
     this.attributes.passengerNumber = '1';
     this.attributes.budget = BudgetEnum.ECO;
-    this.attributes.directFlight = 'false';
+    this.attributes.directFlight = directFlight;
     this.attributes.nearestAeroport = 'false';
     this.attributes.currency = currency;
     this.translations = ['Search', 'TripType', 'SegNo', 'SO0', 'SD0', 'SDP0', 'AD', 'TK', 'DO', 'NA', 'currency'];

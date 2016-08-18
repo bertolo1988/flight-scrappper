@@ -8,6 +8,7 @@ var driver;
 
 
 function momondoScrapper() {
+
     function startBrowser() {
         driver = new Webdriver.Builder()
             .forBrowser(Config.BROWSER)
@@ -20,10 +21,30 @@ function momondoScrapper() {
         chromedriver.stop();
     }
 
-    function parseFlightPromises(args, targetDate, fromAeroport, toAeroport) {
+    function parseFlightStops(arg) {
+        switch (arg) {
+            case 'DIRECT':
+                return 0;
+            case '1 STOP':
+                return 1;
+            case '2 STOP':
+                return 2;
+            default:
+                return 3;
+        }
+    }
+
+    function parseFlightPromises(args, date, fromAeroport, toAeroport) {
         let result = [];
-        for (let i = 0; i + 5 <= args.length; i += 5) {
-            result.push(new Flight(targetDate, args[i], args[i + 1], args[i + 2], args[i + 3], args[i + 4], fromAeroport, toAeroport, new Date()));
+        for (let i = 0; i + 6 <= args.length; i += 6) {
+            let airline = args[i];
+            let price = args[i + 1];
+            let currency = args[i + 2];
+            let departure = args[i + 3];
+            let duration = args[i + 4];
+            let direct = parseFlightStops(args[i + 5]);
+            let flight = new Flight(date, airline, price, currency, departure, duration, direct, fromAeroport, toAeroport, new Date());
+            result.push(flight);
         }
         return result;
     }
@@ -36,14 +57,19 @@ function momondoScrapper() {
             resultBoxData.push(elements[idx].findElement(By.css('div.price-pax .price span.unit')).getText());
             resultBoxData.push(elements[idx].findElement(By.css('div.departure > div > div.iata-time > span.time')).getText());
             resultBoxData.push(elements[idx].findElement(By.css('.travel-time')).getText());
+            resultBoxData.push(elements[idx].findElement(By.css('div.travel-stops > .total')).getText());
         });
         return resultBoxData;
     }
 
-    function retrieveFlightData(fromAeroport, toAeroport, targetDate, currency) {
+    function buildUrl(fromAeroport, toAeroport, targetDate, currency, directFlight) {
+        let momondo = new MomondoQueryString(fromAeroport, toAeroport, targetDate, currency, directFlight);
+        return 'http://www.momondo.co.uk/flightsearch/?' + momondo.toString();
+    }
+
+    function retrieveFlightData(fromAeroport, toAeroport, targetDate, currency, directFlight) {
         return new Promise(function(resolve, reject) {
-            var momondo = new MomondoQueryString(fromAeroport, toAeroport, targetDate, currency);
-            var fullUrl = 'http://www.momondo.co.uk/flightsearch/?' + momondo.toString();
+            var fullUrl = buildUrl(fromAeroport, toAeroport, targetDate, currency, directFlight);
             driver.get(fullUrl);
             driver.wait(function() {
                 return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
@@ -64,12 +90,12 @@ function momondoScrapper() {
         });
     }
 
-    function scrap(from, to, dates, currency) {
+    function scrap(from, to, dates, currency, directFlight) {
         return new Promise(function(resolve, reject) {
             startBrowser();
             var dataPromises = [];
             for (let targetDate of dates) {
-                dataPromises.push(retrieveFlightData(from, to, targetDate, currency));
+                dataPromises.push(retrieveFlightData(from, to, targetDate, currency, directFlight));
             }
             Promise.all(dataPromises).then(function(args) {
                 resolve(args);
