@@ -6,6 +6,7 @@ var Webdriver = require('selenium-webdriver');
 var By = Webdriver.By;
 var driver;
 
+
 function momondoScrapper() {
     function startBrowser() {
         driver = new Webdriver.Builder()
@@ -17,6 +18,26 @@ function momondoScrapper() {
     function stopBrowser() {
         driver.quit();
         chromedriver.stop();
+    }
+
+    function parseFlightPromises(args, targetDate, fromAeroport, toAeroport) {
+        let result = [];
+        for (let i = 0; i + 5 <= args.length; i += 5) {
+            result.push(new Flight(targetDate, args[i], args[i + 1], args[i + 2], args[i + 3], args[i + 4], fromAeroport, toAeroport, new Date()));
+        }
+        return result;
+    }
+
+    function retrieveFlightPromises(elements) {
+        var resultBoxData = [];
+        elements.forEach(function(val, idx) {
+            resultBoxData.push(elements[idx].findElement(By.css('div.names')).getText());
+            resultBoxData.push(elements[idx].findElement(By.css('div.price-pax .price span.value')).getText());
+            resultBoxData.push(elements[idx].findElement(By.css('div.price-pax .price span.unit')).getText());
+            resultBoxData.push(elements[idx].findElement(By.css('div.departure > div > div.iata-time > span.time')).getText());
+            resultBoxData.push(elements[idx].findElement(By.css('.travel-time')).getText());
+        });
+        return resultBoxData;
     }
 
     function retrieveFlightData(fromAeroport, toAeroport, targetDate) {
@@ -32,18 +53,9 @@ function momondoScrapper() {
             var resultsBoardElement = driver.findElement(By.id('results-tickets'));
             resultsBoardElement.findElements(By.css('div.result-box')).then(function(elements) {
                 if (elements.length > 0) {
-                    var resultBoxData = [];
-                    elements.forEach(function(val, idx) {
-                        resultBoxData.push(elements[idx].findElement(By.css('div.names')).getText());
-                        resultBoxData.push(elements[idx].findElement(By.css('div.price-pax .price span.value')).getText());
-                        resultBoxData.push(elements[idx].findElement(By.css('.travel-time')).getText());
-                    });
+                    let resultBoxData = retrieveFlightPromises(elements);
                     Promise.all(resultBoxData).then(function(args) {
-                        let result = [];
-                        for (let i = 0; i + 2 < args.length; i = i + 3) {
-                            result.push(new Flight(args[i], targetDate, args[i + 1], args[i + 2]));
-                        }
-                        resolve(result);
+                        resolve(parseFlightPromises(args, targetDate, fromAeroport, toAeroport));
                     });
                 } else {
                     reject(new Error('No results!'));
