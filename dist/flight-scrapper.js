@@ -43,25 +43,33 @@ function flightScrapper() {
     return result;
   }
 
+  function sendData(docs, resolve, reject) {
+    MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
+      if (err != null) {
+        reject(err);
+      } else {
+        Utils.printText('Successfully connected to ' + Config.DATABASE + '!');
+        db.collection(Config.COLLECTION).insertMany(docs, function(err, res) {
+          if (res != null) {
+            db.close();
+            Utils.printText('Closed database connection!');
+            resolve(res.insertedCount);
+          } else {
+            reject(err);
+          }
+        });
+      }
+    });
+  }
+
   function persistFlightData(docs) {
     return new Promise(function(resolve, reject) {
-      MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
-        if (err != null) {
-          reject(err);
-        } else {
-          Utils.printText('Successfully connected to ' + Config.DATABASE + '!');
-          let data = flatDataArray(docs);
-          db.collection(Config.COLLECTION).insertMany(data, function(err, res) {
-            if (res != null) {
-              db.close();
-              Utils.printText('Closed database connection!');
-              resolve(res.insertedCount);
-            } else {
-              reject(err);
-            }
-          });
-        }
-      });
+      if (docs.length == 0) {
+        Utils.printText('No data to be inserted!');
+        resolve(0);
+      } else {
+        sendData(docs, resolve, reject);
+      }
     });
   }
 
@@ -72,7 +80,7 @@ function flightScrapper() {
       let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
       Utils.printText('Querying for the following dates: ' + JSON.stringify(dates, null, 2));
       MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight).then(function(flights) {
-        persistFlightData(flights).then(function(arg) {
+        persistFlightData(flatDataArray(flights)).then(function(arg) {
           resolve(arg);
         }, (err) => reject(err));
       }, (err) => reject(err));

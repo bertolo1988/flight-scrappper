@@ -70,7 +70,7 @@ function momondoScrapper() {
     }
 
     function retrieveFlightData(fromAeroport, toAeroport, targetDate, currency, directFlight) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function(resolve) {
             var fullUrl = buildUrl(fromAeroport, toAeroport, targetDate, currency, directFlight);
             driver.get(fullUrl);
             driver.wait(function() {
@@ -86,7 +86,7 @@ function momondoScrapper() {
                         resolve(parseFlightPromises(args, targetDate, fromAeroport, toAeroport));
                     });
                 } else {
-                    reject(new Error('No results!'));
+                    resolve([]);
                 }
             });
         });

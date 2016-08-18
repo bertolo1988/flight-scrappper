@@ -13,8 +13,8 @@ describe('FlightScrapper tests', function() {
   });
 
   it('should get "No results" error', (done) => {
-    FlightScrapper.run(['to=PHI']).then({}, (err) => {
-      (err instanceof Error).should.be.true();
+    FlightScrapper.run(['from=POR', 'to=PHI']).then((inserted) => {
+      inserted.should.be.exactly(0);
       done();
     });
   });
