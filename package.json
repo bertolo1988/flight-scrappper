@@ -15,6 +15,7 @@
     "mongodb": "2.1.18"
   },
   "devDependencies": {
+    "debug": "2.2.0",
     "jshint": "^2.9.2",
     "mocha": "2.5.3",
     "selenium-webdriver": "2.53.2",
@@ -23,6 +24,7 @@
   "scripts": {
     "lint": "jshint --show-non-errors --exclude ./node_modules .",
     "test": "npm run lint && mocha test --recursive",
+    "debug": "set DEBUG=* && node app.js",
     "start": "node app.js"
   },
   "license": "MIT"

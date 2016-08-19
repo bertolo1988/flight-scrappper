@@ -2,11 +2,6 @@ var Config = require('../config');
 var Moment = require('moment');
 
 module.exports = {
-  printText(text) {
-    if (Config.VERBOSE) {
-      console.log(text);
-    }
-  },
 
   printObjectProperties(obj) {
     for (let propName in obj) {

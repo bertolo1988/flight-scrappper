@@ -1,4 +1,5 @@
 require('should');
+const debug = require('debug')('momondo-scrapper');
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
 var Flight = require('../src/flight');
@@ -101,6 +102,7 @@ function momondoScrapper() {
                 dataPromises.push(retrieveFlightData(from, to, targetDate, currency, directFlight));
             }
             Promise.all(dataPromises).then(function(args) {
+                debug('Retrieved flights:\n' + JSON.stringify(args, null, 2));
                 resolve(args);
             }, (err) => reject(err));
             stopBrowser();

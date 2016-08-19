@@ -3,6 +3,7 @@ var MongoClient = require('mongodb').MongoClient;
 var MomondoScrapper = require('../src/momondo-scrapper');
 var Config = require('../config');
 var Utils = require('../src/utils');
+const debug = require('debug')('fligth-scrapper');
 
 function flightScrapper() {
 
@@ -49,9 +50,11 @@ function flightScrapper() {
         if (err != null) {
           reject(err);
         } else {
+          debug('Successfully connected to ' + Config.DATABASE + ' !');
           db.collection(Config.COLLECTION).insertMany(docs, function(err, res) {
             if (res != null) {
               db.close();
+              debug('Closed connection to ' + Config.DATABASE + ' !');
               resolve(res.insertedCount);
             } else {
               reject(err);
@@ -65,20 +68,20 @@ function flightScrapper() {
   function run(args) {
     return new Promise(function(resolve, reject) {
       var options = retrieveScrapperOptionsFromArgs(args);
-      Utils.printText('Executing with the following options :\n' + JSON.stringify(options, null, 2));
+      debug('Executing with the following options :\n' + JSON.stringify(options, null, 2));
       let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
-      Utils.printText('Querying for the following dates: ' + JSON.stringify(dates, null, 2));
+      debug('Querying for the following dates: ' + JSON.stringify(dates, null, 2));
       MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight).then((flights) => {
         persistFlightData(flatDataArray(flights)).then((arg) => {
-          Utils.printText('Successfully inserted ' + arg + ' entries!');
+          debug('Successfully inserted ' + arg + ' entries!');
           resolve(arg);
         }, (err) => {
-          Utils.printText('Unable to persist data!');
+          debug('Unable to persist data!');
           reject(err);
         });
       }, (err) => {
         if (!(err instanceof Error)) {
-          Utils.printText('Scrapped no data!');
+          debug('Scrapped no data!');
         }
         reject(err);
       });

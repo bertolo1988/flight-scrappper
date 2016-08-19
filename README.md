@@ -30,7 +30,6 @@ Add a config.js file to the project folder with the following format and fields.
 	    COLLECTION: 'flight-data',
 	    DATE_FORMAT: 'DD-MM-YYYY',
 	    TIMEOUT: 40000,
-	    VERBOSE: true,
 	    BROWSER: 'chrome'
 	};
 	module.exports = config;
@@ -64,7 +63,7 @@ Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will g
 
 First, start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/).
 
-To start the flight-scrapper with the default values just type `$ node app.js`.
+To start the flight-scrapper with the default values just type `$ node app.js` or `npm start`.
 If you want to define an option just use `$ node app.js option1=value options2=value`.
 
 ## Output
@@ -94,6 +93,10 @@ The resulting data that will be stored has the following fields:
 ## Tests
 
 `$ npm test`
+
+## Debugging
+
+`npm run debug` to have console output.
 
 ## Contributing
 
