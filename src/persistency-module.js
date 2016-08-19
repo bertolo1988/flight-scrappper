@@ -26,8 +26,32 @@ function persistencyModule() {
 		});
 	}
 
+	function removeFlightsById(ids) {
+		return new Promise(function(resolve, reject) {
+			MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
+				if (err != null) {
+					reject(err);
+				} else {
+					db.collection(Config.COLLECTION).deleteMany({
+						'_id': {
+							'$in': ids
+						}
+					}, function(err, res) {
+						if (err != null) {
+							reject(err);
+						} else {
+							resolve(res.result.n);
+						}
+						db.close();
+					});
+				}
+			});
+		});
+	}
+
 	return {
-		persistFlightData
+		persistFlightData,
+		removeFlightsById
 	};
 
 }

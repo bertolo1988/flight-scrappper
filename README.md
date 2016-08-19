@@ -29,7 +29,7 @@ Add a config.js file to the project folder with the following format and fields.
 	    DATABASE: 'localhost:27017/flight-scrapper',
 	    COLLECTION: 'flight-data',
 	    DATE_FORMAT: 'DD-MM-YYYY',
-	    TIMEOUT: 40000,
+	    TIMEOUT: 50000,
 	    BROWSER: 'chrome'
 	};
 	module.exports = config;
@@ -55,7 +55,7 @@ These are the default values:
 
 During the start, a new parameter `dates` will be generated. This array will contain dates in string form in the `Config.DATE_FORMAT` format.
 
-This dates are calculated with the followin formula `targetDate + options.interval x options.periods ` times.
+This dates are calculated with the following formula `targetDate + options.interval x options.periods ` times.
  
 Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will generate an array  such as ['5/01/2000','07/01/2000'].
 
