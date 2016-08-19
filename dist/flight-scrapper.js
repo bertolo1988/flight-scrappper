@@ -51,11 +51,17 @@ function flightScrapper() {
         }, (err) => {
           debug('Unable to persist data!');
           reject(err);
+        }).catch((err) => {
+          debug('Some persistency error has ocurred!');
+          reject(err);
         });
       }, (err) => {
         if (!(err instanceof Error)) {
           debug('Scrapped no data!');
         }
+        reject(err);
+      }).catch((err) => {
+        debug('Some scrapping error has ocurred!');
         reject(err);
       });
     });

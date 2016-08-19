@@ -42,7 +42,7 @@ describe('persistencyModule test', () => {
 			Persistency.removeFlightsById(ids).then((deleted) => {
 				(deleted).should.be.exactly(ids.length).which.is.a.Number();
 				done();
-			});
+			}).catch((err) => done(err));
 		});
 	});
 

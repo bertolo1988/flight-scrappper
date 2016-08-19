@@ -1,4 +1,3 @@
-require('should');
 const debug = require('debug')('momondo-scrapper');
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
@@ -37,7 +36,6 @@ function momondoScrapper() {
     }
 
     function parseFlightPromises(args, date, from, to) {
-        (args.length % 6).should.be.exactly(0, 'Error: Six values should be scrapped by flight!');
         let result = [];
         for (let i = 0; i + 6 <= args.length; i += 6) {
             let airline = args[i];
@@ -101,10 +99,12 @@ function momondoScrapper() {
             for (let targetDate of dates) {
                 dataPromises.push(retrieveFlightData(from, to, targetDate, currency, directFlight));
             }
-            Promise.all(dataPromises).then(function(args) {
-                debug('Retrieved flights:\n' + JSON.stringify(args, null, 2));
-                resolve(args);
-            }, (err) => reject(err));
+            Promise.all(dataPromises)
+                .then(function(args) {
+                    debug('Retrieved flights:\n' + JSON.stringify(args, null, 2));
+                    resolve(args);
+                }, (err) => reject(err))
+                .catch((err) => reject(err));
             stopBrowser();
         });
     }

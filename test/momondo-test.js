@@ -25,8 +25,6 @@ describe('momondoScrapper test', function() {
 			flights[0][0].from.should.be.equal('LON');
 			flights[0][0].time.date.should.be.equal(targetDate);
 			done();
-		}).catch((e) => {
-			done(e);
-		});
+		}).catch((err) => done(err));
 	});
 });

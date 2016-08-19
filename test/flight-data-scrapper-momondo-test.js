@@ -11,17 +11,14 @@ describe('flightScrapper test', function() {
       Persistency.removeFlightsById(ids).then((deleted) => {
         (deleted).should.be.exactly(ids.length).which.is.a.Number();
         done();
-      });
-    }, (err) => {
-      err.should.not.exist();
-      done();
-    });
+      }).catch((err) => done(err));
+    }).catch((err) => done(err));
   });
 
   it('should get "No results" error', (done) => {
     FlightScrapper.run(['from=POR', 'to=PHI']).then({}, (inserted) => {
       (inserted).should.be.exactly(0).which.is.a.Number();
       done();
-    });
+    }).catch((err) => done(err));
   });
 });
