@@ -3,12 +3,8 @@ var Moment = require('moment');
 
 module.exports = {
 
-  printObjectProperties(obj) {
-    for (let propName in obj) {
-      if ({}.hasOwnProperty.call(obj, propName)) {
-        this.printText(propName, obj[propName]);
-      }
-    }
+  getDefaultDateString() {
+    return new Moment(new Date().toISOString()).add(2, 'days').format(Config.DATE_FORMAT);
   },
 
   retrieveFlightDatesArray(fromDate, periods, interval) {

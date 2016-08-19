@@ -3,13 +3,13 @@ var Persistency = require('../src/persistency-module');
 var Config = require('../config');
 require('should');
 
-describe('FlightScrapper tests', function() {
+describe('flightScrapper test', function() {
   this.timeout(Config.TIMEOUT);
 
   it('should retrieve and delete results with default options', (done) => {
-    FlightScrapper.run(['periods=2']).then((resp) => {
-      Persistency.removeFlightsById(resp).then((deleted) => {
-        (deleted).should.be.exactly(resp.length).which.is.a.Number();
+    FlightScrapper.run().then((ids) => {
+      Persistency.removeFlightsById(ids).then((deleted) => {
+        (deleted).should.be.exactly(ids.length).which.is.a.Number();
         done();
       });
     }, (err) => {

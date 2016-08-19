@@ -1,15 +1,9 @@
-var Moment = require('moment');
 var MomondoScrapper = require('../src/momondo-scrapper');
 var Persistency = require('../src/persistency-module');
-var Config = require('../config');
 var Utils = require('../src/utils');
 const debug = require('debug')('fligth-scrapper');
 
 function flightScrapper() {
-
-  function getDefaultDateString() {
-    return new Moment(new Date().toISOString()).add(2, 'days').format(Config.DATE_FORMAT);
-  }
 
   function retrieveScrapperOptionsFromArgs(args) {
     var options = {
@@ -19,7 +13,7 @@ function flightScrapper() {
       to: 'PAR',
       currency: 'USD',
       directFlight: 'false',
-      targetDate: getDefaultDateString()
+      targetDate: Utils.getDefaultDateString()
     };
     if (args != null) {
       for (let argument of args) {
