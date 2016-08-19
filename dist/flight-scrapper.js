@@ -68,8 +68,8 @@ function flightScrapper() {
       Utils.printText('Executing with the following options :\n' + JSON.stringify(options, null, 2));
       let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
       Utils.printText('Querying for the following dates: ' + JSON.stringify(dates, null, 2));
-      MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight).then(function(flights) {
-        persistFlightData(flatDataArray(flights)).then(function(arg) {
+      MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight).then((flights) => {
+        persistFlightData(flatDataArray(flights)).then((arg) => {
           Utils.printText('Successfully inserted ' + arg + ' entries!');
           resolve(arg);
         }, (err) => {

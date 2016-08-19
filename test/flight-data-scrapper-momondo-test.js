@@ -9,6 +9,9 @@ describe('FlightScrapper tests', function() {
     FlightScrapper.run().then((resp) => {
       resp.should.be.exactly(15);
       done();
+    }, (err) => {
+      err.should.not.exist();
+      done();
     });
   });
 
