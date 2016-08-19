@@ -70,25 +70,26 @@ function momondoScrapper() {
     }
 
     function retrieveFlightData(fromAeroport, toAeroport, targetDate, currency, directFlight) {
-        return new Promise(function(resolve) {
+        return new Promise(function(resolve, reject) {
             var fullUrl = buildUrl(fromAeroport, toAeroport, targetDate, currency, directFlight);
             driver.get(fullUrl);
             driver.wait(function() {
                 return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
                     return text === 'Search complete';
                 });
-            }, Config.TIMEOUT);
-            var resultsBoardElement = driver.findElement(By.id('results-tickets'));
-            resultsBoardElement.findElements(By.css('div.result-box')).then(function(elements) {
-                if (elements.length > 0) {
-                    let resultBoxData = retrieveFlightPromises(elements);
-                    Promise.all(resultBoxData).then(function(args) {
-                        resolve(parseFlightPromises(args, targetDate, fromAeroport, toAeroport));
-                    });
-                } else {
-                    resolve([]);
-                }
-            });
+            }).then(function() {
+                var resultsBoardElement = driver.findElement(By.id('results-tickets'));
+                resultsBoardElement.findElements(By.css('div.result-box')).then(function(elements) {
+                    if (elements.length > 0) {
+                        let resultBoxData = retrieveFlightPromises(elements);
+                        Promise.all(resultBoxData).then(function(args) {
+                            resolve(parseFlightPromises(args, targetDate, fromAeroport, toAeroport));
+                        });
+                    } else {
+                        reject(0);
+                    }
+                });
+            }).catch(() => reject(0));
         });
     }
 
