@@ -1,6 +1,6 @@
 var Moment = require('moment');
-var MongoClient = require('mongodb').MongoClient;
 var MomondoScrapper = require('../src/momondo-scrapper');
+var Persistency = require('../src/persistency-module');
 var Config = require('../config');
 var Utils = require('../src/utils');
 const debug = require('debug')('fligth-scrapper');
@@ -44,27 +44,6 @@ function flightScrapper() {
     return result;
   }
 
-  function persistFlightData(docs) {
-    return new Promise(function(resolve, reject) {
-      MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
-        if (err != null) {
-          reject(err);
-        } else {
-          debug('Successfully connected to ' + Config.DATABASE + ' !');
-          db.collection(Config.COLLECTION).insertMany(docs, function(err, res) {
-            if (res != null) {
-              db.close();
-              debug('Closed connection to ' + Config.DATABASE + ' !');
-              resolve(res.insertedCount);
-            } else {
-              reject(err);
-            }
-          });
-        }
-      });
-    });
-  }
-
   function run(args) {
     return new Promise(function(resolve, reject) {
       var options = retrieveScrapperOptionsFromArgs(args);
@@ -72,8 +51,8 @@ function flightScrapper() {
       let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
       debug('Querying for the following dates: ' + JSON.stringify(dates, null, 2));
       MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight).then((flights) => {
-        persistFlightData(flatDataArray(flights)).then((arg) => {
-          debug('Successfully inserted ' + arg + ' entries!');
+        Persistency.persistFlightData(flatDataArray(flights)).then((arg) => {
+          debug('Successfully inserted ' + arg.length + ' entries!');
           resolve(arg);
         }, (err) => {
           debug('Unable to persist data!');
