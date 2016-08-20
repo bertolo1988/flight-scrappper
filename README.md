@@ -2,7 +2,7 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3b112d983624adea191ba81a9713ba1)](https://www.codacy.com/app/tiagobertolo/flight-scrapper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrapper&amp;utm_campaign=Badge_Grade)
 [![npm version](https://badge.fury.io/js/flight-scrapper.svg)](https://badge.fury.io/js/flight-scrapper)
-[![Stories in Ready](https://badge.waffle.io/bertolo1988/flight-scrapper.png?label=ready&title=Ready)](https://waffle.io/bertolo1988/flight-scrapper)
+[![Stories in Ready](https://badge.waffle.io/bertolo1988/flight-scrapper.svg?label=ready&title=Ready)](http://waffle.io/bertolo1988/flight-scrapper)
 [![dependencies Status](https://david-dm.org/bertolo1988/flight-scrapper/status.svg)](https://david-dm.org/bertolo1988/flight-scrapper)
 [![devDependencies Status](https://david-dm.org/bertolo1988/flight-scrapper/dev-status.svg)](https://david-dm.org/bertolo1988/flight-scrapper?type=dev)
 
