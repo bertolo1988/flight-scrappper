@@ -39,31 +39,17 @@ function flightScrapper() {
   }
 
   function run(args) {
-    return new Promise(function(resolve, reject) {
-      var options = retrieveScrapperOptionsFromArgs(args);
-      debug('Executing with the following options :\n' + JSON.stringify(options, null, 2));
-      let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
-      debug('Querying for the following dates: ' + JSON.stringify(dates, null, 2));
-      MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight).then((flights) => {
-        Persistency.persistFlightData(flatDataArray(flights)).then((arg) => {
-          debug('Successfully inserted ' + arg.length + ' entries!');
-          resolve(arg);
-        }, (err) => {
-          debug('Unable to persist data!');
-          reject(err);
-        }).catch((err) => {
-          debug('Some persistency error has ocurred!');
-          reject(err);
-        });
-      }, (err) => {
-        if (!(err instanceof Error)) {
-          debug('Scrapped no data!');
-        }
-        reject(err);
-      }).catch((err) => {
-        debug('Some scrapping error has ocurred!');
-        reject(err);
-      });
+    var options = retrieveScrapperOptionsFromArgs(args);
+    debug('Executing with the following options :\n' + JSON.stringify(options, null, 2));
+    let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
+    debug('Querying for the following dates: ' + JSON.stringify(dates, null, 2));
+    var scrapPromise = MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight);
+    var persistencyPromise = scrapPromise.then((flights) => {
+      return Persistency.persistFlightData(flatDataArray(flights));
+    });
+    return persistencyPromise.then((arg) => {
+      debug('Successfully inserted ' + arg.length + ' entries!');
+      return arg;
     });
   }
 
