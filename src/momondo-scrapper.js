@@ -7,7 +7,6 @@ var Webdriver = require('selenium-webdriver');
 var By = Webdriver.By;
 var driver;
 
-
 function momondoScrapper() {
 
     function startBrowser() {
@@ -93,19 +92,15 @@ function momondoScrapper() {
     }
 
     function scrap(from, to, dates, currency, directFlight) {
-        return new Promise(function(resolve, reject) {
-            startBrowser();
-            var dataPromises = [];
-            for (let targetDate of dates) {
-                dataPromises.push(retrieveFlightData(from, to, targetDate, currency, directFlight));
-            }
-            Promise.all(dataPromises)
-                .then(function(args) {
-                    debug('Retrieved flights:\n' + JSON.stringify(args, null, 2));
-                    resolve(args);
-                }, (err) => reject(err))
-                .catch((err) => reject(err));
-            stopBrowser();
+        startBrowser();
+        var dataPromises = [];
+        for (let targetDate of dates) {
+            dataPromises.push(retrieveFlightData(from, to, targetDate, currency, directFlight));
+        }
+        stopBrowser();
+        return Promise.all(dataPromises).then((args) => {
+            debug('Retrieved flights:\n' + JSON.stringify(args, null, 2));
+            return args;
         });
     }
 

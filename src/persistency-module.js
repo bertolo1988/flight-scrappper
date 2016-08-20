@@ -12,13 +12,14 @@ function persistencyModule() {
 				} else {
 					debug('Successfully connected to ' + Config.DATABASE + ' !');
 					db.collection(Config.COLLECTION).insertMany(docs, function(err, res) {
-						if (res != null) {
+						if (err != null) {
+							reject(err);
+						} else {
 							debug(JSON.stringify(res.insertedIds, null, 2));
 							db.close();
 							debug('Closed connection to ' + Config.DATABASE + ' !');
 							resolve(res.insertedIds);
-						} else {
-							reject(err);
+
 						}
 					});
 				}
