@@ -34,6 +34,16 @@ function momondoScrapper() {
         }
     }
 
+    function flatDataArray(data) {
+        var result = [];
+        for (let doc of data) {
+            for (let flight of doc) {
+                result.push(flight);
+            }
+        }
+        return result;
+    }
+
     function parseFlightPromises(args, date, from, to) {
         let result = [];
         for (let i = 0; i + 6 <= args.length; i += 6) {
@@ -68,27 +78,31 @@ function momondoScrapper() {
     }
 
     function retrieveFlightData(fromAeroport, toAeroport, targetDate, currency, directFlight) {
-        return new Promise(function(resolve, reject) {
-            var fullUrl = buildUrl(fromAeroport, toAeroport, targetDate, currency, directFlight);
-            driver.get(fullUrl);
-            driver.wait(function() {
-                return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
-                    return text === 'Search complete';
-                });
-            }).then(function() {
-                var resultsBoardElement = driver.findElement(By.id('results-tickets'));
-                resultsBoardElement.findElements(By.css('div.result-box')).then(function(elements) {
-                    if (elements.length > 0) {
-                        let resultBoxData = retrieveFlightPromises(elements);
-                        Promise.all(resultBoxData).then(function(args) {
-                            resolve(parseFlightPromises(args, targetDate, fromAeroport, toAeroport));
-                        });
-                    } else {
-                        reject(0);
-                    }
-                });
-            }).catch(() => reject(0));
+        let fullUrl = buildUrl(fromAeroport, toAeroport, targetDate, currency, directFlight);
+        driver.get(fullUrl);
+        let inProgressPromise = driver.wait(function() {
+            return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
+                return text === 'Search complete';
+            });
         });
+        let resultBoxElementsPromise = inProgressPromise.then(function() {
+            let resultsBoardElement = driver.findElement(By.id('results-tickets'));
+            return resultsBoardElement.findElements(By.css('div.result-box'));
+        });
+        let resultBoxDataPromise = resultBoxElementsPromise.then(function(elements) {
+            if (elements.length > 0) {
+                let resultBoxData = retrieveFlightPromises(elements);
+                return Promise.all(resultBoxData);
+            } else {
+                debug('No data found!');
+                return 0;
+            }
+        });
+
+        return resultBoxDataPromise.then(function(args) {
+            return parseFlightPromises(args, targetDate, fromAeroport, toAeroport);
+        });
+
     }
 
     function scrap(from, to, dates, currency, directFlight) {
@@ -99,8 +113,9 @@ function momondoScrapper() {
         }
         stopBrowser();
         return Promise.all(dataPromises).then((args) => {
-            debug('Retrieved flights:\n' + JSON.stringify(args, null, 2));
-            return args;
+            let flattenedFlights = flatDataArray(args);
+            debug('Retrieved flights:\n' + JSON.stringify(flattenedFlights, null, 2));
+            return flattenedFlights;
         });
     }
 

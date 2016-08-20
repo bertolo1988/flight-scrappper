@@ -28,16 +28,6 @@ function flightScrapper() {
     return options;
   }
 
-  function flatDataArray(data) {
-    var result = [];
-    for (let doc of data) {
-      for (let flight of doc) {
-        result.push(flight);
-      }
-    }
-    return result;
-  }
-
   function run(args) {
     var options = retrieveScrapperOptionsFromArgs(args);
     debug('Executing with the following options :\n' + JSON.stringify(options, null, 2));
@@ -45,7 +35,7 @@ function flightScrapper() {
     debug('Querying for the following dates: ' + JSON.stringify(dates, null, 2));
     var scrapPromise = MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight);
     var persistencyPromise = scrapPromise.then((flights) => {
-      return Persistency.persistFlightData(flatDataArray(flights));
+      return Persistency.insertFlights(flights);
     });
     return persistencyPromise.then((arg) => {
       debug('Successfully inserted ' + arg.length + ' entries!');

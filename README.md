@@ -101,6 +101,8 @@ The resulting data that will be stored has the following fields:
 
 `$ npm run debug` to have console output.
 
+It is still possible to run the app with parameters, example: `npm run debug from=POR to=PHI`;
+
 ## Contributing
 
 Contributions or pull requests are welcome & appreciated!
