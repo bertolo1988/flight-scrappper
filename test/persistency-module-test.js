@@ -3,7 +3,7 @@ var Persistency = require('../src/persistency-module');
 
 describe('persistencyModule test', () => {
 
-	it('should insert mock documents and remove them by id', () => {
+	it('should insert mock documents and remove them using the ids', () => {
 		let mockFlights = [{
 			"from": "LIS",
 			"to": "PAR",
@@ -38,7 +38,7 @@ describe('persistencyModule test', () => {
 			}
 		}];
 		let persistFlightPromise = Persistency.insertFlights(mockFlights);
-		let ids = [];
+		let ids;
 		let removeFlightPromise = persistFlightPromise.then((idsArray) => {
 			ids = idsArray;
 			(idsArray.length).should.be.exactly(2);

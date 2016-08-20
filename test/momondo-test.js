@@ -6,7 +6,7 @@ var Config = require('../config');
 
 describe('momondoScrapper test', function() {
 	this.timeout(Config.TIMEOUT);
-	it('should generate a good momondo-query-string', (done) => {
+	it('should generate a valid momondo-query-string', (done) => {
 		let query = new MomondoQueryString('LON', 'PAR', '23-05-2016', 'USD').toString();
 		should.exist(query);
 		(query.includes('USD')).should.be.true();
@@ -27,7 +27,7 @@ describe('momondoScrapper test', function() {
 			flights[0].time.date.should.be.equal(targetDate);
 		});
 	});
-	it('should retrieve []', () => {
+	it('should retrieve [] if there are no flights', () => {
 		let targetDate = Utils.getDefaultDateString();
 		let dates = Utils.retrieveFlightDatesArray(targetDate, 1, 24);
 		let scrapPromise = MomondoScrapper.scrap('POR', 'PHI', dates, 'EUR', false);
