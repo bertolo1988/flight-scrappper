@@ -1,6 +1,7 @@
 const debug = require('debug')('persistency-module');
 var MongoClient = require('mongodb').MongoClient;
 var Config = require('../config');
+var Utils = require('../src/utils');
 
 function persistencyModule() {
 
@@ -16,7 +17,7 @@ function persistencyModule() {
 							if (err != null) {
 								reject(err);
 							} else {
-								debug(JSON.stringify(res.insertedIds, null, 2));
+								debug(Utils.prettifyObject(res.insertedIds, null, 2));
 								db.close();
 								debug('Closed connection to ' + Config.DATABASE + ' !');
 								resolve(res.insertedIds);

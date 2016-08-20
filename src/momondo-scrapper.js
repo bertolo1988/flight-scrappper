@@ -2,6 +2,7 @@ const debug = require('debug')('momondo-scrapper');
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
 var Flight = require('../src/flight');
+var Utils = require('../src/utils');
 var Config = require('../config');
 var Webdriver = require('selenium-webdriver');
 var By = Webdriver.By;
@@ -109,12 +110,13 @@ function momondoScrapper() {
         startBrowser();
         var dataPromises = [];
         for (let targetDate of dates) {
+            debug('Pushed a promise of scrapped data.');
             dataPromises.push(retrieveFlightData(from, to, targetDate, currency, directFlight));
         }
         stopBrowser();
         return Promise.all(dataPromises).then((args) => {
             let flattenedFlights = flatDataArray(args);
-            debug('Retrieved flights:\n' + JSON.stringify(flattenedFlights, null, 2));
+            debug('Retrieved flights:\n' + Utils.prettifyObject(flattenedFlights));
             return flattenedFlights;
         });
     }
