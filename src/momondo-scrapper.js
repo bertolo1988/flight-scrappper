@@ -2,11 +2,11 @@ const debug = require('debug')('momondo-scrapper');
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
 var Flight = require('../src/flight');
+var Utils = require('../src/utils');
 var Config = require('../config');
 var Webdriver = require('selenium-webdriver');
 var By = Webdriver.By;
 var driver;
-
 
 function momondoScrapper() {
 
@@ -33,6 +33,16 @@ function momondoScrapper() {
             default:
                 return 3;
         }
+    }
+
+    function flatDataArray(data) {
+        var result = [];
+        for (let doc of data) {
+            for (let flight of doc) {
+                result.push(flight);
+            }
+        }
+        return result;
     }
 
     function parseFlightPromises(args, date, from, to) {
@@ -69,43 +79,45 @@ function momondoScrapper() {
     }
 
     function retrieveFlightData(fromAeroport, toAeroport, targetDate, currency, directFlight) {
-        return new Promise(function(resolve, reject) {
-            var fullUrl = buildUrl(fromAeroport, toAeroport, targetDate, currency, directFlight);
-            driver.get(fullUrl);
-            driver.wait(function() {
-                return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
-                    return text === 'Search complete';
-                });
-            }).then(function() {
-                var resultsBoardElement = driver.findElement(By.id('results-tickets'));
-                resultsBoardElement.findElements(By.css('div.result-box')).then(function(elements) {
-                    if (elements.length > 0) {
-                        let resultBoxData = retrieveFlightPromises(elements);
-                        Promise.all(resultBoxData).then(function(args) {
-                            resolve(parseFlightPromises(args, targetDate, fromAeroport, toAeroport));
-                        });
-                    } else {
-                        reject(0);
-                    }
-                });
-            }).catch(() => reject(0));
+        let fullUrl = buildUrl(fromAeroport, toAeroport, targetDate, currency, directFlight);
+        driver.get(fullUrl);
+        let inProgressPromise = driver.wait(function() {
+            return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
+                return text === 'Search complete';
+            });
         });
+        let resultBoxElementsPromise = inProgressPromise.then(function() {
+            let resultsBoardElement = driver.findElement(By.id('results-tickets'));
+            return resultsBoardElement.findElements(By.css('div.result-box'));
+        });
+        let resultBoxDataPromise = resultBoxElementsPromise.then(function(elements) {
+            if (elements.length > 0) {
+                let resultBoxData = retrieveFlightPromises(elements);
+                return Promise.all(resultBoxData);
+            } else {
+                debug('No data found!');
+                return 0;
+            }
+        });
+
+        return resultBoxDataPromise.then(function(args) {
+            return parseFlightPromises(args, targetDate, fromAeroport, toAeroport);
+        });
+
     }
 
     function scrap(from, to, dates, currency, directFlight) {
-        return new Promise(function(resolve, reject) {
-            startBrowser();
-            var dataPromises = [];
-            for (let targetDate of dates) {
-                dataPromises.push(retrieveFlightData(from, to, targetDate, currency, directFlight));
-            }
-            Promise.all(dataPromises)
-                .then(function(args) {
-                    debug('Retrieved flights:\n' + JSON.stringify(args, null, 2));
-                    resolve(args);
-                }, (err) => reject(err))
-                .catch((err) => reject(err));
-            stopBrowser();
+        startBrowser();
+        var dataPromises = [];
+        for (let targetDate of dates) {
+            debug('Pushed a promise of scrapped data.');
+            dataPromises.push(retrieveFlightData(from, to, targetDate, currency, directFlight));
+        }
+        stopBrowser();
+        return Promise.all(dataPromises).then((args) => {
+            let flattenedFlights = flatDataArray(args);
+            debug('Retrieved flights:\n' + Utils.prettifyObject(flattenedFlights));
+            return flattenedFlights;
         });
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "flight-scrapper",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Web scrapper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.",
   "main": "dist/flight-scrapper.js",
   "repository": {
@@ -24,7 +24,7 @@
   "scripts": {
     "lint": "jshint --show-non-errors --exclude ./node_modules .",
     "test": "npm run lint && mocha test --recursive",
-    "debug": "set DEBUG=* && node app.js",
+    "debug": "npm run lint && set DEBUG=* && node app.js",
     "start": "node app.js"
   },
   "license": "MIT"

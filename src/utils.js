@@ -7,6 +7,10 @@ module.exports = {
     return new Moment(new Date().toISOString()).add(2, 'days').format(Config.DATE_FORMAT);
   },
 
+  prettifyObject(obj) {
+    return JSON.stringify(obj, null, 2);
+  },
+
   retrieveFlightDatesArray(fromDate, periods, interval) {
     let result = [];
     let targetDate = new Moment(fromDate, Config.DATE_FORMAT);

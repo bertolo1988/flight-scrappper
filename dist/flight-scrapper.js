@@ -28,42 +28,26 @@ function flightScrapper() {
     return options;
   }
 
-  function flatDataArray(data) {
-    var result = [];
-    for (let doc of data) {
-      for (let flight of doc) {
-        result.push(flight);
-      }
-    }
-    return result;
+  function getData(options, dates) {
+    return MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight);
+  }
+
+  function persistData(data) {
+    return data.then((flights) => {
+      return Persistency.insertFlights(flights);
+    });
   }
 
   function run(args) {
-    return new Promise(function(resolve, reject) {
-      var options = retrieveScrapperOptionsFromArgs(args);
-      debug('Executing with the following options :\n' + JSON.stringify(options, null, 2));
-      let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
-      debug('Querying for the following dates: ' + JSON.stringify(dates, null, 2));
-      MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight).then((flights) => {
-        Persistency.persistFlightData(flatDataArray(flights)).then((arg) => {
-          debug('Successfully inserted ' + arg.length + ' entries!');
-          resolve(arg);
-        }, (err) => {
-          debug('Unable to persist data!');
-          reject(err);
-        }).catch((err) => {
-          debug('Some persistency error has ocurred!');
-          reject(err);
-        });
-      }, (err) => {
-        if (!(err instanceof Error)) {
-          debug('Scrapped no data!');
-        }
-        reject(err);
-      }).catch((err) => {
-        debug('Some scrapping error has ocurred!');
-        reject(err);
-      });
+    let options = retrieveScrapperOptionsFromArgs(args);
+    debug('Executing with the following options :\n' + Utils.prettifyObject(options));
+    let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
+    debug('Querying for the following dates:\n' + Utils.prettifyObject(dates));
+    let scrapPromise = getData(options, dates);
+    let persistencyPromise = persistData(scrapPromise);
+    return persistencyPromise.then((arg) => {
+      debug('Successfully inserted ' + arg.length + ' entries!');
+      return arg;
     });
   }
 

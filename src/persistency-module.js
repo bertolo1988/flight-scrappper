@@ -1,32 +1,38 @@
 const debug = require('debug')('persistency-module');
 var MongoClient = require('mongodb').MongoClient;
 var Config = require('../config');
+var Utils = require('../src/utils');
 
 function persistencyModule() {
 
-	function persistFlightData(docs) {
+	function insertFlights(docs) {
 		return new Promise(function(resolve, reject) {
-			MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
-				if (err != null) {
-					reject(err);
-				} else {
-					debug('Successfully connected to ' + Config.DATABASE + ' !');
-					db.collection(Config.COLLECTION).insertMany(docs, function(err, res) {
-						if (res != null) {
-							debug(JSON.stringify(res.insertedIds, null, 2));
-							db.close();
-							debug('Closed connection to ' + Config.DATABASE + ' !');
-							resolve(res.insertedIds);
-						} else {
-							reject(err);
-						}
-					});
-				}
-			});
+			if (docs.length > 0) {
+				MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
+					if (err != null) {
+						reject(err);
+					} else {
+						debug('Successfully connected to ' + Config.DATABASE + ' !');
+						db.collection(Config.COLLECTION).insertMany(docs, function(err, res) {
+							if (err != null) {
+								reject(err);
+							} else {
+								debug(Utils.prettifyObject(res.insertedIds, null, 2));
+								db.close();
+								debug('Closed connection to ' + Config.DATABASE + ' !');
+								resolve(res.insertedIds);
+							}
+						});
+					}
+				});
+			} else {
+				debug('No data to be inserted!');
+				resolve([]);
+			}
 		});
 	}
 
-	function removeFlightsById(ids) {
+	function removeFlights(ids) {
 		return new Promise(function(resolve, reject) {
 			MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
 				if (err != null) {
@@ -50,8 +56,8 @@ function persistencyModule() {
 	}
 
 	return {
-		persistFlightData,
-		removeFlightsById
+		insertFlights,
+		removeFlights
 	};
 
 }

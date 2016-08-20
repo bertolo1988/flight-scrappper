@@ -3,7 +3,7 @@ var Persistency = require('../src/persistency-module');
 
 describe('persistencyModule test', () => {
 
-	it('should insert mock documents and remove them by id', (done) => {
+	it('should insert mock documents and remove them using the ids', () => {
 		let mockFlights = [{
 			"from": "LIS",
 			"to": "PAR",
@@ -37,12 +37,22 @@ describe('persistencyModule test', () => {
 				"currency": "USD"
 			}
 		}];
-		Persistency.persistFlightData(mockFlights).then((ids) => {
-			(ids.length).should.be.exactly(2);
-			Persistency.removeFlightsById(ids).then((deleted) => {
-				(deleted).should.be.exactly(ids.length).which.is.a.Number();
-				done();
-			}).catch((err) => done(err));
+		let persistFlightPromise = Persistency.insertFlights(mockFlights);
+		let ids;
+		let removeFlightPromise = persistFlightPromise.then((idsArray) => {
+			ids = idsArray;
+			(idsArray.length).should.be.exactly(2);
+			return Persistency.removeFlights(idsArray);
+		});
+		return removeFlightPromise.then((deleted) => {
+			(deleted).should.be.exactly(ids.length).which.is.a.Number();
+		});
+	});
+
+	it('should retrieve [] if there is no data to insert', () => {
+		let persistencyPromise = Persistency.insertFlights([]);
+		return persistencyPromise.then((result) => {
+			result.length.should.be.exactly(0);
 		});
 	});
 
