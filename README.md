@@ -1,4 +1,4 @@
-[![NPM](https://nodei.co/npm/flight-scrapper.png)](https://nodei.co/npm/flight-scrapper/)
+[![NPM](https://nodei.co/npm/flight-scrapper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/flight-scrapper/)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3b112d983624adea191ba81a9713ba1)](https://www.codacy.com/app/tiagobertolo/flight-scrapper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrapper&amp;utm_campaign=Badge_Grade)
 [![npm version](https://badge.fury.io/js/flight-scrapper.svg)](https://badge.fury.io/js/flight-scrapper)
