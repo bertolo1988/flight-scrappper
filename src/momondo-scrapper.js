@@ -14,7 +14,6 @@ function momondoScrapper() {
         driver = new Webdriver.Builder()
             .forBrowser(Config.BROWSER)
             .build();
-        chromedriver.start();
     }
 
     function stopBrowser() {
