@@ -109,6 +109,6 @@ It is still possible to run the app with parameters, example: `$ npm run debug f
 
 ## Contributing
 
-Contributions or pull requests are welcome & appreciated!
+Contributions, requests or pull requests are welcome & appreciated!
 
 Send [me](https://github.com/bertolo1988/) an email if you have questions regarding possible contributions.
