@@ -1,6 +1,7 @@
 var Moment = require('moment');
 
 module.exports = {
+
   getDefaultDateString(dateFormat) {
     return new Moment(new Date().toISOString()).add(2, 'days').format(dateFormat);
   },
@@ -19,4 +20,5 @@ module.exports = {
     }
     return result;
   }
+
 };

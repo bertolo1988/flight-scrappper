@@ -23,4 +23,5 @@ describe('retrieveFlightDatesArray test', () => {
     todayMoment.should.be.equal(dates[44]);
     done();
   });
+
 });
