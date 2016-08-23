@@ -1,6 +1,6 @@
 {
   "name": "flight-scrapper",
-  "version": "0.0.8-DEV",
+  "version": "0.0.8",
   "description": "Web scrapper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.",
   "main": "dist/flight-scrapper.js",
   "repository": {
@@ -11,10 +11,10 @@
   "author": "bertolo1988 <tiagobertolo@gmail.com> (https://github.com/bertolo1988)",
   "dependencies": {
     "chromedriver": "2.21.2",
-    "moment": "2.13.0",
-    "selenium-webdriver": "2.53.2",
     "debug": "2.2.0",
-    "mongodb": "2.1.18"
+    "moment": "2.13.0",
+    "mongodb": "2.1.18",
+    "selenium-webdriver": "2.53.2"
   },
   "devDependencies": {
     "jshint": "2.9.2",
