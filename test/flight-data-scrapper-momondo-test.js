@@ -1,10 +1,11 @@
 var FlightScrapper = require('../dist/flight-scrapper');
 var Persistency = require('../src/persistency-module');
-var Config = require('../config');
+var Options = require('../src/options');
 var should = require('should');
 
 describe('flightScrapper test', function() {
-  this.timeout(Config.TIMEOUT);
+  var options = new Options().options;
+  this.timeout(options.timeout);
 
   it('should retrieve and delete results with default options', () => {
     let ids;
@@ -13,7 +14,7 @@ describe('flightScrapper test', function() {
       should.exist(idsArray);
       (idsArray.length).should.be.above(0);
       ids = idsArray;
-      return Persistency.removeFlights(idsArray);
+      return Persistency.removeFlights(options.database, options.collection, idsArray);
     });
     return persistencyPromise.then((deleted) => {
       (deleted).should.be.exactly(ids.length).which.is.a.Number();

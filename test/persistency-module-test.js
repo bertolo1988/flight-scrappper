@@ -1,7 +1,9 @@
 require('should');
 var Persistency = require('../src/persistency-module');
+var Options = require('../src/options');
 
 describe('persistencyModule test', () => {
+	var options = new Options().options;
 
 	it('should insert mock documents and remove them using the ids', () => {
 		let mockFlights = [{
@@ -37,12 +39,12 @@ describe('persistencyModule test', () => {
 				"currency": "USD"
 			}
 		}];
-		let persistFlightPromise = Persistency.insertFlights(mockFlights);
+		let persistFlightPromise = Persistency.insertFlights(options.database, options.collection, mockFlights);
 		let ids;
 		let removeFlightPromise = persistFlightPromise.then((idsArray) => {
 			ids = idsArray;
 			(idsArray.length).should.be.exactly(2);
-			return Persistency.removeFlights(idsArray);
+			return Persistency.removeFlights(options.database, options.collection, idsArray);
 		});
 		return removeFlightPromise.then((deleted) => {
 			(deleted).should.be.exactly(ids.length).which.is.a.Number();
@@ -50,7 +52,7 @@ describe('persistencyModule test', () => {
 	});
 
 	it('should retrieve [] if there is no data to insert', () => {
-		let persistencyPromise = Persistency.insertFlights([]);
+		let persistencyPromise = Persistency.insertFlights(options.database, options.collection, []);
 		return persistencyPromise.then((result) => {
 			result.length.should.be.exactly(0);
 		});

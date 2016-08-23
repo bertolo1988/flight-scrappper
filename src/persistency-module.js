@@ -1,25 +1,24 @@
 const debug = require('debug')('persistency-module');
 var MongoClient = require('mongodb').MongoClient;
-var Config = require('../config');
 var Utils = require('../src/utils');
 
 function persistencyModule() {
 
-	function insertFlights(docs) {
+	function insertFlights(database, collection, docs) {
 		return new Promise(function(resolve, reject) {
 			if (docs.length > 0) {
-				MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
+				MongoClient.connect('mongodb://' + database, function(err, db) {
 					if (err != null) {
 						reject(err);
 					} else {
-						debug('Successfully connected to ' + Config.DATABASE + ' !');
-						db.collection(Config.COLLECTION).insertMany(docs, function(err, res) {
+						debug('Successfully connected to ' + database + ' !');
+						db.collection(collection).insertMany(docs, function(err, res) {
 							if (err != null) {
 								reject(err);
 							} else {
 								debug(Utils.prettifyObject(res.insertedIds, null, 2));
 								db.close();
-								debug('Closed connection to ' + Config.DATABASE + ' !');
+								debug('Closed connection to ' + database + ' !');
 								resolve(res.insertedIds);
 							}
 						});
@@ -32,13 +31,13 @@ function persistencyModule() {
 		});
 	}
 
-	function removeFlights(ids) {
+	function removeFlights(database, collection, ids) {
 		return new Promise(function(resolve, reject) {
-			MongoClient.connect('mongodb://' + Config.DATABASE, function(err, db) {
+			MongoClient.connect('mongodb://' + database, function(err, db) {
 				if (err != null) {
 					reject(err);
 				} else {
-					db.collection(Config.COLLECTION).deleteMany({
+					db.collection(collection).deleteMany({
 						'_id': {
 							'$in': ids
 						}
