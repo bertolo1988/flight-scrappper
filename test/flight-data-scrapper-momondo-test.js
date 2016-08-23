@@ -4,6 +4,7 @@ var Options = require('../src/options');
 var should = require('should');
 
 describe('flightScrapper test', function() {
+
   var options = new Options().options;
   this.timeout(options.timeout);
 
@@ -20,10 +21,12 @@ describe('flightScrapper test', function() {
       (deleted).should.be.exactly(ids.length).which.is.a.Number();
     });
   });
+
   it('should resolve into [] if no flights are retrieved or persisted', () => {
     let flightScPromise = FlightScrapper.run(['from=POR', 'to=PHI']);
     return flightScPromise.then((inserted) => {
       (inserted.length).should.be.exactly(0).which.is.a.Number();
     });
   });
+
 });

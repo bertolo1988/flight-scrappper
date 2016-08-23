@@ -31,7 +31,7 @@ The following options can be defined as an argument of the `FlightScrapper.run()
 This can be done in 2 ways:
 
  - by passing an array in the following format: `['option1=abc','options2=abc',...]`.
- - or by passing a simple object
+ - or by passing a simple object `{option1:'abc',option2:'abc',...}`
 
 If an option is not defined, a default value will be used instead.
 
@@ -64,6 +64,7 @@ Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will g
 First, start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/).
 
 To start the flight-scrapper with the default values just type `$ npm start`.
+
 If you want to run with diferent options just add arguments as specified in [Options](#options).
 
 If you want to get feedback in the console please check  [Debugging](#debugging).
@@ -72,7 +73,7 @@ If you want to get feedback in the console please check  [Debugging](#debugging)
 
 `FlightScrapper.run` will return a promise wich will resolve into the number of inserted documents or into an error.
 
-The resulting data that will be stored has the following fields:
+The resulting data that will be stored in the database has the following fields:
 
 	{
 		_id, 		

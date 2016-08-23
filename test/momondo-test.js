@@ -5,8 +5,10 @@ var Utils = require('../src/utils');
 var Options = require('../src/options');
 
 describe('momondoScrapper test', function() {
+
 	var options = new Options().options;
 	this.timeout(options.timeout);
+
 	it('should generate a valid momondo-query-string', (done) => {
 		let query = new MomondoQueryString('LON', 'PAR', '23-05-2016', 'USD').toString();
 		should.exist(query);
@@ -18,6 +20,7 @@ describe('momondoScrapper test', function() {
 		(attributes.length).should.be.exactly(11);
 		done();
 	});
+
 	it('should retrieve 30 flights', () => {
 		let targetDate = Utils.getDefaultDateString(options.dateFormat);
 		let dates = Utils.retrieveFlightDatesArray(targetDate, options.dateFormat, 2, 24);
@@ -28,6 +31,7 @@ describe('momondoScrapper test', function() {
 			flights[0].time.date.should.be.equal(targetDate);
 		});
 	});
+
 	it('should retrieve [] if there are no flights', () => {
 		let targetDate = Utils.getDefaultDateString(options.dateFormat);
 		let dates = Utils.retrieveFlightDatesArray(targetDate, options.dateFormat, 1, 24);

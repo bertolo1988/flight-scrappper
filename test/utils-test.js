@@ -4,6 +4,7 @@ var Utils = require('../src/utils');
 var Options = require('../src/options');
 
 describe('retrieveFlightDatesArray test', () => {
+
   var DATE_FORMAT = new Options().options.dateFormat;
   it('should generate 3 dates, in days 7, 9, 11-09-2015 from a moment', (done) => {
     let moment = new Moment('05-09-2015', DATE_FORMAT);
@@ -13,6 +14,7 @@ describe('retrieveFlightDatesArray test', () => {
     (dates[2]).should.be.equal('09-09-2015');
     done();
   });
+
   it('should generate 45 dates from a string', (done) => {
     let todayDate = new Moment(new Date().toISOString()).format(DATE_FORMAT);
     let dates = Utils.retrieveFlightDatesArray(todayDate, DATE_FORMAT, 45, 24);
