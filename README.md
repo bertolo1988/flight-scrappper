@@ -17,7 +17,6 @@ Web scrapper made with nodejs and webdriverjs that gathers flight data and store
  - [mongodb](https://www.mongodb.com/)
  - [npm](http://npmjs.org/)
  - [node](http://nodejs.org/)
- - [gulp](http://gulpjs.com/)
 
 
 ## Installing
