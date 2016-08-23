@@ -1,50 +1,28 @@
 var MomondoScrapper = require('../src/momondo-scrapper');
 var Persistency = require('../src/persistency-module');
 var Utils = require('../src/utils');
+var Options = require('../src/options');
 const debug = require('debug')('fligth-scrapper');
 
 function flightScrapper() {
 
-  function retrieveScrapperOptionsFromArgs(args) {
-    var options = {
-      periods: 1,
-      interval: 48,
-      from: 'LIS',
-      to: 'PAR',
-      currency: 'USD',
-      directFlight: 'false',
-      targetDate: Utils.getDefaultDateString()
-    };
-    if (args != null) {
-      for (let argument of args) {
-        let auxiliar = argument.split('=');
-        if (auxiliar[0] in options) {
-          options[auxiliar[0]] = auxiliar[1];
-        } else {
-          throw new Error('Invalid arguments error message!');
-        }
-      }
-    }
-    return options;
-  }
-
   function getData(options, dates) {
-    return MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight);
+    return MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight, options.browser);
   }
 
-  function persistData(data) {
+  function persistData(options, data) {
     return data.then((flights) => {
-      return Persistency.insertFlights(flights);
+      return Persistency.insertFlights(options.database, options.collection, flights);
     });
   }
 
   function run(args) {
-    let options = retrieveScrapperOptionsFromArgs(args);
+    let options = new Options(args).options;
     debug('Executing with the following options :\n' + Utils.prettifyObject(options));
-    let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.periods, options.interval);
+    let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.dateFormat, options.periods, options.interval);
     debug('Querying for the following dates:\n' + Utils.prettifyObject(dates));
     let scrapPromise = getData(options, dates);
-    let persistencyPromise = persistData(scrapPromise);
+    let persistencyPromise = persistData(options, scrapPromise);
     return persistencyPromise.then((arg) => {
       debug('Successfully inserted ' + arg.length + ' entries!');
       return arg;

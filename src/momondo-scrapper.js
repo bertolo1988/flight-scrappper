@@ -3,18 +3,17 @@ var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
 var Flight = require('../src/flight');
 var Utils = require('../src/utils');
-var Config = require('../config');
 var Webdriver = require('selenium-webdriver');
 var By = Webdriver.By;
 var driver;
+var MomondoBaseUrl = 'http://www.momondo.co.uk/flightsearch/?';
 
 function momondoScrapper() {
 
-    function startBrowser() {
+    function startBrowser(browser) {
         driver = new Webdriver.Builder()
-            .forBrowser(Config.BROWSER)
+            .forBrowser(browser)
             .build();
-        chromedriver.start();
     }
 
     function stopBrowser() {
@@ -75,7 +74,7 @@ function momondoScrapper() {
 
     function buildUrl(fromAeroport, toAeroport, targetDate, currency, directFlight) {
         let momondo = new MomondoQueryString(fromAeroport, toAeroport, targetDate, currency, directFlight);
-        return 'http://www.momondo.co.uk/flightsearch/?' + momondo.toString();
+        return MomondoBaseUrl + momondo.toString();
     }
 
     function retrieveFlightData(fromAeroport, toAeroport, targetDate, currency, directFlight) {
@@ -106,8 +105,8 @@ function momondoScrapper() {
 
     }
 
-    function scrap(from, to, dates, currency, directFlight) {
-        startBrowser();
+    function scrap(from, to, dates, currency, directFlight, browser) {
+        startBrowser(browser);
         var dataPromises = [];
         for (let targetDate of dates) {
             debug('Pushed a promise of scrapped data.');

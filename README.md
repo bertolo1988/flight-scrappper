@@ -1,6 +1,10 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3b112d983624adea191ba81a9713ba1)](https://www.codacy.com/app/tiagobertolo/flight-scrapper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrapper&amp;utm_campaign=Badge_Grade)
-[![Stories in Ready](https://badge.waffle.io/bertolo1988/flight-scrapper.png?label=ready&title=Ready)](https://waffle.io/bertolo1988/flight-scrapper)
+[![NPM](https://nodei.co/npm/flight-scrapper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/flight-scrapper/)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3b112d983624adea191ba81a9713ba1)](https://www.codacy.com/app/tiagobertolo/flight-scrapper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrapper&amp;utm_campaign=Badge_Grade)
+[![npm version](https://badge.fury.io/js/flight-scrapper.svg)](https://badge.fury.io/js/flight-scrapper)
+[![Stories in Ready](https://badge.waffle.io/bertolo1988/flight-scrapper.svg?label=ready&title=Ready)](http://waffle.io/bertolo1988/flight-scrapper)
+[![dependencies Status](https://david-dm.org/bertolo1988/flight-scrapper/status.svg)](https://david-dm.org/bertolo1988/flight-scrapper)
+[![devDependencies Status](https://david-dm.org/bertolo1988/flight-scrapper/dev-status.svg)](https://david-dm.org/bertolo1988/flight-scrapper?type=dev)
 
 # flight-scrapper
 
@@ -9,11 +13,10 @@ Web scrapper made with nodejs and webdriverjs that gathers flight data and store
 
 ## Requirements
 
+ - [node](http://nodejs.org/)
+ - [npm](http://npmjs.org/)
  - [chrome](https://www.google.com/chrome/browser/desktop/index.html)
  - [mongodb](https://www.mongodb.com/)
- - [npm](http://npmjs.org/)
- - [node](http://nodejs.org/)
- - [gulp](http://gulpjs.com/)
 
 
 ## Installing
@@ -21,39 +24,36 @@ Web scrapper made with nodejs and webdriverjs that gathers flight data and store
 `$ npm install flight-scrapper`
 
 
-## Config
-
-Add a config.js file to the project folder with the following format and fields.
-
-	var config = {
-	    DATABASE: 'localhost:27017/flight-scrapper',
-	    COLLECTION: 'flight-data',
-	    DATE_FORMAT: 'DD-MM-YYYY',
-	    TIMEOUT: 50000,
-	    BROWSER: 'chrome'
-	};
-	module.exports = config;
-
-
 ## Options
 
 The following options can be defined as an argument of the `FlightScrapper.run()` method.
-This can be done by passing an array in the following format: `['option1=abc','options2=abc',...]`.
+
+This can be done in 2 ways:
+
+ - by passing an array in the following format: `['option1=abc','options2=abc',...]`.
+ - or by passing a simple object `{option1:'abc',option2:'abc',...}`
 
 If an option is not defined, a default value will be used instead.
-These are the default values:
 
-	var options = {
-		periods: 1, 						//specifies the number of queries that will be made
-		interval: 48, 						//number of hours between the queries
-		from: 'LIS',						//departure aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
-		to: 'PAR',							//destination aeroport trigram Ex: PAR, LIS, NYC, TOK, LON, DUB
-		currency: 'USD', 					//EUR,USD,GBP
-		directFlight: 'false',				// 'true' or 'false'
-		targetDate: getDefaultDateString()	//wich is new Date() + 2 days
+These are the default values:
+	
+	let defaultDateFormat = 'DD-MM-YYYY';
+	var defaultOptions = {
+		periods: 1,
+		interval: 48,
+		from: 'LIS',
+		to: 'PAR',
+		currency: 'USD',
+		directFlight: 'false',
+		dateFormat: defaultDateFormat,
+		targetDate: Utils.getDefaultDateString(defaultDateFormat),
+		database: 'localhost:27017/flight-scrapper',
+		collection: 'flight-data',
+		timeout: 50000,
+		browser: 'chrome'
 	};
 
-During the start, a new parameter `dates` will be generated. This array will contain dates in string form in the `Config.DATE_FORMAT` format.
+During the start, a new parameter `dates` will be generated. This array will contain dates in string form in the `options.dateFormat` format.
 
 This dates are calculated with the following formula `targetDate + options.interval x options.periods ` times.
  
@@ -63,17 +63,17 @@ Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will g
 
 First, start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/).
 
-To start the flight-scrapper with the default values just type `$ node app.js` or `$ npm start`.
+To start the flight-scrapper with the default values just type `$ npm start`.
+
+If you want to run with diferent options just add arguments as specified in [Options](#options).
 
 If you want to get feedback in the console please check  [Debugging](#debugging).
-
-If you want to define an option just use `$ node app.js option1=value options2=value`.
 
 ## Output
 
 `FlightScrapper.run` will return a promise wich will resolve into the number of inserted documents or into an error.
 
-The resulting data that will be stored has the following fields:
+The resulting data that will be stored in the database has the following fields:
 
 	{
 		_id, 		
@@ -105,6 +105,6 @@ It is still possible to run the app with parameters, example: `$ npm run debug f
 
 ## Contributing
 
-Contributions or pull requests are welcome & appreciated!
+Contributions, requests or pull requests are welcome & appreciated!
 
 Send [me](https://github.com/bertolo1988/) an email if you have questions regarding possible contributions.
