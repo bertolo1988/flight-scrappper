@@ -105,17 +105,19 @@ function momondoScrapper() {
 
     }
 
-    function scrap(from, to, dates, currency, directFlight, browser) {
+    function scrap(routes, dates, currency, directFlight, browser) {
         startBrowser(browser);
-        var dataPromises = [];
-        for (let targetDate of dates) {
-            debug('Pushed a promise of scrapped data.');
-            dataPromises.push(retrieveFlightData(from, to, targetDate, currency, directFlight));
+        let dataPromises = [];
+        for (let route of routes) {
+            for (let targetDate of dates) {
+                debug('Pushed a promise of scrapped data.');
+                dataPromises.push(retrieveFlightData(route.from, route.to, targetDate, currency, directFlight));
+            }
         }
-        stopBrowser();
         return Promise.all(dataPromises).then((args) => {
             let flattenedFlights = flatDataArray(args);
             debug('Retrieved flights:\n' + Utils.prettifyObject(flattenedFlights));
+            stopBrowser();
             return flattenedFlights;
         });
     }

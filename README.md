@@ -28,10 +28,7 @@ Web scrapper made with nodejs and webdriverjs that gathers flight data and store
 
 The following options can be defined as an argument of the `FlightScrapper.run()` method.
 
-This can be done in 2 ways:
-
- - by passing an array in the following format: `['option1=abc','options2=abc',...]`.
- - or by passing a simple object `{option1:'abc',option2:'abc',...}`
+This can be done passing an object `{option1:'abc',option2:'abc',...}`.
 
 If an option is not defined, a default value will be used instead.
 
@@ -41,8 +38,10 @@ These are the default values:
 	var defaultOptions = {
 		periods: 1,
 		interval: 48,
-		from: 'LIS',
-		to: 'PAR',
+		routes: [{
+			from: 'LIS',
+			to: 'PAR'
+		}],
 		currency: 'USD',
 		directFlight: 'false',
 		dateFormat: defaultDateFormat,
@@ -62,6 +61,8 @@ Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will g
 ## Running
 
 First, start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/).
+
+If you installed mongodb in the default directory you can run `$ npm run mongo-win` or `$ npm run mongo-mac` to run a database that will use a folder named `mongo-db` in the current directory.
 
 To start the flight-scrapper with the default values just type `$ npm start`.
 

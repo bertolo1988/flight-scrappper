@@ -7,7 +7,7 @@ const debug = require('debug')('fligth-scrapper');
 function flightScrapper() {
 
   function getData(options, dates) {
-    return MomondoScrapper.scrap(options.from, options.to, dates, options.currency, options.directFlight, options.browser);
+    return MomondoScrapper.scrap(options.routes, dates, options.currency, options.directFlight, options.browser);
   }
 
   function persistData(options, data) {

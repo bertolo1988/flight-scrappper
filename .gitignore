@@ -1,4 +1,5 @@
 /node_modules/
+/mongo-db/
 /tmp/
 *.pem
 *.log
