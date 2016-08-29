@@ -7,7 +7,7 @@ var Options = require('../src/options');
 describe('momondoScrapper test', function() {
 
 	var options = new Options().options;
-	this.timeout(options.timeout);
+	this.timeout(options.timeout * 4);
 
 	it('should generate a valid momondo-query-string', (done) => {
 		let query = new MomondoQueryString('LON', 'PAR', '23-05-2016', 'USD').toString();
@@ -16,26 +16,39 @@ describe('momondoScrapper test', function() {
 		(query.includes('23-05-2016')).should.be.true();
 		(query.includes('LON')).should.be.true();
 		(query.includes('PAR')).should.be.true();
-		var attributes = query.split('&');
+		let attributes = query.split('&');
 		(attributes.length).should.be.exactly(11);
 		done();
 	});
 
-	it('should retrieve 30 flights', () => {
+	it('should retrieve 60 flights for 2 route', () => {
 		let targetDate = Utils.getDefaultDateString(options.dateFormat);
 		let dates = Utils.retrieveFlightDatesArray(targetDate, options.dateFormat, 2, 24);
-		let scrapPromise = MomondoScrapper.scrap('LON', 'BER', dates, 'EUR', false, options.browser);
+		let routes = [{
+			from: 'LON',
+			to: 'BER'
+		}, {
+			from: 'MAD',
+			to: 'LON'
+		}];
+		let scrapPromise = MomondoScrapper.scrap(routes, dates, 'EUR', false, options.browser);
 		return scrapPromise.then((flights) => {
-			(flights.length).should.be.exactly(30);
-			flights[0].from.should.be.equal('LON');
+			(flights.length).should.be.exactly(60);
+			flights[0].from.should.be.equal(routes[0].from);
 			flights[0].time.date.should.be.equal(targetDate);
+			flights[59].from.should.be.equal(routes[1].from);
+			flights[59].time.date.should.be.equal(dates[1]);
 		});
 	});
 
 	it('should retrieve [] if there are no flights', () => {
 		let targetDate = Utils.getDefaultDateString(options.dateFormat);
 		let dates = Utils.retrieveFlightDatesArray(targetDate, options.dateFormat, 1, 24);
-		let scrapPromise = MomondoScrapper.scrap('POR', 'PHI', dates, 'EUR', false, options.browser);
+		let routes = [{
+			from: 'POR',
+			to: 'PHI'
+		}];
+		let scrapPromise = MomondoScrapper.scrap(routes, dates, 'EUR', false, options.browser);
 		return scrapPromise.then((flights) => {
 			(flights.length).should.be.exactly(0);
 		});
