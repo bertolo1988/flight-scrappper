@@ -26,8 +26,8 @@
     "mongo-win": "mkdir mongo-db & \"C:/Program Files/MongoDb/Server/3.2/bin/mongod.exe\" --dbpath=mongo-db",
     "lint": "jshint --show-non-errors --exclude ./node_modules .",
     "test": "npm run lint && mocha test --recursive",
-    "debug": "npm run lint && set DEBUG=* && node flight-scrapper-app.js",
-    "start": "node app.js"
+    "debug": "npm run lint && set DEBUG=* && npm start",
+    "start": "node flight-scrapper-app.js"
   },
   "license": "MIT"
 }

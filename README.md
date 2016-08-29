@@ -62,7 +62,7 @@ Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will g
 
 First, start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/).
 
-If you installed mongodb in the default directory you can run `$ npm run mongo-win` or `$ npm run mongo-mac` to run a database that will use a folder named `mongo-db` in the current directory.
+If you installed mongodb in the default directory you can run `$ npm run mongo-win`  (for windows) or `$ npm run mongo-mac` (for mac) to run a database that will use a folder named `mongo-db` in the current directory.
 
 To start the flight-scrapper with the default values just type `$ npm start`.
 
@@ -101,8 +101,6 @@ The resulting data that will be stored in the database has the following fields:
 ## Debugging
 
 `$ npm run debug` to have console output.
-
-It is still possible to run the app with parameters, example: `$ npm run debug from=POR to=PHI`;
 
 ## Contributing
 
