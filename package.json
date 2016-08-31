@@ -1,13 +1,13 @@
 {
-  "name": "flight-scrapper",
+  "name": "flight-scrappper",
   "version": "0.0.10-DEV",
-  "description": "Web scrapper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.",
-  "main": "dist/flight-scrapper.js",
+  "description": "Web scrappper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.",
+  "main": "dist/flight-scrappper.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bertolo1988/flight-scrapper"
+    "url": "https://github.com/bertolo1988/flight-scrappper"
   },
-  "homepage": "https://github.com/bertolo1988/flight-scrapper",
+  "homepage": "https://github.com/bertolo1988/flight-scrappper",
   "author": "bertolo1988 <tiagobertolo@gmail.com> (https://github.com/bertolo1988)",
   "dependencies": {
     "chromedriver": "2.21.2",
@@ -27,7 +27,7 @@
     "lint": "jshint --show-non-errors --exclude ./node_modules .",
     "test": "npm run lint && mocha test --recursive",
     "debug": "npm run lint && set DEBUG=* && npm start",
-    "start": "node flight-scrapper-app.js"
+    "start": "node flight-scrappper-app.js"
   },
   "license": "MIT"
 }

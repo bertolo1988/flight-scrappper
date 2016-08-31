@@ -1,10 +1,10 @@
 var should = require('should');
 var MomondoQueryString = require('../src/momondo-query-string');
-var MomondoScrapper = require('../src/momondo-scrapper');
+var MomondoScrappper = require('../src/momondo-scrappper');
 var Utils = require('../src/utils');
 var Options = require('../src/options');
 
-describe('momondoScrapper test', function() {
+describe('momondoScrappper test', function() {
 
 	var options = new Options().options;
 	this.timeout(options.timeout * 4);
@@ -31,7 +31,7 @@ describe('momondoScrapper test', function() {
 			from: 'MAD',
 			to: 'LON'
 		}];
-		let scrapPromise = MomondoScrapper.scrap(routes, dates, 'EUR', false, options.browser);
+		let scrapPromise = MomondoScrappper.scrap(routes, dates, 'EUR', false, options.browser);
 		return scrapPromise.then((flights) => {
 			(flights.length).should.be.exactly(60);
 			flights[0].from.should.be.equal(routes[0].from);
@@ -48,7 +48,7 @@ describe('momondoScrapper test', function() {
 			from: 'POR',
 			to: 'PHI'
 		}];
-		let scrapPromise = MomondoScrapper.scrap(routes, dates, 'EUR', false, options.browser);
+		let scrapPromise = MomondoScrappper.scrap(routes, dates, 'EUR', false, options.browser);
 		return scrapPromise.then((flights) => {
 			(flights.length).should.be.exactly(0);
 		});

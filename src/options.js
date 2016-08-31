@@ -13,7 +13,7 @@ function getDefaultOptions() {
 		directFlight: 'false',
 		dateFormat: defaultDateFormat,
 		targetDate: Utils.getDefaultDateString(defaultDateFormat),
-		database: 'localhost:27017/flight-scrapper',
+		database: 'localhost:27017/flight-scrappper',
 		collection: 'flight-data',
 		timeout: 50000,
 		browser: 'chrome'
