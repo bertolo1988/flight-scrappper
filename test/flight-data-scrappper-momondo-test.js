@@ -1,16 +1,16 @@
-var FlightScrapper = require('../dist/flight-scrapper');
+var FlightScrappper = require('../dist/flight-scrappper');
 var Persistency = require('../src/persistency-module');
 var Options = require('../src/options');
 var should = require('should');
 
-describe('flightScrapper test', function() {
+describe('flightScrappper test', function() {
 
   var options = new Options().options;
   this.timeout(options.timeout);
 
   it('should retrieve and delete results with default options', () => {
     let ids;
-    let flightScPromise = FlightScrapper.run();
+    let flightScPromise = FlightScrappper.run();
     let persistencyPromise = flightScPromise.then((idsArray) => {
       should.exist(idsArray);
       (idsArray.length).should.be.above(0);
@@ -23,7 +23,7 @@ describe('flightScrapper test', function() {
   });
 
   it('should resolve into [] if no flights are retrieved or persisted', () => {
-    let flightScPromise = FlightScrapper.run({
+    let flightScPromise = FlightScrappper.run({
       routes: [{
         from: 'POR',
         to: 'PHI'

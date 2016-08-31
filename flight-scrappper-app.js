@@ -1,5 +1,5 @@
-let FlightScrapper = require('./dist/flight-scrapper');
-let debug = require('debug')('flight-scrapper-app.js');
+let FlightScrappper = require('./dist/flight-scrappper');
+let debug = require('debug')('flight-scrappper-app.js');
 let Utils = require('./src/utils');
 
 var defaultDateFormat = 'DD-MM-YYYY';
@@ -14,13 +14,13 @@ var options = {
 	directFlight: 'false',
 	dateFormat: defaultDateFormat,
 	targetDate: Utils.getDefaultDateString(defaultDateFormat),
-	database: 'localhost:27017/flight-scrapper',
+	database: 'localhost:27017/flight-scrappper',
 	collection: 'flight-data',
 	timeout: 50000,
 	browser: 'chrome'
 };
 
-FlightScrapper.run(options).then((value) => {
+FlightScrappper.run(options).then((value) => {
 	debug('Resolved: ' + Utils.prettifyObject(value));
 }, (err) => {
 	debug('Rejected: ' + err);

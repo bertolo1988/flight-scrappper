@@ -1,12 +1,12 @@
-[![NPM](https://nodei.co/npm/flight-scrapper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/flight-scrapper/)
+[![NPM](https://nodei.co/npm/flight-scrappper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/flight-scrappper/)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3b112d983624adea191ba81a9713ba1)](https://www.codacy.com/app/tiagobertolo/flight-scrapper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrapper&amp;utm_campaign=Badge_Grade)
-[![npm version](https://badge.fury.io/js/flight-scrapper.svg)](https://badge.fury.io/js/flight-scrapper)
-[![Stories in Ready](https://badge.waffle.io/bertolo1988/flight-scrapper.svg?label=ready&title=Ready)](http://waffle.io/bertolo1988/flight-scrapper)
-[![dependencies Status](https://david-dm.org/bertolo1988/flight-scrapper/status.svg)](https://david-dm.org/bertolo1988/flight-scrapper)
-[![devDependencies Status](https://david-dm.org/bertolo1988/flight-scrapper/dev-status.svg)](https://david-dm.org/bertolo1988/flight-scrapper?type=dev)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3b112d983624adea191ba81a9713ba1)](https://www.codacy.com/app/tiagobertolo/flight-scrappper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrappper&amp;utm_campaign=Badge_Grade)
+[![npm version](https://badge.fury.io/js/flight-scrappper.svg)](https://badge.fury.io/js/flight-scrappper)
+[![Stories in Ready](https://badge.waffle.io/bertolo1988/flight-scrappper.svg?label=ready&title=Ready)](http://waffle.io/bertolo1988/flight-scrappper)
+[![dependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/status.svg)](https://david-dm.org/bertolo1988/flight-scrappper)
+[![devDependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/dev-status.svg)](https://david-dm.org/bertolo1988/flight-scrappper?type=dev)
 
-# flight-scrapper
+# flight-scrappper
 
 Web scraper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.
 
@@ -21,12 +21,12 @@ Web scraper made with nodejs and webdriverjs that gathers flight data and stores
 
 ## Installing
 
-`$ npm install flight-scrapper`
+`$ npm install flight-scrappper`
 
 
 ## Options
 
-The following options can be defined as an argument of the `FlightScrapper.run()` method.
+The following options can be defined as an argument of the `FlightScrappper.run()` method.
 
 This can be done passing an object `{option1:'abc',option2:'abc',...}`.
 
@@ -46,7 +46,7 @@ These are the default values:
 		directFlight: 'false',
 		dateFormat: defaultDateFormat,
 		targetDate: Utils.getDefaultDateString(defaultDateFormat),
-		database: 'localhost:27017/flight-scrapper',
+		database: 'localhost:27017/flight-scrappper',
 		collection: 'flight-data',
 		timeout: 50000,
 		browser: 'chrome'
@@ -64,7 +64,7 @@ First, start your [mongodb](https://www.mongodb.com/) database. You can find mor
 
 If you installed mongodb in the default directory you can run `$ npm run mongo-win`  (for windows) or `$ npm run mongo-mac` (for mac) to run a database that will use a folder named `mongo-db` in the current directory.
 
-To start the flight-scrapper with the default values just type `$ npm start`.
+To start the flight-scrappper with the default values just type `$ npm start`.
 
 If you want to run with diferent options just add arguments as specified in [Options](#options).
 
@@ -72,7 +72,7 @@ If you want to get feedback in the console please check  [Debugging](#debugging)
 
 ## Output
 
-`FlightScrapper.run` will return a promise wich will resolve into the number of inserted documents or into an error.
+`FlightScrappper.run` will return a promise wich will resolve into the number of inserted documents or into an error.
 
 The resulting data that will be stored in the database has the following fields:
 

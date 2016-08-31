@@ -1,13 +1,13 @@
-var MomondoScrapper = require('../src/momondo-scrapper');
+var MomondoScrappper = require('../src/momondo-scrappper');
 var Persistency = require('../src/persistency-module');
 var Utils = require('../src/utils');
 var Options = require('../src/options');
-const debug = require('debug')('fligth-scrapper');
+const debug = require('debug')('fligth-scrappper');
 
-function flightScrapper() {
+function flightScrappper() {
 
   function getData(options, dates) {
-    return MomondoScrapper.scrap(options.routes, dates, options.currency, options.directFlight, options.browser);
+    return MomondoScrappper.scrap(options.routes, dates, options.currency, options.directFlight, options.browser);
   }
 
   function persistData(options, data) {
@@ -34,4 +34,4 @@ function flightScrapper() {
   };
 }
 
-module.exports = flightScrapper();
+module.exports = flightScrappper();

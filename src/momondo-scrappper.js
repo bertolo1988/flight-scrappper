@@ -1,4 +1,4 @@
-const debug = require('debug')('momondo-scrapper');
+const debug = require('debug')('momondo-scrappper');
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
 var Flight = require('../src/flight');
@@ -8,7 +8,7 @@ var By = Webdriver.By;
 var driver;
 var MomondoBaseUrl = 'http://www.momondo.co.uk/flightsearch/?';
 
-function momondoScrapper() {
+function momondoScrappper() {
 
     function startBrowser(browser) {
         driver = new Webdriver.Builder()
@@ -127,4 +127,4 @@ function momondoScrapper() {
     };
 }
 
-module.exports = momondoScrapper();
+module.exports = momondoScrappper();
