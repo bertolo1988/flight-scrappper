@@ -1,6 +1,6 @@
 {
   "name": "flight-scrappper",
-  "version": "0.0.10-DEV",
+  "version": "0.0.10",
   "description": "Web scrappper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.",
   "main": "dist/flight-scrappper.js",
   "repository": {
