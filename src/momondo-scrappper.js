@@ -110,7 +110,7 @@ function momondoScrappper() {
         let dataPromises = [];
         for (let route of routes) {
             for (let targetDate of dates) {
-                debug('Pushed a promise of scrapped data.');
+                debug('Pushed a promise of scraped data.');
                 dataPromises.push(retrieveFlightData(route.from, route.to, targetDate, currency, directFlight));
             }
         }
