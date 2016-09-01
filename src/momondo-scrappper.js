@@ -91,6 +91,7 @@ function momondoScrappper() {
 
         return resultBoxDataPromise.then(function(args) {
             let flights = parseFlightPromises(args, targetDate, fromAeroport, toAeroport);
+            debug(JSON.stringify(flights.length > 0 ? flights[0] : flights, null, 2));
             return Persistency.insertFlights(database, collection, flights);
         });
 
@@ -111,7 +112,6 @@ function momondoScrappper() {
         let dataPromises = [];
         for (let route of routes) {
             for (let targetDate of dates) {
-                debug('Pushed a promise of scraped data.');
                 dataPromises.push(retrieveFlightData(database, collection, route.from, route.to, targetDate, currency, directFlight));
             }
         }
