@@ -31,7 +31,7 @@ describe('momondoScrappper test', function() {
 			from: 'MAD',
 			to: 'LON'
 		}];
-		let scrapPromise = MomondoScrappper.scrap(routes, dates, 'EUR', false, options.browser);
+		let scrapPromise = MomondoScrappper.scrap('none', 'flight-data', routes, dates, 'EUR', false, options.browser);
 		return scrapPromise.then((flights) => {
 			(flights.length).should.be.exactly(60);
 			flights[0].from.should.be.equal(routes[0].from);
@@ -48,7 +48,7 @@ describe('momondoScrappper test', function() {
 			from: 'POR',
 			to: 'PHI'
 		}];
-		let scrapPromise = MomondoScrappper.scrap(routes, dates, 'EUR', false, options.browser);
+		let scrapPromise = MomondoScrappper.scrap('none', 'flight-data', routes, dates, 'EUR', false, options.browser);
 		return scrapPromise.then((flights) => {
 			(flights.length).should.be.exactly(0);
 		});
