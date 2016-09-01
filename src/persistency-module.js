@@ -1,10 +1,14 @@
 const debug = require('debug')('persistency-module');
 var MongoClient = require('mongodb').MongoClient;
 var Utils = require('../src/utils');
+const NO_DATABASE = 'none';
 
 function persistencyModule() {
 
 	function insertFlights(database, collection, docs) {
+		if (database === NO_DATABASE) {
+			return docs;
+		}
 		return new Promise(function(resolve, reject) {
 			if (docs.length > 0) {
 				MongoClient.connect('mongodb://' + database, function(err, db) {
@@ -32,6 +36,9 @@ function persistencyModule() {
 	}
 
 	function removeFlights(database, collection, ids) {
+		if (database === NO_DATABASE) {
+			return ids;
+		}
 		return new Promise(function(resolve, reject) {
 			MongoClient.connect('mongodb://' + database, function(err, db) {
 				if (err != null) {

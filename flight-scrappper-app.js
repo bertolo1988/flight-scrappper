@@ -4,11 +4,14 @@ let Utils = require('./src/utils');
 
 var defaultDateFormat = 'DD-MM-YYYY';
 var options = {
-	periods: 1,
+	periods: 2,
 	interval: 48,
 	routes: [{
 		from: 'LIS',
 		to: 'PAR'
+	}, {
+		from: 'LIS',
+		to: 'LON'
 	}],
 	currency: 'USD',
 	directFlight: 'false',

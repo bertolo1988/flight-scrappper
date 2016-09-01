@@ -1,6 +1,6 @@
 [![NPM](https://nodei.co/npm/flight-scrappper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/flight-scrappper/)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3b112d983624adea191ba81a9713ba1)](https://www.codacy.com/app/tiagobertolo/flight-scrappper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrappper&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e0ff0ec2a3484cd0b823933578987cf4)](https://www.codacy.com/app/tiagobertolo/flight-scrappper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrappper&amp;utm_campaign=Badge_Grade)
 [![npm version](https://badge.fury.io/js/flight-scrappper.svg)](https://badge.fury.io/js/flight-scrappper)
 [![Stories in Ready](https://badge.waffle.io/bertolo1988/flight-scrappper.svg?label=ready&title=Ready)](http://waffle.io/bertolo1988/flight-scrappper)
 [![dependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/status.svg)](https://david-dm.org/bertolo1988/flight-scrappper)
@@ -61,6 +61,8 @@ Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will g
 ## Running
 
 First, start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/).
+
+If you want to scrap flights, without storing data, you can set database to `'none'`.
 
 If you installed mongodb in the default directory you can run `$ npm run mongo-win`  (for windows) or `$ npm run mongo-mac` (for mac) to run a database that will use a folder named `mongo-db` in the current directory.
 
