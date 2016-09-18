@@ -10,16 +10,16 @@
   "homepage": "https://github.com/bertolo1988/flight-scrappper",
   "author": "bertolo1988 <tiagobertolo@gmail.com> (https://github.com/bertolo1988)",
   "dependencies": {
-    "chromedriver": "2.21.2",
+    "chromedriver": "2.24.1",
     "debug": "2.2.0",
     "moment": "2.15.0",
     "mongodb": "2.2.10",
     "selenium-webdriver": "2.53.2"
   },
   "devDependencies": {
-    "jshint": "2.9.2",
-    "mocha": "2.5.3",
-    "should": "11.0.0"
+    "jshint": "2.9.3",
+    "mocha": "3.0.2",
+    "should": "11.1.0"
   },
   "scripts": {
     "mongo-mac": "mkdir mongo-db; mongod --dbpath mongo-db",

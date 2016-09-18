@@ -10,7 +10,6 @@ describe('retrieveFlightDatesArray test', () => {
   it('should generate 3 dates, in days 7, 9, 11-09-2015 from a moment', (done) => {
     let moment = new Moment('05-09-2015', DATE_FORMAT);
     let dates = Utils.retrieveFlightDatesArray(moment, DATE_FORMAT, 3, 48);
-    console.log(dates);
     (dates[0]).should.be.equal('05-09-2015');
     (dates[1]).should.be.equal('07-09-2015');
     (dates[2]).should.be.equal('09-09-2015');
