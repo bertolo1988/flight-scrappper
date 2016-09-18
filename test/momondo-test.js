@@ -9,6 +9,14 @@ describe('momondoScrappper test', function() {
 	var options = new Options().options;
 	this.timeout(options.timeout * 4);
 
+	beforeEach(() => {
+		MomondoScrappper.startBrowser('chrome');
+	});
+
+	afterEach(() => {
+		MomondoScrappper.stopBrowser();
+	});
+
 	it('should generate a valid momondo-query-string', (done) => {
 		let query = new MomondoQueryString('LON', 'PAR', '23-05-2016', 'USD').toString();
 		should.exist(query);
@@ -21,6 +29,17 @@ describe('momondoScrappper test', function() {
 		done();
 	});
 
+	it('should retrieve [] if there are no flights', () => {
+		let targetDate = Utils.getDefaultDateString(options.dateFormat);
+		let scrapPromise = MomondoScrappper.scrap({
+			from: 'POR',
+			to: 'PHI'
+		}, targetDate, 'EUR', false);
+		return scrapPromise.then((flights) => {
+			(flights.length).should.be.exactly(0);
+		});
+	});
+
 	it('should retrieve 60 flights for 2 route', () => {
 		let targetDate = Utils.getDefaultDateString(options.dateFormat);
 		let dates = Utils.retrieveFlightDatesArray(targetDate, options.dateFormat, 2, 24);
@@ -31,8 +50,16 @@ describe('momondoScrappper test', function() {
 			from: 'MAD',
 			to: 'LON'
 		}];
-		let scrapPromise = MomondoScrappper.scrap('none', 'flight-data', routes, dates, 'EUR', false, options.browser);
-		return scrapPromise.then((flights) => {
+
+		let scrapPromise = [];
+		for (let route of routes) {
+			for (let date of dates) {
+				scrapPromise.push(MomondoScrappper.scrap(route, date, 'EUR', false));
+			}
+		}
+
+		return Promise.all(scrapPromise).then((flights) => {
+			flights = Utils.flattenArray(flights);
 			(flights.length).should.be.exactly(60);
 			flights[0].from.should.be.equal(routes[0].from);
 			flights[0].time.date.should.be.equal(targetDate);
@@ -41,16 +68,4 @@ describe('momondoScrappper test', function() {
 		});
 	});
 
-	it('should retrieve [] if there are no flights', () => {
-		let targetDate = Utils.getDefaultDateString(options.dateFormat);
-		let dates = Utils.retrieveFlightDatesArray(targetDate, options.dateFormat, 1, 24);
-		let routes = [{
-			from: 'POR',
-			to: 'PHI'
-		}];
-		let scrapPromise = MomondoScrappper.scrap('none', 'flight-data', routes, dates, 'EUR', false, options.browser);
-		return scrapPromise.then((flights) => {
-			(flights.length).should.be.exactly(0);
-		});
-	});
 });

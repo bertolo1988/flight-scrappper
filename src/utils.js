@@ -10,6 +10,16 @@ module.exports = {
     return JSON.stringify(obj, null, 2);
   },
 
+  flattenArray(data) {
+    var result = [];
+    for (let doc of data) {
+      for (let flight of doc) {
+        result.push(flight);
+      }
+    }
+    return result;
+  },
+
   retrieveFlightDatesArray(fromDate, dateFormat, periods, interval) {
     let result = [];
     let targetDate = new Moment(fromDate, dateFormat);
