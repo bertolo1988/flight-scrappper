@@ -12,7 +12,7 @@
   "dependencies": {
     "chromedriver": "2.21.2",
     "debug": "2.2.0",
-    "moment": "2.13.0",
+    "moment": "2.15.0",
     "mongodb": "2.1.18",
     "selenium-webdriver": "2.53.2"
   },
