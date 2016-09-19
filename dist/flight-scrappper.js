@@ -2,6 +2,7 @@ var MomondoScrappper = require('../src/momondo-scrappper');
 var Utils = require('../src/utils');
 var Persistency = require('../src/persistency-module');
 var Options = require('../src/options');
+var Progress = require('../src/progress-bar');
 const debug = require('debug')('fligth-scrappper');
 
 function flightScrappper() {
@@ -9,6 +10,7 @@ function flightScrappper() {
   var options;
 
   function persistData(flights) {
+    debug(Progress.tick());
     return Persistency.insertFlights(options.database, options.collection, flights);
   }
 
@@ -18,6 +20,7 @@ function flightScrappper() {
     let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.dateFormat, options.periods, options.interval);
     debug('Querying for the following dates:\n' + Utils.prettifyObject(dates) + '\n');
     MomondoScrappper.startBrowser(options.browser);
+    Progress.init(dates.length * options.routes.length);
     return dates;
   }
 
