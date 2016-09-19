@@ -4,14 +4,32 @@ let Utils = require('./src/utils');
 
 var defaultDateFormat = 'DD-MM-YYYY';
 var options = {
-	periods: 2,
-	interval: 48,
+	periods: 50,
+	interval: 96,
 	routes: [{
+		from: 'LIS',
+		to: 'LON'
+	}, {
+		from: 'LIS',
+		to: 'MIL'
+	}, {
 		from: 'LIS',
 		to: 'PAR'
 	}, {
 		from: 'LIS',
-		to: 'LON'
+		to: 'BCN'
+	}, {
+		from: 'LIS',
+		to: 'IST'
+	}, {
+		from: 'LIS',
+		to: 'NYC'
+	}, {
+		from: 'LIS',
+		to: 'BER'
+	}, {
+		from: 'LIS',
+		to: 'LAD'
 	}],
 	currency: 'USD',
 	directFlight: 'false',
@@ -25,6 +43,6 @@ var options = {
 
 FlightScrappper.run(options).then((value) => {
 	debug('Resolved: ' + Utils.prettifyObject(value));
-}, (err) => {
-	debug('Rejected: ' + err);
+}).catch(function(err) {
+	debug('Found an error! ' + err);
 });
