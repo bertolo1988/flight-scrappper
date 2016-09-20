@@ -4,9 +4,23 @@ let Utils = require('./src/utils');
 
 var defaultDateFormat = 'DD-MM-YYYY';
 var options = {
-	periods: 60,
 	interval: 96,
 	routes: [{
+		from: 'LIS',
+		to: 'SHA'
+	}, {
+		from: 'LIS',
+		to: 'MAA'
+	}, {
+		from: 'LIS',
+		to: 'TYO'
+	}, {
+		from: 'LIS',
+		to: 'DPS'
+	}, {
+		from: 'LIS',
+		to: 'MLE'
+	}, {
 		from: 'LIS',
 		to: 'LAD'
 	}, {
