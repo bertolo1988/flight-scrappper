@@ -104,8 +104,18 @@ function momondoScrappper() {
     }
 
     function scrap(route, date, currency, directFlight) {
+        var retries = 1;
         try {
-            return retrieveFlightData(route, date, currency, directFlight).catch(handleError);
+            return retrieveFlightData(route, date, currency, directFlight).catch((error) => {
+                if (retries > 0) {
+                    retries--;
+                    debug(error);
+                    debug('Retrying...');
+                    return retrieveFlightData(route, date, currency, directFlight);
+                } else {
+                    handleError(error);
+                }
+            });
         } catch (error) {
             handleError(error);
         }

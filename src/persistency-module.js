@@ -20,7 +20,7 @@ function persistencyModule() {
 							if (err != null) {
 								reject(err);
 							} else {
-								debug(JSON.stringify(res.insertedIds));
+								debug(JSON.stringify(res.insertedIds) + ' - ' + res.insertedIds.length);
 								db.close();
 								debug('Closed connection to ' + database + ' !');
 								resolve(res.insertedIds);

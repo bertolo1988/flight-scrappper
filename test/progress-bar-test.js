@@ -3,8 +3,8 @@ var Progress = require('../src/progress-bar');
 
 describe('progress bar test', function() {
 
-  var tickTime = 2000;
-  var todo = 3;
+  var tickTime = 1000;
+  var todo = 20;
   this.timeout(tickTime * (todo + 1));
 
   it('should see the desired progress bars', (done) => {

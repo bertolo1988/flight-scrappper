@@ -3,10 +3,11 @@ var Moment = require('moment');
 function progressBar() {
 
 	var done, todo;
-	var size = 20;
-	var completed = '#';
-	var incomplete = '-';
-	var firstTick, lastTick;
+	var size = 25;
+	var tickHistory;
+	const COMPLETE = '#';
+	const INCOMPLETE = '-';
+	const MAX_TICKS = 5;
 
 	function getPercentage() {
 		return Math.floor((done / todo) * 100);
@@ -27,17 +28,27 @@ function progressBar() {
 		let completes = Math.floor(percentage * size / 100);
 		let incompletes = size - completes;
 		for (let i = 0; i < completes; i++) {
-			bar += completed;
+			bar += COMPLETE;
 		}
 		for (let i = 0; i < incompletes; i++) {
-			bar += incomplete;
+			bar += INCOMPLETE;
 		}
 		bar += ']';
 		return bar;
 	}
 
 	function getAverageTickTime() {
-		return lastTick.diff(firstTick) / done;
+		if (tickHistory.length > 1) {
+			let intervalsCount = 0;
+			let totalTimeDiff = 0;
+			for (let i = 0; i < tickHistory.length - 1; i++) {
+				totalTimeDiff += tickHistory[i + 1].diff(tickHistory[i]);
+				intervalsCount++;
+			}
+			return totalTimeDiff / intervalsCount;
+		} else {
+			return 0;
+		}
 	}
 
 	function getEstimatedEndTime() {
@@ -47,25 +58,29 @@ function progressBar() {
 	}
 
 	function getEstimatedTimeLeft() {
-		if (lastTick != null) {
-			let averageTimeDiff = getAverageTickTime();
-			let estimatedTimeLeft = averageTimeDiff * (todo - done);
-			return estimatedTimeLeft;
-		} else {
-			return '';
+		let averageTimeDiff = getAverageTickTime();
+		let estimatedTimeLeft = averageTimeDiff * (todo - done);
+		return estimatedTimeLeft;
+	}
+
+	function updateTickHistory() {
+		tickHistory.push(new Moment());
+		if (tickHistory.length > MAX_TICKS) {
+			tickHistory.shift();
 		}
 	}
 
 	function tick() {
 		done++;
-		lastTick = new Moment();
+		updateTickHistory();
 		return draw();
 	}
 
 	function init(newTodo) {
 		done = 0;
 		todo = newTodo;
-		firstTick = new Moment();
+		tickHistory = [];
+		updateTickHistory();
 	}
 
 	return {
