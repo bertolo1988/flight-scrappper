@@ -111,13 +111,13 @@ function momondoScrappper() {
                     retries--;
                     debug(error);
                     debug('Retrying...');
-                    return retrieveFlightData(route, date, currency, directFlight);
+                    return retrieveFlightData(route, date, currency, directFlight).catch(handleError);
                 } else {
-                    handleError(error);
+                    return handleError(error);
                 }
             });
         } catch (error) {
-            handleError(error);
+            return handleError(error);
         }
     }
 
