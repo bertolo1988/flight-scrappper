@@ -4,7 +4,7 @@ let Utils = require('./src/utils');
 
 var defaultDateFormat = 'DD-MM-YYYY';
 var options = {
-	periods: 2,
+	periods: 60,
 	interval: 96,
 	routes: [{
 		from: 'LIS',
@@ -42,7 +42,7 @@ var options = {
 };
 
 FlightScrappper.run(options).then((value) => {
-	debug('Resolved: ' + Utils.prettifyObject(value.length));
+	debug('Resolved: ' + Utils.prettifyObject(value.length) + ' flights!');
 }).catch(function(err) {
 	debug('Found an error! ' + err);
 });

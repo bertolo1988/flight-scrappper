@@ -71,6 +71,7 @@ function momondoScrappper() {
     function retrieveFlightData(route, targetDate, currency, directFlight) {
         let fullUrl = buildUrl(route.from, route.to, targetDate, currency, directFlight);
         driver.get(fullUrl);
+
         let inProgressPromise = driver.wait(function() {
             return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
                 return text === 'Search complete';
@@ -97,8 +98,17 @@ function momondoScrappper() {
         });
     }
 
+    function handleError(error) {
+        debug(error);
+        return Promise.resolve([]);
+    }
+
     function scrap(route, date, currency, directFlight) {
-        return retrieveFlightData(route, date, currency, directFlight);
+        try {
+            return retrieveFlightData(route, date, currency, directFlight).catch(handleError);
+        } catch (error) {
+            handleError(error);
+        }
     }
 
     return {

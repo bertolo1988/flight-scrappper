@@ -25,10 +25,8 @@ function flightScrappper() {
   }
 
   function end(args) {
-    args = Utils.flattenArray(args);
     MomondoScrappper.stopBrowser();
-    debug('Successfully persisted for ' + args.length + ' flights.');
-    return args;
+    return Utils.flattenArray(args);
   }
 
   function run(args) {
@@ -41,7 +39,7 @@ function flightScrappper() {
         persistPromises.push(scrapPromise.then(persistData));
       }
     }
-    return Promise.all(persistPromises).then(end);
+    return Promise.all(persistPromises).then(end).catch(end);
   }
 
   return {
