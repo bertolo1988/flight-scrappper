@@ -57,7 +57,7 @@ function progressBar() {
 	}
 
 	function tick() {
-		done += 1;
+		done++;
 		lastTick = new Moment();
 		return draw();
 	}
