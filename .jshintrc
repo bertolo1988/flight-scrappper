@@ -8,6 +8,6 @@
     "unused": true,
     "maxdepth": 3,
     "maxcomplexity" : 5,
-    "maxstatements": 20,
+    "maxstatements": 15,
     "predef": [ "require","process","console","module","describe","it","xit", "beforeEach","afterEach" ]
 }

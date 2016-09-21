@@ -1,32 +1,23 @@
 var Moment = require('moment');
 
+const COMPLETE = '#';
+const INCOMPLETE = '-';
+const MAX_TICK_HIST = 15;
+const PROGRESS_BAR_SIZE = 25;
+
 function progressBar() {
 
-	var done, todo;
-	var size = 25;
-	var tickHistory;
-	const COMPLETE = '#';
-	const INCOMPLETE = '-';
-	const MAX_TICK_HIST = 15;
+	var done, todo, tickHistory;
 
 	function getPercentage() {
 		return Math.floor((done / todo) * 100);
 	}
 
-	function draw() {
-		let result = done + '/' + todo;
-		result += ' ' + drawBar();
-		result += ' ' + getPercentage() + '%';
-		result += ' ' + parseInt(getAverageTickTime() / 1000) + 's/tick';
-		result += ' ETA:' + getEstimatedEndTime();
-		return result;
-	}
-
 	function drawBar() {
 		let bar = '[';
 		let percentage = getPercentage();
-		let completes = Math.floor(percentage * size / 100);
-		let incompletes = size - completes;
+		let completes = Math.floor(percentage * PROGRESS_BAR_SIZE / 100);
+		let incompletes = PROGRESS_BAR_SIZE - completes;
 		for (let i = 0; i < completes; i++) {
 			bar += COMPLETE;
 		}
@@ -68,6 +59,15 @@ function progressBar() {
 		if (tickHistory.length > MAX_TICK_HIST) {
 			tickHistory.shift();
 		}
+	}
+
+	function draw() {
+		let result = done + '/' + todo;
+		result += ' ' + drawBar();
+		result += ' ' + getPercentage() + '%';
+		result += ' ' + parseInt(getAverageTickTime() / 1000) + 's/tick';
+		result += ' ETA:' + getEstimatedEndTime();
+		return result;
 	}
 
 	function tick() {
