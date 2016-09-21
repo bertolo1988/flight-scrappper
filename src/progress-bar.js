@@ -42,16 +42,16 @@ function progressBar() {
 		}
 	}
 
-	function getEstimatedEndTime() {
-		let eta = getEstimatedTimeLeft();
-		let now = new Moment().add(eta, 'milliseconds').format('hh:mm:ss');
-		return now;
-	}
-
 	function getEstimatedTimeLeft() {
 		let averageTimeDiff = getAverageTickTime();
 		let estimatedTimeLeft = averageTimeDiff * (todo - done);
 		return estimatedTimeLeft;
+	}
+
+	function getEstimatedEndTime() {
+		let eta = getEstimatedTimeLeft();
+		let now = new Moment().add(eta, 'milliseconds').format('hh:mm:ss');
+		return now;
 	}
 
 	function updateTickHistory() {

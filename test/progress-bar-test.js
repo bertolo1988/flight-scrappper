@@ -74,7 +74,7 @@ describe('progress bar test', function() {
 
     function scheduleTick(barStrings, i) {
       setTimeout(function() {
-        bars.push(Progress.tick());
+        barStrings.push(Progress.tick());
         if (i === todo) {
           let barArray = buildBarArray(barStrings);
           outOfsShouldNeverDec(barArray);
