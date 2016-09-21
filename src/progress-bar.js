@@ -7,7 +7,7 @@ function progressBar() {
 	var tickHistory;
 	const COMPLETE = '#';
 	const INCOMPLETE = '-';
-	const MAX_TICKS = 5;
+	const MAX_TICK_HIST = 15;
 
 	function getPercentage() {
 		return Math.floor((done / todo) * 100);
@@ -65,7 +65,7 @@ function progressBar() {
 
 	function updateTickHistory() {
 		tickHistory.push(new Moment());
-		if (tickHistory.length > MAX_TICKS) {
+		if (tickHistory.length > MAX_TICK_HIST) {
 			tickHistory.shift();
 		}
 	}
