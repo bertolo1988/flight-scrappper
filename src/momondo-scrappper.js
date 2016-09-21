@@ -1,14 +1,15 @@
 const debug = require('debug')('momondo-scrappper');
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
-var Persistency = require('../src/persistency-module');
 var Flight = require('../src/flight');
+var Utils = require('../src/utils');
 var Webdriver = require('selenium-webdriver');
 var By = Webdriver.By;
 var driver;
-var MomondoBaseUrl = 'http://www.momondo.co.uk/flightsearch/?';
 
 function momondoScrappper() {
+
+    const MomondoBaseUrl = 'http://www.momondo.co.uk/flightsearch/?';
 
     function startBrowser(browser) {
         driver = new Webdriver.Builder()
@@ -67,9 +68,10 @@ function momondoScrappper() {
         return MomondoBaseUrl + momondo.toString();
     }
 
-    function retrieveFlightData(database, collection, fromAeroport, toAeroport, targetDate, currency, directFlight) {
-        let fullUrl = buildUrl(fromAeroport, toAeroport, targetDate, currency, directFlight);
+    function retrieveFlightData(route, targetDate, currency, directFlight) {
+        let fullUrl = buildUrl(route.from, route.to, targetDate, currency, directFlight);
         driver.get(fullUrl);
+
         let inProgressPromise = driver.wait(function() {
             return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
                 return text === 'Search complete';
@@ -90,39 +92,39 @@ function momondoScrappper() {
         });
 
         return resultBoxDataPromise.then(function(args) {
-            let flights = parseFlightPromises(args, targetDate, fromAeroport, toAeroport);
-            debug(JSON.stringify(flights.length > 0 ? flights[0] : flights, null, 2));
-            return Persistency.insertFlights(database, collection, flights);
+            let flights = parseFlightPromises(args, targetDate, route.from, route.to);
+            debug(Utils.prettifyObject(flights.length > 0 ? flights[0] : flights));
+            return flights;
         });
-
     }
 
-    function flatDataArray(data) {
-        var result = [];
-        for (let doc of data) {
-            for (let flight of doc) {
-                result.push(flight);
-            }
-        }
-        return result;
+    function handleError(error) {
+        debug(error);
+        return Promise.resolve([]);
     }
 
-    function scrap(database, collection, routes, dates, currency, directFlight, browser) {
-        startBrowser(browser);
-        let dataPromises = [];
-        for (let route of routes) {
-            for (let targetDate of dates) {
-                dataPromises.push(retrieveFlightData(database, collection, route.from, route.to, targetDate, currency, directFlight));
-            }
+    function scrap(route, date, currency, directFlight) {
+        var retries = 1;
+        try {
+            return retrieveFlightData(route, date, currency, directFlight).catch((error) => {
+                if (retries > 0) {
+                    retries--;
+                    debug(error);
+                    debug('Retrying...');
+                    return retrieveFlightData(route, date, currency, directFlight).catch(handleError);
+                } else {
+                    return handleError(error);
+                }
+            });
+        } catch (error) {
+            return handleError(error);
         }
-        return Promise.all(dataPromises).then((args) => {
-            stopBrowser();
-            return flatDataArray(args);
-        });
     }
 
     return {
-        scrap
+        scrap,
+        startBrowser,
+        stopBrowser
     };
 }
 
