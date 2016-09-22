@@ -17,11 +17,13 @@ describe('retrieveFlightDatesArray test', () => {
   });
 
   it('should generate 40 dates from a string', (done) => {
-    let todayDate = new Moment(new Date().toISOString()).format(DATE_FORMAT);
-    let dates = Utils.retrieveFlightDatesArray(todayDate, DATE_FORMAT, 40, 24);
-    (dates.length).should.be.exactly(40);
-    let todayMoment = new Moment().add(39, 'days').format(DATE_FORMAT);
-    todayMoment.should.be.equal(dates[39]);
+    const datesCount = 10;
+    const interval = 24;
+    let todayDate = new Moment().format(DATE_FORMAT);
+    let dates = Utils.retrieveFlightDatesArray(todayDate, DATE_FORMAT, datesCount, interval);
+    (dates.length).should.be.exactly(datesCount);
+    let todayMoment = new Moment().add((datesCount - 1) * interval, 'hours').format(DATE_FORMAT);
+    todayMoment.should.be.equal(dates[(datesCount - 1)]);
     done();
   });
 
