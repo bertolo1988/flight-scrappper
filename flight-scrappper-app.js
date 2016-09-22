@@ -46,7 +46,7 @@ var options = {
 		from: 'LIS',
 		to: 'BER'
 	}],
-	currency: 'USD',
+	currency: 'EUR',
 	directFlight: 'false',
 	dateFormat: defaultDateFormat,
 	targetDate: Utils.getDefaultDateString(defaultDateFormat),

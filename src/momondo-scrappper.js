@@ -9,6 +9,7 @@ var driver;
 
 function momondoScrappper() {
 
+    const sourceName = 'momondo';
     const MomondoBaseUrl = 'http://www.momondo.co.uk/flightsearch/?';
 
     function startBrowser(browser) {
@@ -35,16 +36,39 @@ function momondoScrappper() {
         }
     }
 
+    function retrieveDigit(input) {
+        return parseInt(input.replace(/^\D+/g, ''));
+    }
+
+    function parseDuration(duration) {
+        let durationMinutes = 0;
+        let splittedDuration = duration.split(' ');
+        for (let unit of splittedDuration) {
+            switch (unit[unit.length - 1]) {
+                case 'h':
+                    durationMinutes += retrieveDigit(unit) * 60;
+                    break;
+                case 'm':
+                    durationMinutes += retrieveDigit(unit);
+                    break;
+                default:
+                    durationMinutes += retrieveDigit(unit);
+                    break;
+            }
+        }
+        return durationMinutes;
+    }
+
     function parseFlightPromises(args, date, from, to) {
         let result = [];
         for (let i = 0; i + 6 <= args.length; i += 6) {
             let airline = args[i];
-            let amount = args[i + 1];
+            let amount = parseInt(args[i + 1]);
             let currency = args[i + 2];
             let departure = args[i + 3];
-            let duration = args[i + 4];
+            let duration = parseDuration(args[i + 4]);
             let stops = parseFlightStops(args[i + 5]);
-            let flight = new Flight(from, to, airline, stops, date, departure, duration, new Date(), amount, currency);
+            let flight = new Flight(from, to, sourceName, airline, stops, date, departure, duration, new Date(), amount, currency);
             result.push(flight);
         }
         return result;
