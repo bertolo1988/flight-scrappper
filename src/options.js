@@ -9,7 +9,7 @@ function getDefaultOptions() {
 			from: 'LIS',
 			to: 'PAR'
 		}],
-		currency: 'USD',
+		currency: 'EUR',
 		directFlight: 'false',
 		dateFormat: defaultDateFormat,
 		targetDate: Utils.getDefaultDateString(defaultDateFormat),

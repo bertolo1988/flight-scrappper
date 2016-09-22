@@ -1,7 +1,8 @@
 class Flight {
-	constructor(from, to, airline, stops, date, departure, duration, queried, amount, currency) {
+	constructor(from, to, source, airline, stops, date, departure, duration, queried, amount, currency) {
 		this.from = from;
 		this.to = to;
+		this.source = source;
 		this.airline = airline;
 		this.stops = stops;
 		this.time = {
