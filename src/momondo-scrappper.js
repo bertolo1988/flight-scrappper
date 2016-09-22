@@ -9,6 +9,7 @@ var driver;
 
 function momondoScrappper() {
 
+    const sourceName = 'momondo';
     const MomondoBaseUrl = 'http://www.momondo.co.uk/flightsearch/?';
 
     function startBrowser(browser) {
@@ -67,7 +68,7 @@ function momondoScrappper() {
             let departure = args[i + 3];
             let duration = parseDuration(args[i + 4]);
             let stops = parseFlightStops(args[i + 5]);
-            let flight = new Flight(from, to, 'Momondo', airline, stops, date, departure, duration, new Date(), amount, currency);
+            let flight = new Flight(from, to, sourceName, airline, stops, date, departure, duration, new Date(), amount, currency);
             result.push(flight);
         }
         return result;
