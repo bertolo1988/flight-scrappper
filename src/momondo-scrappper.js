@@ -96,7 +96,6 @@ function momondoScrappper() {
     function takeScreenShot(route, targetDate) {
         driver.takeScreenshot().then(function(data) {
             let todayDate = Utils.getTodayDateString('DD-MM-YYYY_HH_mm');
-            console.log(todayDate);
             let imgName = todayDate + '_' + route.from + '_' + route.to + '_' + targetDate + '.png';
             let ssPath = 'screenshots/';
             fs.writeFileSync(ssPath + imgName, data, 'base64');
