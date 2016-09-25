@@ -17,7 +17,6 @@ function momondoScrappper() {
         driver = new Webdriver.Builder()
             .forBrowser(browser)
             .build();
-        driver.manage().window().maximize();
     }
 
     function stopBrowser() {
@@ -106,6 +105,7 @@ function momondoScrappper() {
 
     function retrieveFlightData(route, targetDate, currency, directFlight) {
         let fullUrl = buildUrl(route.from, route.to, targetDate, currency, directFlight);
+        driver.manage().window().maximize();
         driver.get(fullUrl);
 
         let inProgressPromise = driver.wait(function() {
