@@ -5,6 +5,7 @@ var Flight = require('../src/flight');
 var Utils = require('../src/utils');
 var Webdriver = require('selenium-webdriver');
 var By = Webdriver.By;
+var fs = require('fs');
 var driver;
 
 function momondoScrappper() {
@@ -92,8 +93,20 @@ function momondoScrappper() {
         return MomondoBaseUrl + momondo.toString();
     }
 
+    function takeScreenShot(route, targetDate) {
+        driver.takeScreenshot().then(function(data) {
+            let todayDate = Utils.getTodayDateString('DD-MM-YYYY_HH_mm');
+            console.log(todayDate);
+            let imgName = todayDate + '_' + route.from + '_' + route.to + '_' + targetDate + '.png';
+            let ssPath = 'screenshots/';
+            fs.writeFileSync(ssPath + imgName, data, 'base64');
+            debug('Screenshot saved at ' + ssPath + imgName + ' !');
+        });
+    }
+
     function retrieveFlightData(route, targetDate, currency, directFlight) {
         let fullUrl = buildUrl(route.from, route.to, targetDate, currency, directFlight);
+        driver.manage().window().maximize();
         driver.get(fullUrl);
 
         let inProgressPromise = driver.wait(function() {
@@ -131,6 +144,7 @@ function momondoScrappper() {
         var retries = 1;
         try {
             return retrieveFlightData(route, date, currency, directFlight).catch((error) => {
+                takeScreenShot(route, date);
                 if (retries > 0) {
                     retries--;
                     debug(error);
@@ -141,6 +155,7 @@ function momondoScrappper() {
                 }
             });
         } catch (error) {
+            takeScreenShot(route, date);
             return handleError(error);
         }
     }

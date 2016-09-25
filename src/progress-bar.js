@@ -50,7 +50,7 @@ function progressBar() {
 
 	function getEstimatedEndTime() {
 		let eta = getEstimatedTimeLeft();
-		let now = new Moment().add(eta, 'milliseconds').format('hh:mm:ss');
+		let now = new Moment().add(eta, 'milliseconds').format('HH:mm:ss');
 		return now;
 	}
 
