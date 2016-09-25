@@ -4,3 +4,4 @@
 /screenshots/
 *.pem
 *.log
+*.log.*
