@@ -107,7 +107,6 @@ function momondoScrappper() {
     function retrieveFlightData(route, targetDate, currency, directFlight) {
         let fullUrl = buildUrl(route.from, route.to, targetDate, currency, directFlight);
         driver.get(fullUrl);
-        takeScreenShot(route, targetDate);
 
         let inProgressPromise = driver.wait(function() {
             return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
