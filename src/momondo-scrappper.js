@@ -10,9 +10,6 @@ var driver;
 
 function momondoScrappper() {
 
-    const sourceName = 'momondo';
-    const MomondoBaseUrl = 'http://www.momondo.co.uk/flightsearch/?';
-
     function startBrowser(browser) {
         driver = new Webdriver.Builder()
             .forBrowser(browser)
@@ -69,7 +66,7 @@ function momondoScrappper() {
             let departure = args[i + 3];
             let duration = parseDuration(args[i + 4]);
             let stops = parseFlightStops(args[i + 5]);
-            let flight = new Flight(from, to, sourceName, airline, stops, date, departure, duration, new Date(), amount, currency);
+            let flight = new Flight(from, to, 'momondo', airline, stops, date, departure, duration, new Date(), amount, currency);
             result.push(flight);
         }
         return result;
@@ -77,20 +74,20 @@ function momondoScrappper() {
 
     function retrieveFlightPromises(elements) {
         var resultBoxData = [];
-        elements.forEach(function(val, idx) {
-            resultBoxData.push(elements[idx].findElement(By.css('div.names')).getText());
-            resultBoxData.push(elements[idx].findElement(By.css('div.price-pax .price span.value')).getText());
-            resultBoxData.push(elements[idx].findElement(By.css('div.price-pax .price span.unit')).getText());
-            resultBoxData.push(elements[idx].findElement(By.css('div.departure > div > div.iata-time > span.time')).getText());
-            resultBoxData.push(elements[idx].findElement(By.css('.travel-time')).getText());
-            resultBoxData.push(elements[idx].findElement(By.css('div.travel-stops > .total')).getText());
+        elements.forEach(function(element) {
+            resultBoxData.push(element.findElement(By.css('div.names')).getText());
+            resultBoxData.push(element.findElement(By.css('div.price-pax .price span.value')).getText());
+            resultBoxData.push(element.findElement(By.css('div.price-pax .price span.unit')).getText());
+            resultBoxData.push(element.findElement(By.css('div.departure > div > div.iata-time > span.time')).getText());
+            resultBoxData.push(element.findElement(By.css('.travel-time')).getText());
+            resultBoxData.push(element.findElement(By.css('div.travel-stops > .total')).getText());
         });
         return resultBoxData;
     }
 
     function buildUrl(fromAeroport, toAeroport, targetDate, currency, directFlight) {
         let momondo = new MomondoQueryString(fromAeroport, toAeroport, targetDate, currency, directFlight);
-        return MomondoBaseUrl + momondo.toString();
+        return 'http://www.momondo.co.uk/flightsearch/?' + momondo.toString();
     }
 
     function takeScreenShot(route, targetDate) {
@@ -101,6 +98,33 @@ function momondoScrappper() {
             fs.writeFileSync(ssPath + imgName, data, 'base64');
             debug('Screenshot saved at ' + ssPath + imgName + ' !');
         });
+    }
+
+    function filterSucessfullPromises(promisesMap) {
+        var results = [];
+        for (let p of promisesMap) {
+            if (p.success) {
+                results.push(p.result);
+            }
+        }
+        return Promise.all(results);
+    }
+
+    function allSettled(promises) {
+        return Promise.all(
+            promises.map(
+                promise => promise.then(
+                    (result) => ({
+                        result: result,
+                        success: true
+                    }),
+                    (result) => ({
+                        result: result,
+                        success: false
+                    })
+                )
+            )
+        );
     }
 
     function retrieveFlightData(route, targetDate, currency, directFlight) {
@@ -120,7 +144,9 @@ function momondoScrappper() {
         let resultBoxDataPromise = resultBoxElementsPromise.then(function(elements) {
             if (elements.length > 0) {
                 let resultBoxData = retrieveFlightPromises(elements);
-                return Promise.all(resultBoxData);
+                return allSettled(resultBoxData).then((results) => {
+                    return filterSucessfullPromises(results);
+                });
             } else {
                 debug('No data found!');
                 return 0;
