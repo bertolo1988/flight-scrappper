@@ -113,13 +113,13 @@ function momondoScrappper() {
     function allSettled(promises) {
         return Promise.all(
             promises.map(
-                promise => promise.then(
+                (promise) => promise.then(
                     (result) => ({
-                        result: result,
+                        result,
                         success: true
                     }),
                     (result) => ({
-                        result: result,
+                        result,
                         success: false
                     })
                 )
