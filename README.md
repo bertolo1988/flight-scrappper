@@ -80,7 +80,8 @@ The resulting data that will be stored in the database has the following fields:
 	{
 		_id, 		
 		from,
-		to,	
+		to,
+		source,
 		airline,
 		stops,
 		time: {
