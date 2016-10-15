@@ -10,12 +10,12 @@ function getDefaultOptions() {
             to: 'PAR'
         }],
         currency: 'EUR',
-        directFlight: 'false',
+        directFlight: false,
         dateFormat: defaultDateFormat,
         targetDate: Utils.getDefaultDateString(defaultDateFormat),
         database: 'localhost:27017/flight-scrappper',
         collection: 'flight-data',
-        timeout: 50000,
+        timeout: 60000,
         browser: 'chrome'
     };
     return defaultOptions;

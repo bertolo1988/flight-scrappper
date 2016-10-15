@@ -8,6 +8,10 @@ describe('flightScrappper test', function() {
     var options = new Options().options;
     this.timeout(options.timeout);
 
+    function checkNumber(myNumber, mustBe) {
+        return (myNumber).should.be.exactly(mustBe).which.is.a.Number();
+    }
+
     it('should retrieve and delete results with default options', () => {
         let ids;
         let flightScPromise = FlightScrappper.run();
@@ -18,7 +22,7 @@ describe('flightScrappper test', function() {
             return Persistency.removeFlights(options.database, options.collection, idsArray);
         });
         return persistencyPromise.then((deleted) => {
-            (deleted).should.be.exactly(ids.length).which.is.a.Number();
+            return checkNumber(deleted, ids.length);
         });
     });
 
@@ -30,7 +34,7 @@ describe('flightScrappper test', function() {
             }]
         });
         return flightScPromise.then((inserted) => {
-            (inserted.length).should.be.exactly(0).which.is.a.Number();
+            return checkNumber(inserted.length, 0);
         });
     });
 

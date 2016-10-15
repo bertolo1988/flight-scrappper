@@ -38,6 +38,10 @@ describe('persistencyModule test', () => {
         }
     }];
 
+    function checkNumber(myNumber, mustBe) {
+        return (myNumber).should.be.exactly(mustBe).which.is.a.Number();
+    }
+
     it('should insert mock documents and remove them using the ids', () => {
         let persistFlightPromise = Persistency.insertFlights(options.database, options.collection, mockFlights);
         let ids;
@@ -47,28 +51,28 @@ describe('persistencyModule test', () => {
             return Persistency.removeFlights(options.database, options.collection, idsArray);
         });
         return removeFlightPromise.then((deleted) => {
-            (deleted).should.be.exactly(ids.length).which.is.a.Number();
+            return checkNumber(deleted, ids.length);
         });
     });
 
     it('should retrieve [] if there is no data to insert', () => {
         let persistencyPromise = Persistency.insertFlights(options.database, options.collection, []);
         return persistencyPromise.then((result) => {
-            result.length.should.be.exactly(0);
+            return checkNumber(result.length, 0);
         });
     });
 
     it('should fake insert and retrieve mock documents if database is set to none', () => {
         let persistencyPromise = Persistency.insertFlights(Persistency.NO_DATABASE, options.collection, []);
         return persistencyPromise.then((result) => {
-            result.length.should.be.exactly(0);
+            return checkNumber(result.length, 0);
         });
     });
 
     it('should fake remove and retrieve mock ids if database is set to none', () => {
         let persistencyPromise = Persistency.removeFlights(Persistency.NO_DATABASE, options.collection, []);
         return persistencyPromise.then((result) => {
-            result.length.should.be.exactly(0);
+            return checkNumber(result.length, 0);
         });
     });
 
