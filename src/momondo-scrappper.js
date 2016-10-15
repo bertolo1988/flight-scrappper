@@ -127,16 +127,7 @@ function momondoScrappper() {
         );
     }
 
-    function retrieveFlightData(route, targetDate, currency, directFlight) {
-        let fullUrl = buildUrl(route.from, route.to, targetDate, currency, directFlight);
-        driver.manage().window().maximize();
-        driver.get(fullUrl);
-
-        let inProgressPromise = driver.wait(function() {
-            return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
-                return text === 'Search complete';
-            });
-        });
+    function retrieveFlightData(inProgressPromise, route, targetDate) {
         let resultBoxElementsPromise = inProgressPromise.then(function() {
             let resultsBoardElement = driver.findElement(By.id('results-tickets'));
             return resultsBoardElement.findElements(By.css('div.result-box'));
@@ -152,12 +143,24 @@ function momondoScrappper() {
                 return 0;
             }
         });
-
         return resultBoxDataPromise.then(function(args) {
             let flights = parseFlightPromises(args, targetDate, route.from, route.to);
             debug(Utils.prettifyObject(flights.length > 0 ? flights[0] : flights));
             return flights;
         });
+    }
+
+    function retrieveFlightPage(route, targetDate, currency, directFlight) {
+        let fullUrl = buildUrl(route.from, route.to, targetDate, currency, directFlight);
+        driver.manage().window().maximize();
+        driver.get(fullUrl);
+
+        let inProgressPromise = driver.wait(function() {
+            return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
+                return text === 'Search complete';
+            });
+        });
+        return retrieveFlightData(inProgressPromise, route, targetDate);
     }
 
     function handleError(error) {
@@ -168,13 +171,13 @@ function momondoScrappper() {
     function scrap(route, date, currency, directFlight) {
         var retries = 1;
         try {
-            return retrieveFlightData(route, date, currency, directFlight).catch((error) => {
+            return retrieveFlightPage(route, date, currency, directFlight).catch((error) => {
                 takeScreenShot(route, date);
                 if (retries > 0) {
                     retries--;
                     debug(error);
                     debug('Retrying...');
-                    return retrieveFlightData(route, date, currency, directFlight).catch(handleError);
+                    return retrieveFlightPage(route, date, currency, directFlight).catch(handleError);
                 } else {
                     return handleError(error);
                 }

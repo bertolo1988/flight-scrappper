@@ -4,7 +4,7 @@ let Utils = require('./src/utils');
 
 var defaultDateFormat = 'DD-MM-YYYY';
 var options = {
-    periods: 10,
+    periods: 3,
     interval: 96,
     routes: [{
         from: 'LIS',
