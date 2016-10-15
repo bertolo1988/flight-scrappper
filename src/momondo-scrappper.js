@@ -10,6 +10,8 @@ var driver;
 
 function momondoScrappper() {
 
+    const JS_DOM_DELAY = 500;
+
     function startBrowser(browser) {
         driver = new Webdriver.Builder()
             .forBrowser(browser)
@@ -74,7 +76,7 @@ function momondoScrappper() {
 
     function retrieveFlightPromises(elements) {
         var resultBoxData = [];
-        elements.forEach(function(element) {
+        elements.forEach((element) => {
             resultBoxData.push(element.findElement(By.css('div.names')).getText());
             resultBoxData.push(element.findElement(By.css('div.price-pax .price span.value')).getText());
             resultBoxData.push(element.findElement(By.css('div.price-pax .price span.unit')).getText());
@@ -91,7 +93,7 @@ function momondoScrappper() {
     }
 
     function takeScreenShot(route, targetDate) {
-        driver.takeScreenshot().then(function(data) {
+        driver.takeScreenshot().then((data) => {
             let todayDate = Utils.getTodayDateString('DD-MM-YYYY_HH_mm');
             let imgName = todayDate + '_' + route.from + '_' + route.to + '_' + targetDate + '.png';
             let ssPath = 'screenshots/';
@@ -128,22 +130,26 @@ function momondoScrappper() {
     }
 
     function retrieveFlightData(inProgressPromise, route, targetDate) {
-        let resultBoxElementsPromise = inProgressPromise.then(function() {
+        let resultBoxElementsPromise = inProgressPromise.then(() => {
             let resultsBoardElement = driver.findElement(By.id('results-tickets'));
             return resultsBoardElement.findElements(By.css('div.result-box'));
         });
-        let resultBoxDataPromise = resultBoxElementsPromise.then(function(elements) {
-            if (elements.length > 0) {
-                let resultBoxData = retrieveFlightPromises(elements);
-                return allSettled(resultBoxData).then((results) => {
-                    return filterSucessfullPromises(results);
-                });
-            } else {
-                debug('No data found!');
-                return 0;
-            }
+        let resultBoxDataPromise = resultBoxElementsPromise.then((elements) => {
+            //we wait 500ms after the resultBox has resolved in order to avoid problems
+            //related with price not being updated in time in the page DOM
+            return driver.sleep(JS_DOM_DELAY).then(() => {
+                if (elements.length > 0) {
+                    let resultBoxData = retrieveFlightPromises(elements);
+                    return allSettled(resultBoxData).then((results) => {
+                        return filterSucessfullPromises(results);
+                    });
+                } else {
+                    debug('No data found!');
+                    return 0;
+                }
+            });
         });
-        return resultBoxDataPromise.then(function(args) {
+        return resultBoxDataPromise.then((args) => {
             let flights = parseFlightPromises(args, targetDate, route.from, route.to);
             debug(Utils.prettifyObject(flights.length > 0 ? flights[0] : flights));
             return flights;
@@ -155,8 +161,8 @@ function momondoScrappper() {
         driver.manage().window().maximize();
         driver.get(fullUrl);
 
-        let inProgressPromise = driver.wait(function() {
-            return driver.findElement(By.id('searchProgressText')).getText().then(function(text) {
+        let inProgressPromise = driver.wait(() => {
+            return driver.findElement(By.id('searchProgressText')).getText().then((text) => {
                 return text === 'Search complete';
             });
         });
