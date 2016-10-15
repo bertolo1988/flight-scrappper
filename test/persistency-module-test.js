@@ -62,17 +62,14 @@ describe('persistencyModule test', () => {
         });
     });
 
-    it('should fake insert and retrieve mock documents if database is set to none', () => {
-        let persistencyPromise = Persistency.insertFlights(Persistency.NO_DATABASE, options.collection, []);
-        return persistencyPromise.then((result) => {
-            return checkNumber(result.length, 0);
-        });
-    });
-
-    it('should fake remove and retrieve mock ids if database is set to none', () => {
+    it('should fake insert/remove and retrieve mock ids if database is set to none', () => {
         let persistencyPromise = Persistency.removeFlights(Persistency.NO_DATABASE, options.collection, []);
         return persistencyPromise.then((result) => {
-            return checkNumber(result.length, 0);
+            checkNumber(result.length, 0);
+            let persistencyPromise = Persistency.insertFlights(Persistency.NO_DATABASE, options.collection, []);
+            return persistencyPromise.then((result) => {
+                checkNumber(result.length, 0);
+            });
         });
     });
 
