@@ -10,7 +10,7 @@ var driver;
 
 function momondoScrappper() {
 
-    const JS_DOM_DELAY = 500;
+    const JS_DOM_DELAY = 1000;
 
     function startBrowser(browser) {
         driver = new Webdriver.Builder()
