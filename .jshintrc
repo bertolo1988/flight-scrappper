@@ -1,13 +1,13 @@
 {
     "esversion": 6,
-    "browser":true,
-    "node":true,
+    "browser": true,
+    "node": true,
     "forin": true,
     "freeze": true,
     "-W041": false,
     "unused": true,
     "maxdepth": 3,
-    "maxcomplexity" : 5,
-    "maxstatements": 15,
-    "predef": [ "require","process","console","module","describe","it","xit", "beforeEach","afterEach" ]
+    "maxcomplexity": 5,
+    "maxstatements": 20,
+    "predef": ["require", "process", "console", "module", "describe", "it", "xit", "beforeEach", "afterEach"]
 }

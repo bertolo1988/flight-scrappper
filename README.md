@@ -41,8 +41,8 @@ These are the default values:
 			from: 'LIS',
 			to: 'PAR'
 		}],
-		currency: 'USD',
-		directFlight: 'false',
+		currency: 'USD'
+		directFlight: false,
 		dateFormat: defaultDateFormat,
 		targetDate: Utils.getDefaultDateString(defaultDateFormat),
 		database: 'localhost:27017/flight-scrappper',
@@ -80,7 +80,8 @@ The resulting data that will be stored in the database has the following fields:
 	{
 		_id, 		
 		from,
-		to,	
+		to,
+		source,
 		airline,
 		stops,
 		time: {

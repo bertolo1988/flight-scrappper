@@ -7,44 +7,44 @@ const debug = require('debug')('fligth-scrappper');
 
 function flightScrappper() {
 
-  var options;
+    var options;
 
-  function persistData(flights) {
-    debug(Progress.tick());
-    return Persistency.insertFlights(options.database, options.collection, flights);
-  }
-
-  function init(args) {
-    options = new Options(args).options;
-    debug('Executing with the following options :\n' + Utils.prettifyObject(options));
-    let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.dateFormat, options.periods, options.interval);
-    debug('Querying for the following dates:\n' + Utils.prettifyObject(dates) + '\n');
-    MomondoScrappper.startBrowser(options.browser);
-    Progress.init(dates.length * options.routes.length);
-    return dates;
-  }
-
-  function end(args) {
-    MomondoScrappper.stopBrowser();
-    return Utils.flattenArray(args);
-  }
-
-  function run(args) {
-    let dates = init(args);
-    let persistPromises = [];
-    for (let route of options.routes) {
-      for (let date of dates) {
-        debug('Query: from:' + route.from + ' to:' + route.to + ' date:' + date);
-        let scrapPromise = MomondoScrappper.scrap(route, date, options.currency, options.directFlight);
-        persistPromises.push(scrapPromise.then(persistData));
-      }
+    function persistData(flights) {
+        debug(Progress.tick());
+        return Persistency.insertFlights(options.database, options.collection, flights);
     }
-    return Promise.all(persistPromises).then(end).catch(end);
-  }
 
-  return {
-    run
-  };
+    function init(args) {
+        options = new Options(args).options;
+        debug('Executing with the following options :\n' + Utils.prettifyObject(options));
+        let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.dateFormat, options.periods, options.interval);
+        debug('Querying for the following dates:\n' + Utils.prettifyObject(dates) + '\n');
+        MomondoScrappper.startBrowser(options.browser);
+        Progress.init(dates.length * options.routes.length);
+        return dates;
+    }
+
+    function end(args) {
+        MomondoScrappper.stopBrowser();
+        return Utils.flattenArray(args);
+    }
+
+    function run(args) {
+        let dates = init(args);
+        let persistPromises = [];
+        for (let route of options.routes) {
+            for (let date of dates) {
+                debug('Query: from:' + route.from + ' to:' + route.to + ' date:' + date);
+                let scrapPromise = MomondoScrappper.scrap(route, date, options.currency, options.directFlight);
+                persistPromises.push(scrapPromise.then(persistData));
+            }
+        }
+        return Promise.all(persistPromises).then(end).catch(end);
+    }
+
+    return {
+        run
+    };
 }
 
 module.exports = flightScrappper();

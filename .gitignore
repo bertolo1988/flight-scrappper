@@ -1,7 +1,7 @@
-/node_modules/
-/mongo-db/
-/tmp/
-/screenshots/
+node_modules/
+mongo-db/
+tmp/
+screenshots/
 *.pem
 *.log
 *.log.*
