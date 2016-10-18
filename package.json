@@ -13,14 +13,14 @@
         "chromedriver": "2.24.1",
         "debug": "2.2.0",
         "file-system": "2.2.1",
-        "moment": "2.15.0",
+        "moment": "2.15.1",
         "mongodb": "2.2.10",
         "selenium-webdriver": "2.53.2"
     },
     "devDependencies": {
         "jshint": "2.9.3",
-        "mocha": "3.0.2",
-        "should": "11.1.0"
+        "mocha": "3.1.2",
+        "should": "11.1.1"
     },
     "scripts": {
         "mongo-mac": "mkdir mongo-db; mongod --dbpath mongo-db",

@@ -10,8 +10,6 @@ var driver;
 
 function momondoScrappper() {
 
-    const JS_DOM_DELAY = 1000;
-
     function startBrowser(browser) {
         driver = new Webdriver.Builder()
             .forBrowser(browser)
@@ -78,7 +76,13 @@ function momondoScrappper() {
         var resultBoxData = [];
         elements.forEach((element) => {
             resultBoxData.push(element.findElement(By.css('div.names')).getText());
-            resultBoxData.push(element.findElement(By.css('div.price-pax .price span.value')).getText());
+            resultBoxData.push(driver.wait(() => {
+                return element.findElement(By.css('div.price-pax .price span.value')).getText().then((text) => {
+                    return text === '1';
+                });
+            }).then(() => {
+                return element.findElement(By.css('div.price-pax .price span.value')).getText();
+            }));
             resultBoxData.push(element.findElement(By.css('div.price-pax .price span.unit')).getText());
             resultBoxData.push(element.findElement(By.css('div.departure > div > div.iata-time > span.time')).getText());
             resultBoxData.push(element.findElement(By.css('.travel-time')).getText());
@@ -135,19 +139,15 @@ function momondoScrappper() {
             return resultsBoardElement.findElements(By.css('div.result-box'));
         });
         let resultBoxDataPromise = resultBoxElementsPromise.then((elements) => {
-            //we wait 500ms after the resultBox has resolved in order to avoid problems
-            //related with price not being updated in time in the page DOM
-            return driver.sleep(JS_DOM_DELAY).then(() => {
-                if (elements.length > 0) {
-                    let resultBoxData = retrieveFlightPromises(elements);
-                    return allSettled(resultBoxData).then((results) => {
-                        return filterSucessfullPromises(results);
-                    });
-                } else {
-                    debug('No data found!');
-                    return 0;
-                }
-            });
+            if (elements.length > 0) {
+                let resultBoxData = retrieveFlightPromises(elements);
+                return allSettled(resultBoxData).then((results) => {
+                    return filterSucessfullPromises(results);
+                });
+            } else {
+                debug('No data found!');
+                return 0;
+            }
         });
         return resultBoxDataPromise.then((args) => {
             let flights = parseFlightPromises(args, targetDate, route.from, route.to);
