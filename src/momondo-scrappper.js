@@ -61,7 +61,7 @@ function momondoScrappper() {
         let result = [];
         for (let i = 0; i + 6 <= args.length; i += 6) {
             let airline = args[i];
-            let amount = parseInt(args[i + 1]);
+            let amount = parseInt(args[i + 1].replace(/\D/g, ''));
             let currency = args[i + 2];
             let departure = args[i + 3];
             let duration = parseDuration(args[i + 4]);
@@ -76,13 +76,7 @@ function momondoScrappper() {
         var resultBoxData = [];
         elements.forEach((element) => {
             resultBoxData.push(element.findElement(By.css('div.names')).getText());
-            resultBoxData.push(driver.wait(() => {
-                return element.findElement(By.css('div.price-pax .price span.value')).getText().then((text) => {
-                    return text === '1';
-                });
-            }).then(() => {
-                return element.findElement(By.css('div.price-pax .price span.value')).getText();
-            }));
+            resultBoxData.push(element.findElement(By.css('div.price-pax .price span.value')).getText());
             resultBoxData.push(element.findElement(By.css('div.price-pax .price span.unit')).getText());
             resultBoxData.push(element.findElement(By.css('div.departure > div > div.iata-time > span.time')).getText());
             resultBoxData.push(element.findElement(By.css('.travel-time')).getText());
