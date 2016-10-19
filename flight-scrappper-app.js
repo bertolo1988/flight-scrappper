@@ -2,7 +2,7 @@ let FlightScrappper = require('./dist/flight-scrappper');
 let debug = require('debug')('flight-scrappper-app.js');
 let Utils = require('./src/utils');
 
-var options = {
+let options = {
     periods: 30,
     interval: 96,
     routes: [{
