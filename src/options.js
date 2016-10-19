@@ -1,8 +1,8 @@
 var Utils = require('../src/utils');
 
 function getDefaultOptions() {
-    let defaultDateFormat = 'DD-MM-YYYY';
-    var defaultOptions = {
+    const defaultDateFormat = 'DD-MM-YYYY';
+    let defaultOptions = {
         periods: 1,
         interval: 48,
         routes: [{
@@ -33,7 +33,7 @@ function retrieveOptionsFromObject(options, obj) {
 }
 
 function retrieveOptions(input) {
-    var options = getDefaultOptions();
+    let options = getDefaultOptions();
     if (input != null) {
         options = retrieveOptionsFromObject(options, input);
     }
