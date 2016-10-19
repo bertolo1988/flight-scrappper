@@ -62,11 +62,9 @@ Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will g
 
 ## Running
 
-First, start your [mongodb](https://www.mongodb.com/) database. You can try `npm run mongo-linux/win/mac` to start your database in an easy way, or do it manually.
+First, start your [mongodb](https://www.mongodb.com/) database. You can try `npm run mongo-linux/win/mac` to start your database in an easy way, or do it manually. For more information on what this commands are doing just read the scripts object in the `package.json` file.
 
 If you want to scrap flights, without storing data, you can set database to `'none'`.
-
-If you installed mongodb in the default directory you can run `$ npm run mongo-win`  (for windows) or `$ npm run mongo-mac` (for mac) to run a database that will use a folder named `mongo-db` in the current directory.
 
 To start the flight-scrappper with the default values just type `$ npm start`.
 
@@ -103,7 +101,7 @@ The resulting data that will be stored in the database has the following fields:
 
 `$ npm test`
 
-## Debugging
+## Debugging or Verbose
 
 `$ npm run debug` to have console output.
 
