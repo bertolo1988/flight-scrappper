@@ -35,7 +35,7 @@ function flightScrappper() {
         for (let route of options.routes) {
             for (let date of dates) {
                 debug('Query: from:' + route.from + ' to:' + route.to + ' date:' + date);
-                let scrapPromise = MomondoScrappper.scrap(route, date, options.currency, options.directFlight);
+                let scrapPromise = MomondoScrappper.scrap(route, date, options.currency, options.directFlight, options.maximize);
                 persistPromises.push(scrapPromise.then(persistData));
             }
         }

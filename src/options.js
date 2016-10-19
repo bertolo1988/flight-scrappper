@@ -16,7 +16,8 @@ function getDefaultOptions() {
         database: 'localhost:27017/flight-scrappper',
         collection: 'flight-data',
         timeout: 60000,
-        browser: 'chrome'
+        browser: 'chrome',
+        maximize: false
     };
     return defaultOptions;
 }

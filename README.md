@@ -50,7 +50,8 @@ These are the default values:
         database: 'localhost:27017/flight-scrappper',
         collection: 'flight-data',
         timeout: 60000,
-        browser: 'chrome'
+        browser: 'chrome',
+        maximize: false
     };
 
 
@@ -59,6 +60,7 @@ During the start, a new parameter `dates` will be generated. This array will con
 This dates are calculated with the following formula `targetDate + options.interval x options.periods ` times.
  
 Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will generate an array  such as ['5/01/2000','07/01/2000'].
+
 
 ## Running
 

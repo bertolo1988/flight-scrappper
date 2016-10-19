@@ -150,9 +150,11 @@ function momondoScrappper() {
         });
     }
 
-    function retrieveFlightPage(route, targetDate, currency, directFlight) {
+    function retrieveFlightPage(route, targetDate, currency, directFlight, maximize) {
         let fullUrl = buildUrl(route.from, route.to, targetDate, currency, directFlight);
-        driver.manage().window().maximize();
+        if (maximize) {
+            driver.manage().window().maximize();
+        }
         driver.get(fullUrl);
 
         let inProgressPromise = driver.wait(() => {
@@ -168,10 +170,10 @@ function momondoScrappper() {
         return Promise.resolve([]);
     }
 
-    function scrap(route, date, currency, directFlight) {
+    function scrap(route, date, currency, directFlight, maximize) {
         var retries = 1;
         try {
-            return retrieveFlightPage(route, date, currency, directFlight).catch((error) => {
+            return retrieveFlightPage(route, date, currency, directFlight, maximize).catch((error) => {
                 takeScreenShot(route, date);
                 if (retries > 0) {
                     retries--;
