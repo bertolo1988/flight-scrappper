@@ -10,8 +10,6 @@ var driver;
 
 function momondoScrappper() {
 
-    const JS_DOM_DELAY = 1000;
-
     function startBrowser(browser) {
         driver = new Webdriver.Builder()
             .forBrowser(browser)
@@ -63,7 +61,7 @@ function momondoScrappper() {
         let result = [];
         for (let i = 0; i + 6 <= args.length; i += 6) {
             let airline = args[i];
-            let amount = parseInt(args[i + 1]);
+            let amount = parseInt(args[i + 1].replace(/\D/g, ''));
             let currency = args[i + 2];
             let departure = args[i + 3];
             let duration = parseDuration(args[i + 4]);
@@ -135,19 +133,15 @@ function momondoScrappper() {
             return resultsBoardElement.findElements(By.css('div.result-box'));
         });
         let resultBoxDataPromise = resultBoxElementsPromise.then((elements) => {
-            //we wait 500ms after the resultBox has resolved in order to avoid problems
-            //related with price not being updated in time in the page DOM
-            return driver.sleep(JS_DOM_DELAY).then(() => {
-                if (elements.length > 0) {
-                    let resultBoxData = retrieveFlightPromises(elements);
-                    return allSettled(resultBoxData).then((results) => {
-                        return filterSucessfullPromises(results);
-                    });
-                } else {
-                    debug('No data found!');
-                    return 0;
-                }
-            });
+            if (elements.length > 0) {
+                let resultBoxData = retrieveFlightPromises(elements);
+                return allSettled(resultBoxData).then((results) => {
+                    return filterSucessfullPromises(results);
+                });
+            } else {
+                debug('No data found!');
+                return 0;
+            }
         });
         return resultBoxDataPromise.then((args) => {
             let flights = parseFlightPromises(args, targetDate, route.from, route.to);
