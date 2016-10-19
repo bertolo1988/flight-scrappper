@@ -7,7 +7,7 @@
 
 # flight-scrappper
 
-Web scraper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.
+Web scraper made with nodejs and selenium-webdriver that gathers flight data and stores it in a mongodb database.
 
 
 ## Requirements
@@ -16,6 +16,7 @@ Web scraper made with nodejs and webdriverjs that gathers flight data and stores
  - [npm](http://npmjs.org/)
  - [chrome](https://www.google.com/chrome/browser/desktop/index.html)
  - [mongodb](https://www.mongodb.com/)
+ - [mocha](https://mochajs.org/)
 
 
 ## Installing
@@ -33,23 +34,25 @@ If an option is not defined, a default value will be used instead.
 
 These are the default values:
 	
-	let defaultDateFormat = 'DD-MM-YYYY';
-	var defaultOptions = {
-		periods: 1,
-		interval: 48,
-		routes: [{
-			from: 'LIS',
-			to: 'PAR'
-		}],
-		currency: 'USD'
-		directFlight: false,
-		dateFormat: defaultDateFormat,
-		targetDate: Utils.getDefaultDateString(defaultDateFormat),
-		database: 'localhost:27017/flight-scrappper',
-		collection: 'flight-data',
-		timeout: 50000,
-		browser: 'chrome'
-	};
+
+    const defaultDateFormat = 'DD-MM-YYYY';
+    let defaultOptions = {
+        periods: 1,
+        interval: 48,
+        routes: [{
+            from: 'LIS',
+            to: 'PAR'
+        }],
+        currency: 'EUR',
+        directFlight: false,
+        dateFormat: defaultDateFormat,
+        targetDate: Utils.getDefaultDateString(defaultDateFormat),
+        database: 'localhost:27017/flight-scrappper',
+        collection: 'flight-data',
+        timeout: 60000,
+        browser: 'chrome'
+    };
+
 
 During the start, a new parameter `dates` will be generated. This array will contain dates in string form in the `options.dateFormat` format.
 
@@ -59,7 +62,7 @@ Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will g
 
 ## Running
 
-First, start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/).
+First, start your [mongodb](https://www.mongodb.com/) database. You can try `npm run mongo-linux/win/mac` to start your database in an easy way, or do it manually.
 
 If you want to scrap flights, without storing data, you can set database to `'none'`.
 
