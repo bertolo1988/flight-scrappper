@@ -17,7 +17,7 @@ function flightScrappper() {
     function init(args) {
         options = new Options(args).options;
         debug('Executing with the following options :\n' + Utils.prettifyObject(options));
-        let dates = Utils.retrieveFlightDatesArray(options.targetDate, options.dateFormat, options.periods, options.interval);
+        let dates = Utils.retrieveFlightMoments(options.targetDate, options.dateFormat, options.periods, options.interval);
         debug('Querying for the following dates:\n' + Utils.prettifyObject(dates) + '\n');
         MomondoScrappper.startBrowser(options.browser);
         Progress.init(dates.length * options.routes.length);
