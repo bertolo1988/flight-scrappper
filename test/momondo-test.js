@@ -3,17 +3,18 @@ var MomondoQueryString = require('../src/momondo-query-string');
 var MomondoScrappper = require('../src/momondo-scrappper');
 var Utils = require('../src/utils');
 var Options = require('../src/options');
+var Moment = require('moment');
 
 describe('momondoScrappper test', function() {
 
     var options = new Options().options;
     this.timeout(options.timeout * 4);
 
-    beforeEach(() => {
+    before(() => {
         MomondoScrappper.startBrowser('chrome');
     });
 
-    afterEach(() => {
+    after(() => {
         MomondoScrappper.stopBrowser();
     });
 
@@ -42,7 +43,7 @@ describe('momondoScrappper test', function() {
 
     it('should retrieve 60 flights for 2 route', () => {
         let targetDate = Utils.getDefaultDateString(options.dateFormat);
-        let dates = Utils.retrieveFlightDatesArray(targetDate, options.dateFormat, 2, 24);
+        let dates = Utils.retrieveFlightMoments(new Moment(targetDate, options.dateFormat), 2, 24);
         let routes = [{
             from: 'LON',
             to: 'BER'
@@ -54,7 +55,7 @@ describe('momondoScrappper test', function() {
         let scrapPromise = [];
         for (let route of routes) {
             for (let date of dates) {
-                scrapPromise.push(MomondoScrappper.scrap(route, date, 'EUR', false));
+                scrapPromise.push(MomondoScrappper.scrap(route, date, options.dateFormat, 'EUR', false));
             }
         }
 

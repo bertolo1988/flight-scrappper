@@ -3,6 +3,7 @@ var Utils = require('../src/utils');
 var Persistency = require('../src/persistency-module');
 var Options = require('../src/options');
 var Progress = require('../src/progress-bar');
+var Moment = require('moment');
 const debug = require('debug')('fligth-scrappper');
 
 function flightScrappper() {
@@ -17,7 +18,7 @@ function flightScrappper() {
     function init(args) {
         options = new Options(args).options;
         debug('Executing with the following options :\n' + Utils.prettifyObject(options));
-        let dates = Utils.retrieveFlightMoments(options.targetDate, options.dateFormat, options.periods, options.interval);
+        let dates = Utils.retrieveFlightMoments(new Moment(options.targetDate, options.dateFormat), options.periods, options.interval);
         debug('Querying for the following dates:\n' + Utils.prettifyObject(dates) + '\n');
         MomondoScrappper.startBrowser(options.browser);
         Progress.init(dates.length * options.routes.length);
@@ -35,7 +36,7 @@ function flightScrappper() {
         for (let route of options.routes) {
             for (let date of dates) {
                 debug('Query: from:' + route.from + ' to:' + route.to + ' date:' + date);
-                let scrapPromise = MomondoScrappper.scrap(route, date, options.currency, options.directFlight, options.maximize);
+                let scrapPromise = MomondoScrappper.scrap(route, date, options.dateFormat, options.currency, options.directFlight, options.maximize);
                 persistPromises.push(scrapPromise.then(persistData));
             }
         }

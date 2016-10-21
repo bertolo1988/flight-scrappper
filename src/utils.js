@@ -24,12 +24,11 @@ module.exports = {
         return result;
     },
 
-    retrieveFlightMoments(fromDate, dateFormat, periods, interval) {
+    retrieveFlightMoments(targetMoment, periods, interval) {
         let result = [];
-        let targetDate = new Moment(fromDate, dateFormat);
         for (let i = 0; i < periods; i++) {
-            result.push(targetDate);
-            targetDate = targetDate.add(interval, 'hours');
+            result.push(new Moment(targetMoment));
+            targetMoment = targetMoment.add(interval, 'hours');
         }
         return result;
     }

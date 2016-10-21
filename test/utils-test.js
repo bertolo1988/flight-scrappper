@@ -9,21 +9,21 @@ describe('retrieveFlightDatesArray test', () => {
     const datesCount = 10;
     const interval = 24;
 
-    it('should generate 3 dates, in days 7, 9, 11-09-2015 from a moment', (done) => {
+    it('should generate 3 dates, in days 5, 6, 7, 08-09-2015 from a moment', (done) => {
         let moment = new Moment('05-09-2015', DATE_FORMAT);
-        let dates = Utils.retrieveFlightDatesArray(moment, DATE_FORMAT, 3, interval * 2);
-        (dates[0]).should.be.equal('05-09-2015');
-        (dates[1]).should.be.equal('07-09-2015');
-        (dates[2]).should.be.equal('09-09-2015');
+        let dates = Utils.retrieveFlightMoments(moment, datesCount, interval);
+        (dates[0].format(DATE_FORMAT)).should.be.equal('05-09-2015');
+        (dates[1].format(DATE_FORMAT)).should.be.equal('06-09-2015');
+        (dates[2].format(DATE_FORMAT)).should.be.equal('07-09-2015');
+        (dates[datesCount - 1].format(DATE_FORMAT)).should.be.equal('14-09-2015');
         done();
     });
 
     it('should generate ' + datesCount + ' dates from a string', (done) => {
-        let todayDate = new Moment().format(DATE_FORMAT);
-        let dates = Utils.retrieveFlightDatesArray(todayDate, DATE_FORMAT, datesCount, interval);
+        let dates = Utils.retrieveFlightMoments(new Moment(), datesCount, interval);
         (dates.length).should.be.exactly(datesCount);
         let todayMoment = new Moment().add((datesCount - 1) * interval, 'hours').format(DATE_FORMAT);
-        todayMoment.should.be.equal(dates[(datesCount - 1)]);
+        todayMoment.should.be.equal(dates[(datesCount - 1)].format(DATE_FORMAT));
         done();
     });
 
