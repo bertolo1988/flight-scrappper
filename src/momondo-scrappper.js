@@ -2,6 +2,7 @@ const debug = require('debug')('momondo-scrappper');
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
 var Flight = require('../src/flight');
+var FlightTime = require('../src/flight-time');
 var Utils = require('../src/utils');
 var Webdriver = require('selenium-webdriver');
 var By = Webdriver.By;
@@ -57,16 +58,27 @@ function momondoScrappper() {
         return durationMinutes;
     }
 
+    function retrieveDeparture(date, hourMinute) {
+        let hourMinuteSplitted = hourMinute.split(/[^A-Za-z]/);
+        let minute = hourMinuteSplitted[1];
+        let hour = hourMinuteSplitted[0];
+        let momentDate = new Moment(date);
+        let day = momentDate.day();
+        let month = momentDate.month();
+        let year = momentDate.year();
+        return new FlightTime(minute, hour, day, month, year);
+    }
+
     function parseFlightPromises(args, date, from, to) {
         let result = [];
         for (let i = 0; i + 6 <= args.length; i += 6) {
             let airline = args[i];
             let amount = parseInt(args[i + 1].replace(/\D/g, ''));
             let currency = args[i + 2];
-            let departure = args[i + 3];
+            let flightTime = retrieveDeparture(date, args[i + 3]);
             let duration = parseDuration(args[i + 4]);
             let stops = parseFlightStops(args[i + 5]);
-            let flight = new Flight(from, to, 'momondo', airline, stops, date, departure, duration, new Date(), amount, currency);
+            let flight = new Flight(from, to, 'momondo', airline, stops, flightTime, duration, new Date(), amount, currency);
             result.push(flight);
         }
         return result;
