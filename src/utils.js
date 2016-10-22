@@ -16,7 +16,7 @@ module.exports = {
     },
 
     retrieveDigit(input) {
-        return parseInt(input.replace(/[^\d\.\-]/g, ''));
+        return parseInt(input.replace(/\D/g, ''));
     },
 
     momentToFlightTime(myMoment) {

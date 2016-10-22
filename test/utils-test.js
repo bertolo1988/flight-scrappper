@@ -37,12 +37,10 @@ describe('retrieveFlightDatesArray test', () => {
     it('should retrieve digits', (done) => {
         Utils.retrieveDigit('+1').should.be.exactly(1);
         Utils.retrieveDigit('1,300').should.be.exactly(1300);
-        Utils.retrieveDigit('14.00').should.be.exactly(14);
-        Utils.retrieveDigit('15.0$').should.be.exactly(15);
-        Utils.retrieveDigit('-1').should.be.exactly(-1);
-        Utils.retrieveDigit('600').should.be.exactly(600);
-        Utils.retrieveDigit('-30x50').should.be.exactly(-3050);
-        Utils.retrieveDigit('x1x1').should.be.exactly(11);
+        Utils.retrieveDigit('-14.00').should.be.exactly(1400);
+        Utils.retrieveDigit('+15.0$').should.be.exactly(150);
+        Utils.retrieveDigit('-1').should.be.exactly(1);
+        Utils.retrieveDigit('5').should.be.exactly(5);
         done();
     });
 
