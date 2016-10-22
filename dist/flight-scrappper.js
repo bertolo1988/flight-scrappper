@@ -19,7 +19,6 @@ function flightScrappper() {
         options = new Options(args).options;
         debug('Executing with the following options :\n' + Utils.prettifyObject(options));
         let dates = Utils.retrieveFlightMoments(new Moment(options.targetDate, options.dateFormat), options.periods, options.interval);
-        debug('Querying for the following dates:\n' + Utils.prettifyObject(dates) + '\n');
         MomondoScrappper.startBrowser(options.browser);
         Progress.init(dates.length * options.routes.length);
         return dates;
@@ -35,7 +34,7 @@ function flightScrappper() {
         let persistPromises = [];
         for (let route of options.routes) {
             for (let date of dates) {
-                debug('Query: from:' + route.from + ' to:' + route.to + ' date:' + date);
+                debug('Query: from:' + route.from + ' to:' + route.to + ' date:' + date.format(options.dateFormat));
                 let scrapPromise = MomondoScrappper.scrap(route, date, options.dateFormat, options.currency, options.directFlight, options.maximize);
                 persistPromises.push(scrapPromise.then(persistData));
             }

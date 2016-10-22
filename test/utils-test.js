@@ -1,4 +1,4 @@
-require('should');
+var should = require('should');
 var Moment = require('moment');
 var Utils = require('../src/utils');
 var Options = require('../src/options');
@@ -24,6 +24,36 @@ describe('retrieveFlightDatesArray test', () => {
         (dates.length).should.be.exactly(datesCount);
         let todayMoment = new Moment().add((datesCount - 1) * interval, 'hours').format(DATE_FORMAT);
         todayMoment.should.be.equal(dates[(datesCount - 1)].format(DATE_FORMAT));
+        done();
+    });
+
+    it('should tell if string', (done) => {
+        Utils.isNumeric('dd').should.be.false();
+        Utils.isNumeric('1D').should.be.false();
+        Utils.isNumeric('1').should.be.true();
+        done();
+    });
+
+    it('should retrieve digits', (done) => {
+        Utils.retrieveDigit('+1').should.be.exactly(1);
+        Utils.retrieveDigit('1,300').should.be.exactly(1300);
+        Utils.retrieveDigit('14.00').should.be.exactly(14);
+        Utils.retrieveDigit('15.0$').should.be.exactly(15);
+        Utils.retrieveDigit('-1').should.be.exactly(-1);
+        Utils.retrieveDigit('600').should.be.exactly(600);
+        Utils.retrieveDigit('-30x50').should.be.exactly(-3050);
+        Utils.retrieveDigit('x1x1').should.be.exactly(11);
+        done();
+    });
+
+    it('should convert moment to flightTime', (done) => {
+        let flightTime = Utils.momentToFlightTime(new Moment());
+        should.exist(flightTime);
+        should.exist(flightTime.minute);
+        should.exist(flightTime.hour);
+        should.exist(flightTime.day);
+        should.exist(flightTime.month);
+        should.exist(flightTime.year);
         done();
     });
 

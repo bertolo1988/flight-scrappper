@@ -5,36 +5,74 @@ var Options = require('../src/options');
 describe('persistencyModule test', () => {
     let options = new Options().options;
     let mockFlights = [{
-        "from": "LIS",
-        "to": "PAR",
-        "airline": "Iberia, Vueling Airlines",
-        "stops": 1,
-        "test": true,
-        "time": {
-            "date": "21-08-2016",
-            "departure": "17:15",
-            "duration": "15h 45m",
-            "queried": "2016-08-19T14:16:55.505Z"
+        "search": {
+            "from": "LIS",
+            "to": "LON",
+            "source": "momondo",
+            "queried": "2016-10-22T13:39:35.829Z"
         },
-        "price": {
-            "amount": "277",
-            "currency": "USD"
+        "flight": {
+            "duration": 720,
+            "stops": 1,
+            "price": {
+                "amount": 85,
+                "currency": "EUR"
+            },
+            "departure": {
+                "time": {
+                    "minute": 0,
+                    "hour": 23,
+                    "day": 24,
+                    "month": 10,
+                    "year": 2016
+                },
+                "airport": "LIS"
+            },
+            "arrival": {
+                "time": {
+                    "minute": 0,
+                    "hour": 11,
+                    "day": 25,
+                    "month": 10,
+                    "year": 2016
+                },
+                "airport": "LGW"
+            }
         }
     }, {
-        "from": "LIS",
-        "to": "PAR",
-        "airline": "Ryanair",
-        "stops": 0,
-        "test": true,
-        "time": {
-            "date": "21-08-2016",
-            "departure": "06:40",
-            "duration": "2h 30m",
-            "queried": "2016-08-19T14:16:55.505Z"
+        "search": {
+            "from": "LIS",
+            "to": "LON",
+            "source": "momondo",
+            "queried": "2016-10-22T13:39:35.829Z"
         },
-        "price": {
-            "amount": "324",
-            "currency": "USD"
+        "flight": {
+            "duration": 720,
+            "stops": 1,
+            "price": {
+                "amount": 85,
+                "currency": "EUR"
+            },
+            "departure": {
+                "time": {
+                    "minute": 0,
+                    "hour": 23,
+                    "day": 24,
+                    "month": 10,
+                    "year": 2016
+                },
+                "airport": "LIS"
+            },
+            "arrival": {
+                "time": {
+                    "minute": 0,
+                    "hour": 11,
+                    "day": 25,
+                    "month": 10,
+                    "year": 2016
+                },
+                "airport": "LGW"
+            }
         }
     }];
 

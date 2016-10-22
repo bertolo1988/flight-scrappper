@@ -5,10 +5,6 @@ function getDefaultOptions() {
     let defaultOptions = {
         periods: 1,
         interval: 48,
-        routes: [{
-            from: 'LIS',
-            to: 'PAR'
-        }],
         currency: 'EUR',
         directFlight: false,
         dateFormat: defaultDateFormat,
@@ -17,7 +13,11 @@ function getDefaultOptions() {
         collection: 'flight-data',
         timeout: 60000,
         browser: 'chrome',
-        maximize: false
+        maximize: false,
+        routes: [{
+            from: 'LIS',
+            to: 'PAR'
+        }]
     };
     return defaultOptions;
 }

@@ -1,11 +1,10 @@
 class FlightTime {
-	constructor(minute, hour, day, month, year, duration) {
-		this.minute = minute;
-		this.hour = hour;
-		this.day = day;
-		this.month = month;
-		this.year = year;
-		this.duration = duration;
+	constructor(data) {
+		this.minute = data.minute;
+		this.hour = data.hour;
+		this.day = data.day;
+		this.month = data.month;
+		this.year = data.year;
 	}
 }
 

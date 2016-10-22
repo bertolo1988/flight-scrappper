@@ -2,15 +2,17 @@ const debug = require('debug')('momondo-scrappper');
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
 var Flight = require('../src/flight');
-var FlightTime = require('../src/flight-time');
 var Utils = require('../src/utils');
 var Webdriver = require('selenium-webdriver');
+var Moment = require('moment');
 var By = Webdriver.By;
 var fs = require('fs');
-var path = require("path");
+var path = require('path');
 var driver;
 
 function momondoScrappper() {
+
+    const SCRAPPED_VALUES = 10;
 
     function startBrowser(browser) {
         driver = new Webdriver.Builder()
@@ -23,21 +25,12 @@ function momondoScrappper() {
         chromedriver.stop();
     }
 
-    function parseFlightStops(arg) {
-        switch (arg) {
-            case 'DIRECT':
-                return 0;
-            case '1 STOP':
-                return 1;
-            case '2 STOP':
-                return 2;
-            default:
-                return 3;
+    function getFlightStops(value) {
+        if (Utils.isNumeric(value[0])) {
+            return parseInt(value[0]);
+        } else {
+            return 0;
         }
-    }
-
-    function retrieveDigit(input) {
-        return parseInt(input.replace(/^\D+/g, ''));
     }
 
     function parseDuration(duration) {
@@ -46,39 +39,50 @@ function momondoScrappper() {
         for (let unit of splittedDuration) {
             switch (unit[unit.length - 1]) {
                 case 'h':
-                    durationMinutes += retrieveDigit(unit) * 60;
+                    durationMinutes += Utils.retrieveDigit(unit) * 60;
                     break;
                 case 'm':
-                    durationMinutes += retrieveDigit(unit);
+                    durationMinutes += Utils.retrieveDigit(unit);
                     break;
                 default:
-                    durationMinutes += retrieveDigit(unit);
+                    durationMinutes += Utils.retrieveDigit(unit);
                     break;
             }
         }
         return durationMinutes;
     }
 
-    function retrieveFlightTime(date, dateFormat, hourMinute, duration) {
+    function retrieveFlightMoment(date, dateFormat, hourMinute, daysLater) {
+        let myMoment = new Moment(date);
         let hourMinuteSplitted = hourMinute.split(':');
-        let minute = parseInt(hourMinuteSplitted[1]);
-        let hour = parseInt(hourMinuteSplitted[0]);
-        let day = parseInt(date.format('DD'));
-        let month = parseInt(date.format('MM'));
-        let year = parseInt(date.format('YYYY'));
-        return new FlightTime(minute, hour, day, month, year, duration);
+        myMoment.hour(parseInt(hourMinuteSplitted[0]));
+        myMoment.minute(parseInt(hourMinuteSplitted[1]));
+        myMoment.add(parseInt(daysLater), 'days');
+        return Utils.momentToFlightTime(myMoment);
     }
 
     function parseFlightPromises(args, date, dateFormat, from, to) {
+        if (args.length != null && args.length % SCRAPPED_VALUES != 0) {
+            throw new Error('Invalid number of scrapped values!');
+        }
         let result = [];
-        for (let i = 0; i + 6 <= args.length; i += 6) {
-            let airline = args[i];
-            let amount = parseInt(args[i + 1].replace(/\D/g, ''));
-            let currency = args[i + 2];
-            let flightTime = retrieveFlightTime(date, dateFormat, args[i + 3], parseDuration(args[i + 4]));
-            let stops = parseFlightStops(args[i + 5]);
-            let flight = new Flight(from, to, 'momondo', airline, stops, flightTime, new Date(), amount, currency);
-            result.push(flight);
+        for (let i = 0; i + SCRAPPED_VALUES <= args.length; i += SCRAPPED_VALUES) {
+            let data = {
+                from,
+                to,
+                source: 'momondo',
+                airline: args[i],
+                queried: new Date(),
+                amount: Utils.retrieveDigit(args[i + 1]),
+                currency: args[i + 2],
+                departureTime: retrieveFlightMoment(date, dateFormat, args[i + 3], 0),
+                arrivalTime: retrieveFlightMoment(date, dateFormat, args[i + 4], args[i + 5]),
+                departureAirport: args[i + 6],
+                arrivalAirport: args[i + 7],
+                duration: parseDuration(args[i + 8]),
+                stops: getFlightStops(args[i + 9]),
+            };
+            result.push(new Flight(data));
         }
         return result;
     }
@@ -86,11 +90,27 @@ function momondoScrappper() {
     function retrieveFlightPromises(elements) {
         var resultBoxData = [];
         elements.forEach((element) => {
+            //airline
             resultBoxData.push(element.findElement(By.css('div.names')).getText());
+            //amount
             resultBoxData.push(element.findElement(By.css('div.price-pax .price span.value')).getText());
+            //currency
             resultBoxData.push(element.findElement(By.css('div.price-pax .price span.unit')).getText());
+            //departure time
             resultBoxData.push(element.findElement(By.css('div.departure > div > div.iata-time > span.time')).getText());
+            //arrival time
+            resultBoxData.push(element.findElement(By.css('div.destination > div > div.iata-time > span.time')).getText());
+            //days later
+            resultBoxData.push(element.findElement(By.css('div.destination > div > div.iata-time > span.days-later')).getText().catch(() => {
+                return Promise.resolve(0);
+            }));
+            //airport from
+            resultBoxData.push(element.findElement(By.css('div.departure > div > div.iata-time > span.iata')).getText());
+            //airport to
+            resultBoxData.push(element.findElement(By.css('div.destination > div > div.iata-time > span.iata')).getText());
+            //duration
             resultBoxData.push(element.findElement(By.css('.travel-time')).getText());
+            //stops
             resultBoxData.push(element.findElement(By.css('div.travel-stops > .total')).getText());
         });
         return resultBoxData;
@@ -141,7 +161,7 @@ function momondoScrappper() {
     function retrieveFlightData(inProgressPromise, route, targetDate, dateFormat) {
         let resultBoxElementsPromise = inProgressPromise.then(() => {
             let resultsBoardElement = driver.findElement(By.id('results-tickets'));
-            return resultsBoardElement.findElements(By.css('div.result-box'));
+            return resultsBoardElement.findElements(By.css('div.result-box.standard'));
         });
         let resultBoxDataPromise = resultBoxElementsPromise.then((elements) => {
             if (elements.length > 0) {

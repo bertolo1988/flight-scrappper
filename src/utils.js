@@ -1,4 +1,5 @@
 var Moment = require('moment');
+var FlightTime = require('../src/flight-time');
 
 module.exports = {
 
@@ -7,7 +8,26 @@ module.exports = {
     },
 
     prettifyObject(obj) {
-        return JSON.stringify(obj, null, 2);
+        return JSON.stringify(obj, null, 4);
+    },
+
+    isNumeric(str) {
+        return /^\d+$/.test(str);
+    },
+
+    retrieveDigit(input) {
+        return parseInt(input.replace(/[^\d\.\-]/g, ''));
+    },
+
+    momentToFlightTime(myMoment) {
+        let data = {
+            minute: parseInt(myMoment.format('mm')),
+            hour: parseInt(myMoment.format('HH')),
+            day: parseInt(myMoment.format('DD')),
+            month: parseInt(myMoment.format('MM')),
+            year: parseInt(myMoment.format('YYYY'))
+        };
+        return new FlightTime(data);
     },
 
     flattenArray(data) {
