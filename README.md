@@ -39,10 +39,6 @@ These are the default values:
     let defaultOptions = {
         periods: 1,
         interval: 48,
-        routes: [{
-            from: 'LIS',
-            to: 'PAR'
-        }],
         currency: 'EUR',
         directFlight: false,
         dateFormat: defaultDateFormat,
@@ -51,13 +47,14 @@ These are the default values:
         collection: 'flight-data',
         timeout: 60000,
         browser: 'chrome',
-        maximize: false
+        maximize: false,
+        routes: [{
+            from: 'LIS',
+            to: 'PAR'
+        }]
     };
 
-
-During the start, a new parameter `dates` will be generated. This array will contain dates in string form in the `options.dateFormat` format.
-
-This dates are calculated with the following formula `targetDate + options.interval x options.periods ` times.
+This queried dates are calculated with the following formula `targetDate + options.interval x options.periods ` times.
  
 Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will generate an array  such as ['5/01/2000','07/01/2000'].
 
@@ -78,26 +75,44 @@ If you want to get feedback in the console please check  [Debugging](#debugging)
 
 `FlightScrappper.run` will return a promise wich will resolve into the number of inserted documents or into an error.
 
-The resulting data that will be stored in the database has the following fields:
+The output data that will look like this:
 
-	{
-		_id, 		
-		from,
-		to,
-		source,
-		airline,
-		stops,
-		time: {
-			date,
-			departure,
-			duration,
-			queried
-		},
-		price:{
-			amount,
-			currency
-		}
-	}
+{
+    "search" : {
+        "from" : "LIS",
+        "to" : "MAA",
+        "source" : "momondo",
+        "queried" : ISODate("2016-10-22T18:09:28.563Z")
+    },
+    "data" : {
+        "duration" : 1355,
+        "stops" : 2,
+        "price" : {
+            "amount" : 415,
+            "currency" : "EUR"
+        },
+        "departure" : {
+            "time" : {
+                "minute" : 30,
+                "hour" : 7,
+                "day" : 28,
+                "month" : 10,
+                "year" : 2016
+            },
+            "airport" : "LIS"
+        },
+        "arrival" : {
+            "time" : {
+                "minute" : 35,
+                "hour" : 10,
+                "day" : 29,
+                "month" : 10,
+                "year" : 2016
+            },
+            "airport" : "MAA"
+        }
+    }
+}
 
 ## Tests
 
