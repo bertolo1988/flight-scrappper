@@ -5,10 +5,8 @@ class Flight {
         this.source = source;
         this.airline = airline;
         this.stops = stops;
-        this.time = {
-            flightTime,
-            queried
-        };
+        this.queried = queried;
+        this.flightTime = flightTime;
         this.price = {
             amount,
             currency

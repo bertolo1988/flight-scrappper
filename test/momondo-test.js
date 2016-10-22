@@ -18,6 +18,10 @@ describe('momondoScrappper test', function() {
         MomondoScrappper.stopBrowser();
     });
 
+    function getDefaultMoment() {
+        return new Moment(new Date().toISOString()).add(2, 'days');
+    }
+
     it('should generate a valid momondo-query-string', (done) => {
         let query = new MomondoQueryString('LON', 'PAR', '23-05-2016', 'USD').toString();
         should.exist(query);
@@ -31,19 +35,23 @@ describe('momondoScrappper test', function() {
     });
 
     it('should retrieve [] if there are no flights', () => {
-        let targetDate = Utils.getDefaultDateString(options.dateFormat);
         let scrapPromise = MomondoScrappper.scrap({
             from: 'POR',
             to: 'PHI'
-        }, targetDate, 'EUR', false);
+        }, getDefaultMoment(), options.dateFormat, 'EUR', false, false);
         return scrapPromise.then((flights) => {
             (flights.length).should.be.exactly(0);
         });
     });
 
+    function compareFlightTime(flightTime, dateMoment) {
+        flightTime.day.should.be.eql(parseInt(dateMoment.format('DD')));
+        flightTime.month.should.be.eql(parseInt(dateMoment.format('MM')));
+        flightTime.year.should.be.eql(parseInt(dateMoment.format('YYYY')));
+    }
+
     it('should retrieve 60 flights for 2 route', () => {
-        let targetDate = Utils.getDefaultDateString(options.dateFormat);
-        let dates = Utils.retrieveFlightMoments(new Moment(targetDate, options.dateFormat), 2, 24);
+        let dates = Utils.retrieveFlightMoments(getDefaultMoment(), 2, 24);
         let routes = [{
             from: 'LON',
             to: 'BER'
@@ -55,17 +63,17 @@ describe('momondoScrappper test', function() {
         let scrapPromise = [];
         for (let route of routes) {
             for (let date of dates) {
-                scrapPromise.push(MomondoScrappper.scrap(route, date, options.dateFormat, 'EUR', false));
+                scrapPromise.push(MomondoScrappper.scrap(route, date, options.dateFormat, 'EUR', false, false));
             }
         }
 
         return Promise.all(scrapPromise).then((flights) => {
             flights = Utils.flattenArray(flights);
-            (flights.length).should.be.exactly(60);
+            flights.length.should.be.eql(60);
             flights[0].from.should.be.equal(routes[0].from);
-            flights[0].time.date.should.be.equal(targetDate);
+            compareFlightTime(flights[0].flightTime, dates[0]);
             flights[59].from.should.be.equal(routes[1].from);
-            flights[59].time.date.should.be.equal(dates[1]);
+            compareFlightTime(flights[59].flightTime, dates[1]);
         });
     });
 

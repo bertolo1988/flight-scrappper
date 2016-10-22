@@ -2,10 +2,6 @@ var Moment = require('moment');
 
 module.exports = {
 
-    getTodayDateString(dateFormat) {
-        return new Moment(new Date().toISOString()).format(dateFormat);
-    },
-
     getDefaultDateString(dateFormat) {
         return new Moment(new Date().toISOString()).add(2, 'days').format(dateFormat);
     },
