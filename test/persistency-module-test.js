@@ -42,22 +42,22 @@ describe('persistencyModule test', () => {
     }, {
         "search": {
             "from": "LIS",
-            "to": "LON",
+            "to": "AKL",
             "source": "momondo",
-            "queried": "2016-10-22T13:39:35.829Z"
+            "queried": "2016-10-23T12:09:21.569Z"
         },
-        "flight": {
-            "duration": 720,
-            "stops": 1,
+        "data": {
+            "duration": 2384,
+            "stops": 2,
             "price": {
-                "amount": 85,
+                "amount": 793,
                 "currency": "EUR"
             },
             "departure": {
                 "time": {
-                    "minute": 0,
-                    "hour": 23,
-                    "day": 24,
+                    "minute": 15,
+                    "hour": 20,
+                    "day": 25,
                     "month": 10,
                     "year": 2016
                 },
@@ -65,13 +65,13 @@ describe('persistencyModule test', () => {
             },
             "arrival": {
                 "time": {
-                    "minute": 0,
-                    "hour": 11,
-                    "day": 25,
+                    "minute": 59,
+                    "hour": 23,
+                    "day": 27,
                     "month": 10,
                     "year": 2016
                 },
-                "airport": "LGW"
+                "airport": "AKL"
             }
         }
     }];
