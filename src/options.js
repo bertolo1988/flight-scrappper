@@ -1,14 +1,10 @@
 var Utils = require('../src/utils');
 
 function getDefaultOptions() {
-    let defaultDateFormat = 'DD-MM-YYYY';
-    var defaultOptions = {
+    const defaultDateFormat = 'DD-MM-YYYY';
+    let defaultOptions = {
         periods: 1,
         interval: 48,
-        routes: [{
-            from: 'LIS',
-            to: 'PAR'
-        }],
         currency: 'EUR',
         directFlight: false,
         dateFormat: defaultDateFormat,
@@ -16,7 +12,12 @@ function getDefaultOptions() {
         database: 'localhost:27017/flight-scrappper',
         collection: 'flight-data',
         timeout: 60000,
-        browser: 'chrome'
+        browser: 'chrome',
+        maximize: false,
+        routes: [{
+            from: 'LIS',
+            to: 'PAR'
+        }]
     };
     return defaultOptions;
 }
@@ -33,7 +34,7 @@ function retrieveOptionsFromObject(options, obj) {
 }
 
 function retrieveOptions(input) {
-    var options = getDefaultOptions();
+    let options = getDefaultOptions();
     if (input != null) {
         options = retrieveOptionsFromObject(options, input);
     }

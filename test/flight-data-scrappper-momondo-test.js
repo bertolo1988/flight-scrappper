@@ -9,7 +9,7 @@ describe('flightScrappper test', function() {
     this.timeout(options.timeout);
 
     function checkNumber(myNumber, mustBe) {
-        return (myNumber).should.be.exactly(mustBe).which.is.a.Number();
+        return (myNumber).should.be.exactly(mustBe);
     }
 
     it('should retrieve and delete results with default options', () => {

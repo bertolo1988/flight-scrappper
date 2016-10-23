@@ -15,21 +15,21 @@ function persistencyModule() {
                     if (err != null) {
                         reject(err);
                     } else {
-                        debug('Successfully connected to ' + database + ' !');
+                        debug('Successfully connected to ' + database);
                         db.collection(collection).insertMany(docs, function(err, res) {
                             if (err != null) {
                                 reject(err);
                             } else {
-                                debug(JSON.stringify(res.insertedIds) + ' - ' + res.insertedIds.length);
+                                debug('Persisted ' + res.insertedIds.length + ' results');
                                 db.close();
-                                debug('Closed connection to ' + database + ' !');
+                                debug('Closed connection to ' + database);
                                 resolve(res.insertedIds);
                             }
                         });
                     }
                 });
             } else {
-                debug('No data to be inserted!');
+                debug('No data to be inserted');
                 resolve([]);
             }
         });

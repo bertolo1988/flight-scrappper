@@ -9,5 +9,5 @@
     "maxdepth": 3,
     "maxcomplexity": 5,
     "maxstatements": 20,
-    "predef": ["require", "process", "console", "module", "describe", "it", "xit", "beforeEach", "afterEach"]
+    "predef": ["require", "process", "console", "module", "describe", "it", "xit", "beforeEach", "afterEach", "before", "after", "path"]
 }

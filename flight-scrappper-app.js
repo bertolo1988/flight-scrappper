@@ -2,13 +2,21 @@ let FlightScrappper = require('./dist/flight-scrappper');
 let debug = require('debug')('flight-scrappper-app.js');
 let Utils = require('./src/utils');
 
-var defaultDateFormat = 'DD-MM-YYYY';
-var options = {
-    periods: 30,
+let options = {
+    periods: 3,
     interval: 96,
+    //currency: 'EUR',
+    //directFlight: false,
+    //dateFormat: 'DD-MM-YYYY',
+    //targetDate: Utils.getDefaultDateString('DD-MM-YYYY'),
+    //database: 'localhost:27017/flight-scrappper',
+    //collection: 'flight-data',
+    //timeout: 60000,
+    //browser: 'chrome',
+    //maximize: false
     routes: [{
         from: 'LIS',
-        to: 'SHA'
+        to: 'AKL'
     }, {
         from: 'LIS',
         to: 'MAA'
@@ -45,15 +53,7 @@ var options = {
     }, {
         from: 'LIS',
         to: 'BER'
-    }],
-    currency: 'EUR',
-    directFlight: false,
-    dateFormat: defaultDateFormat,
-    targetDate: Utils.getDefaultDateString(defaultDateFormat),
-    database: 'localhost:27017/flight-scrappper',
-    collection: 'flight-data',
-    timeout: 60000,
-    browser: 'chrome'
+    }]
 };
 
 FlightScrappper.run(options).then((value) => {

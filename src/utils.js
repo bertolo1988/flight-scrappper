@@ -1,17 +1,33 @@
 var Moment = require('moment');
+var FlightTime = require('../src/flight-time');
 
 module.exports = {
-
-    getTodayDateString(dateFormat) {
-        return new Moment(new Date().toISOString()).format(dateFormat);
-    },
 
     getDefaultDateString(dateFormat) {
         return new Moment(new Date().toISOString()).add(2, 'days').format(dateFormat);
     },
 
     prettifyObject(obj) {
-        return JSON.stringify(obj, null, 2);
+        return JSON.stringify(obj, null, 4);
+    },
+
+    isNumeric(str) {
+        return /^\d+$/.test(str);
+    },
+
+    retrieveDigit(input) {
+        return parseInt(input.replace(/\D/g, ''));
+    },
+
+    momentToFlightTime(myMoment) {
+        let data = {
+            minute: parseInt(myMoment.format('mm')),
+            hour: parseInt(myMoment.format('HH')),
+            day: parseInt(myMoment.format('DD')),
+            month: parseInt(myMoment.format('MM')),
+            year: parseInt(myMoment.format('YYYY'))
+        };
+        return new FlightTime(data);
     },
 
     flattenArray(data) {
@@ -24,12 +40,11 @@ module.exports = {
         return result;
     },
 
-    retrieveFlightDatesArray(fromDate, dateFormat, periods, interval) {
+    retrieveFlightMoments(targetMoment, periods, interval) {
         let result = [];
-        let targetDate = new Moment(fromDate, dateFormat);
         for (let i = 0; i < periods; i++) {
-            result.push(targetDate.format(dateFormat));
-            targetDate = targetDate.add(interval, 'hours');
+            result.push(new Moment(targetMoment));
+            targetMoment = targetMoment.add(interval, 'hours');
         }
         return result;
     }

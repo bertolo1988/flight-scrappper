@@ -1,27 +1,36 @@
-[![NPM](https://nodei.co/npm/flight-scrappper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/flight-scrappper/)
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e0ff0ec2a3484cd0b823933578987cf4)](https://www.codacy.com/app/tiagobertolo/flight-scrappper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrappper&amp;utm_campaign=Badge_Grade)
-[![Stories in Ready](https://badge.waffle.io/bertolo1988/flight-scrappper.svg?label=ready&title=Ready)](http://waffle.io/bertolo1988/flight-scrappper)
-[![dependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/status.svg)](https://david-dm.org/bertolo1988/flight-scrappper)
-[![devDependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/dev-status.svg)](https://david-dm.org/bertolo1988/flight-scrappper?type=dev)
-
 # flight-scrappper
 
-Web scraper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.
+Web scraper made with nodejs and selenium-webdriver that gathers flight data and stores it in a mongodb database.
+
+
+[![NPM Version][npm-image]][npm-url]
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e0ff0ec2a3484cd0b823933578987cf4)](https://www.codacy.com/app/tiagobertolo/flight-scrappper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrappper&amp;utm_campaign=Badge_Grade)
+[![dependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/status.svg)](https://david-dm.org/bertolo1988/flight-scrappper)
+[![devDependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/dev-status.svg)](https://david-dm.org/bertolo1988/flight-scrappper?type=dev)
+[![MIT License][license-image]][license-url]
+
+
+```js
+let FlightScrappper = require('flight-scrappper');
+
+FlightScrappper.run().then((flights) => {
+    console.log(flights);
+}).catch(function(err) {
+    console.log('Found an error! ' + err);
+});
+```
 
 
 ## Requirements
 
- - [node](http://nodejs.org/)
- - [npm](http://npmjs.org/)
  - [chrome](https://www.google.com/chrome/browser/desktop/index.html)
  - [mongodb](https://www.mongodb.com/)
 
+## Installation
 
-## Installing
-
-`$ npm install flight-scrappper`
-
+```bash
+$ npm install --save flight-scrappper
+```
 
 ## Options
 
@@ -33,37 +42,37 @@ If an option is not defined, a default value will be used instead.
 
 These are the default values:
 	
-	let defaultDateFormat = 'DD-MM-YYYY';
-	var defaultOptions = {
-		periods: 1,
-		interval: 48,
-		routes: [{
-			from: 'LIS',
-			to: 'PAR'
-		}],
-		currency: 'USD'
-		directFlight: false,
-		dateFormat: defaultDateFormat,
-		targetDate: Utils.getDefaultDateString(defaultDateFormat),
-		database: 'localhost:27017/flight-scrappper',
-		collection: 'flight-data',
-		timeout: 50000,
-		browser: 'chrome'
-	};
+```js
+const defaultDateFormat = 'DD-MM-YYYY';
+let defaultOptions = {
+periods: 1,
+interval: 48,
+currency: 'EUR',
+directFlight: false,
+dateFormat: defaultDateFormat,
+targetDate: Utils.getDefaultDateString(defaultDateFormat),
+database: 'localhost:27017/flight-scrappper',
+collection: 'flight-data',
+timeout: 60000,
+browser: 'chrome',
+maximize: false,
+routes: [{
+    from: 'LIS',
+    to: 'PAR'
+    }]
+};
+```
 
-During the start, a new parameter `dates` will be generated. This array will contain dates in string form in the `options.dateFormat` format.
-
-This dates are calculated with the following formula `targetDate + options.interval x options.periods ` times.
+This queried dates are calculated with the following formula `targetDate + options.interval x options.periods ` times.
  
 Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will generate an array  such as ['5/01/2000','07/01/2000'].
 
+
 ## Running
 
-First, start your [mongodb](https://www.mongodb.com/) database. You can find more information on how to do this [here](https://docs.mongodb.com/).
+First, start your [mongodb](https://www.mongodb.com/) database. You can try `npm run mongo-linux/win/mac` to start your database in an easy way, or do it manually. For more information on what this commands are doing just read the scripts object in the `package.json` file.
 
 If you want to scrap flights, without storing data, you can set database to `'none'`.
-
-If you installed mongodb in the default directory you can run `$ npm run mongo-win`  (for windows) or `$ npm run mongo-mac` (for mac) to run a database that will use a folder named `mongo-db` in the current directory.
 
 To start the flight-scrappper with the default values just type `$ npm start`.
 
@@ -75,32 +84,55 @@ If you want to get feedback in the console please check  [Debugging](#debugging)
 
 `FlightScrappper.run` will return a promise wich will resolve into the number of inserted documents or into an error.
 
-The resulting data that will be stored in the database has the following fields:
+The output data that will look like this:
 
-	{
-		_id, 		
-		from,
-		to,
-		source,
-		airline,
-		stops,
-		time: {
-			date,
-			departure,
-			duration,
-			queried
-		},
-		price:{
-			amount,
-			currency
-		}
-	}
+```js
+"search" : {
+    "from" : "LIS",
+    "to" : "AKL",
+    "source" : "momondo",
+    "queried" : ISODate("2016-10-23T12:09:21.566Z")
+},
+"data" : {
+    "duration" : 2080,
+    "stops" : 2,
+    "price" : {
+        "amount" : 778,
+        "currency" : "EUR"
+    },
+    "departure" : {
+        "time" : {
+            "minute" : 15,
+            "hour" : 14,
+            "day" : 25,
+            "month" : 10,
+            "year" : 2016
+        },
+        "airport" : "LIS"
+    },
+    "arrival" : {
+        "time" : {
+            "minute" : 55,
+            "hour" : 12,
+            "day" : 27,
+            "month" : 10,
+            "year" : 2016
+        },
+        "airport" : "AKL"
+    }
+}
+```
 
 ## Tests
 
-`$ npm test`
+  To run the test suite, first install the dependencies, then run `npm test`:
 
-## Debugging
+```bash
+$ npm install
+$ npm test
+```
+
+## Debugging or Verbose
 
 `$ npm run debug` to have console output.
 
@@ -109,3 +141,13 @@ The resulting data that will be stored in the database has the following fields:
 Contributions, requests or pull requests are welcome & appreciated!
 
 Send [me](https://github.com/bertolo1988/) an email if you have questions regarding possible contributions.
+
+
+## License
+
+  [MIT](LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/flight-scrappper.svg
+[npm-url]: https://www.npmjs.com/package/flight-scrappper
+[license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
+[license-url]: LICENSE
