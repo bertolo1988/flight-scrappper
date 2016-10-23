@@ -2,7 +2,7 @@ var MomondoScrappper = require('../src/momondo-scrappper');
 var Utils = require('../src/utils');
 var Persistency = require('../src/persistency-module');
 var Options = require('../src/options');
-var Progress = require('../src/progress-bar');
+var Progress = require('progress-barzz');
 var Moment = require('moment');
 const debug = require('debug')('fligth-scrappper');
 
