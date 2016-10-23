@@ -77,42 +77,42 @@ If you want to get feedback in the console please check  [Debugging](#debugging)
 
 The output data that will look like this:
 
-{
-    "search" : {
-        "from" : "LIS",
-        "to" : "MAA",
-        "source" : "momondo",
-        "queried" : ISODate("2016-10-22T18:09:28.563Z")
-    },
-    "data" : {
-        "duration" : 1355,
-        "stops" : 2,
-        "price" : {
-            "amount" : 415,
-            "currency" : "EUR"
+    {
+        "search" : {
+            "from" : "LIS",
+            "to" : "MAA",
+            "source" : "momondo",
+            "queried" : ISODate("2016-10-22T18:09:28.563Z")
         },
-        "departure" : {
-            "time" : {
+        "data" : {
+            "duration" : 1355,
+            "stops" : 2,
+            "price" : {
+                "amount" : 415,
+                "currency" : "EUR"
+            },
+            "departure" : {
+                "time" : {
                 "minute" : 30,
                 "hour" : 7,
-                "day" : 28,
-                "month" : 10,
-                "year" : 2016
+                    "day" : 28,
+                    "month" : 10,
+                    "year" : 2016
+                },
+                "airport" : "LIS"
             },
-            "airport" : "LIS"
-        },
-        "arrival" : {
-            "time" : {
-                "minute" : 35,
-                "hour" : 10,
-                "day" : 29,
-                "month" : 10,
-                "year" : 2016
-            },
-            "airport" : "MAA"
+            "arrival" : {
+                "time" : {
+                    "minute" : 35,
+                    "hour" : 10,
+                    "day" : 29,
+                    "month" : 10,
+                    "year" : 2016
+                },
+                "airport" : "MAA"
+            }
         }
     }
-}
 
 ## Tests
 
