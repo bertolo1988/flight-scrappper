@@ -7,7 +7,7 @@ Web scraper made with nodejs and selenium-webdriver that gathers flight data and
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e0ff0ec2a3484cd0b823933578987cf4)](https://www.codacy.com/app/tiagobertolo/flight-scrappper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrappper&amp;utm_campaign=Badge_Grade)
 [![dependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/status.svg)](https://david-dm.org/bertolo1988/flight-scrappper)
 [![devDependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/dev-status.svg)](https://david-dm.org/bertolo1988/flight-scrappper?type=dev)
-
+[![MIT License][license-image]][license-url]
 
 
 ```js
@@ -149,3 +149,5 @@ Send [me](https://github.com/bertolo1988/) an email if you have questions regard
 
 [npm-image]: https://img.shields.io/npm/v/flight-scrappper.svg
 [npm-url]: https://www.npmjs.com/package/flight-scrappper
+[license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
+[license-url]: LICENSE
