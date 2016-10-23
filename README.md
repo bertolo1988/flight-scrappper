@@ -1,28 +1,36 @@
-[![NPM](https://nodei.co/npm/flight-scrappper.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/flight-scrappper/)
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e0ff0ec2a3484cd0b823933578987cf4)](https://www.codacy.com/app/tiagobertolo/flight-scrappper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrappper&amp;utm_campaign=Badge_Grade)
-[![Stories in Ready](https://badge.waffle.io/bertolo1988/flight-scrappper.svg?label=ready&title=Ready)](http://waffle.io/bertolo1988/flight-scrappper)
-[![dependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/status.svg)](https://david-dm.org/bertolo1988/flight-scrappper)
-[![devDependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/dev-status.svg)](https://david-dm.org/bertolo1988/flight-scrappper?type=dev)
-
 # flight-scrappper
 
 Web scraper made with nodejs and selenium-webdriver that gathers flight data and stores it in a mongodb database.
 
 
+[![NPM Version][npm-image]][npm-url]
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e0ff0ec2a3484cd0b823933578987cf4)](https://www.codacy.com/app/tiagobertolo/flight-scrappper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bertolo1988/flight-scrappper&amp;utm_campaign=Badge_Grade)
+[![dependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/status.svg)](https://david-dm.org/bertolo1988/flight-scrappper)
+[![devDependencies Status](https://david-dm.org/bertolo1988/flight-scrappper/dev-status.svg)](https://david-dm.org/bertolo1988/flight-scrappper?type=dev)
+
+
+
+```js
+let FlightScrappper = require('flight-scrappper');
+
+FlightScrappper.run().then((flights) => {
+    console.log(flights);
+}).catch(function(err) {
+    console.log('Found an error! ' + err);
+});
+```
+
+
 ## Requirements
 
- - [node](http://nodejs.org/)
- - [npm](http://npmjs.org/)
  - [chrome](https://www.google.com/chrome/browser/desktop/index.html)
  - [mongodb](https://www.mongodb.com/)
- - [mocha](https://mochajs.org/)
 
+## Installation
 
-## Installing
-
-`$ npm install flight-scrappper`
-
+```bash
+$ npm install --save flight-scrappper
+```
 
 ## Options
 
@@ -34,25 +42,26 @@ If an option is not defined, a default value will be used instead.
 
 These are the default values:
 	
-
-    const defaultDateFormat = 'DD-MM-YYYY';
-    let defaultOptions = {
-        periods: 1,
-        interval: 48,
-        currency: 'EUR',
-        directFlight: false,
-        dateFormat: defaultDateFormat,
-        targetDate: Utils.getDefaultDateString(defaultDateFormat),
-        database: 'localhost:27017/flight-scrappper',
-        collection: 'flight-data',
-        timeout: 60000,
-        browser: 'chrome',
-        maximize: false,
-        routes: [{
-            from: 'LIS',
-            to: 'PAR'
-        }]
-    };
+```js
+const defaultDateFormat = 'DD-MM-YYYY';
+let defaultOptions = {
+periods: 1,
+interval: 48,
+currency: 'EUR',
+directFlight: false,
+dateFormat: defaultDateFormat,
+targetDate: Utils.getDefaultDateString(defaultDateFormat),
+database: 'localhost:27017/flight-scrappper',
+collection: 'flight-data',
+timeout: 60000,
+browser: 'chrome',
+maximize: false,
+routes: [{
+    from: 'LIS',
+    to: 'PAR'
+    }]
+};
+```
 
 This queried dates are calculated with the following formula `targetDate + options.interval x options.periods ` times.
  
@@ -77,46 +86,51 @@ If you want to get feedback in the console please check  [Debugging](#debugging)
 
 The output data that will look like this:
 
-    {
-        "search" : {
-            "from" : "LIS",
-            "to" : "MAA",
-            "source" : "momondo",
-            "queried" : ISODate("2016-10-22T18:09:28.563Z")
+```js
+"search" : {
+    "from" : "LIS",
+    "to" : "AKL",
+    "source" : "momondo",
+    "queried" : ISODate("2016-10-23T12:09:21.566Z")
+},
+"data" : {
+    "duration" : 2080,
+    "stops" : 2,
+    "price" : {
+        "amount" : 778,
+        "currency" : "EUR"
+    },
+    "departure" : {
+        "time" : {
+            "minute" : 15,
+            "hour" : 14,
+            "day" : 25,
+            "month" : 10,
+            "year" : 2016
         },
-        "data" : {
-            "duration" : 1355,
-            "stops" : 2,
-            "price" : {
-                "amount" : 415,
-                "currency" : "EUR"
-            },
-            "departure" : {
-                "time" : {
-                "minute" : 30,
-                "hour" : 7,
-                    "day" : 28,
-                    "month" : 10,
-                    "year" : 2016
-                },
-                "airport" : "LIS"
-            },
-            "arrival" : {
-                "time" : {
-                    "minute" : 35,
-                    "hour" : 10,
-                    "day" : 29,
-                    "month" : 10,
-                    "year" : 2016
-                },
-                "airport" : "MAA"
-            }
-        }
+        "airport" : "LIS"
+    },
+    "arrival" : {
+        "time" : {
+            "minute" : 55,
+            "hour" : 12,
+            "day" : 27,
+            "month" : 10,
+            "year" : 2016
+        },
+        "airport" : "AKL"
     }
+}
+```
 
 ## Tests
 
-`$ npm test`
+  To run the test suite, first install the dependencies, then run `npm test`:
+
+```bash
+$ npm install
+$ npm test
+```
 
 ## Debugging or Verbose
 
@@ -127,3 +141,11 @@ The output data that will look like this:
 Contributions, requests or pull requests are welcome & appreciated!
 
 Send [me](https://github.com/bertolo1988/) an email if you have questions regarding possible contributions.
+
+
+## License
+
+  [MIT](LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/flight-scrappper.svg
+[npm-url]: https://www.npmjs.com/package/flight-scrappper
