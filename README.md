@@ -1,6 +1,6 @@
 # flight-scrappper
 
-Web scraper made with nodejs and selenium-webdriver that gathers flight data and stores it in a mongodb database.
+A Web scraper made with nodejs and selenium-webdriver that gathers flight data and stores it in a mongodb database.
 
 
 [![NPM Version][npm-image]][npm-url]
@@ -63,14 +63,14 @@ routes: [{
 };
 ```
 
-This queried dates are calculated with the following formula `targetDate + options.interval x options.periods ` times.
+These queried dates are calculated with the following formula `targetDate + options.interval x options.periods ` times.
  
 Example: Setting periods to 2, interval to 24 and targetDate to 5/01/2000 will generate an array  such as ['5/01/2000','07/01/2000'].
 
 
 ## Running
 
-First, start your [mongodb](https://www.mongodb.com/) database. You can try `npm run mongo-linux/win/mac` to start your database in an easy way, or do it manually. For more information on what this commands are doing just read the scripts object in the `package.json` file.
+First, start your [mongodb](https://www.mongodb.com/) database. You can try `npm run mongo-linux/win/mac` to start your database in an easy way, or do it manually. For more information on what these commands are doing, just read the scripts object in the `package.json` file.
 
 If you want to scrap flights, without storing data, you can set database to `'none'`.
 
@@ -82,7 +82,7 @@ If you want to get feedback in the console please check  [Debugging](#debugging)
 
 ## Output
 
-`FlightScrappper.run` will return a promise wich will resolve into the number of inserted documents or into an error.
+`FlightScrappper.run` will return a promise which will resolve into the number of inserted documents or into an error.
 
 The output data that will look like this:
 
