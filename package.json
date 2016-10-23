@@ -1,35 +1,49 @@
 {
-    "name": "flight-scrappper",
-    "version": "2.0.0-DEV",
-    "description": "Web scraper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database.",
-    "main": "dist/flight-scrappper.js",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/bertolo1988/flight-scrappper"
-    },
-    "homepage": "https://github.com/bertolo1988/flight-scrappper",
-    "author": "bertolo1988 <tiagobertolo@gmail.com> (https://github.com/bertolo1988)",
-    "dependencies": {
-        "chromedriver": "2.24.1",
-        "debug": "2.2.0",
-        "file-system": "2.2.1",
-        "moment": "2.15.1",
-        "mongodb": "2.2.10",
-        "selenium-webdriver": "2.53.2"
-    },
-    "devDependencies": {
-        "jshint": "2.9.3",
-        "mocha": "3.1.2",
-        "should": "11.1.1"
-    },
-    "scripts": {
-        "mongo-mac": "mkdir mongo-db; mongod --dbpath mongo-db",
-        "mongo-win": "mkdir mongo-db & \"C:/Program Files/MongoDb/Server/3.2/bin/mongod.exe\" --dbpath=mongo-db",
-        "mongo-linux": "sudo service mongod restart",
-        "lint": "jshint --show-non-errors --exclude ./node_modules .",
-        "test": "npm run lint && mocha test --recursive",
-        "debug": "npm run lint && set DEBUG=* && npm start",
-        "start": "node flight-scrappper-app.js"
-    },
-    "license": "MIT"
+  "name": "flight-scrappper",
+  "version": "2.0.0-DEV",
+  "description": "Web scraper made with nodejs and webdriverjs that gathers flight data and stores it in a mongodb database",
+  "homepage": "https://github.com/bertolo1988/flight-scrappper",
+  "author": "bertolo1988 <tiagobertolo@gmail.com> (https://github.com/bertolo1988)",
+  "keywords": [
+    "flight",
+    "scrap",
+    "fly",
+    "data",
+    "airport"
+  ],
+  "main": "dist/flight-scrappper.js",
+  "engines": {
+    "node": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bertolo1988/flight-scrappper"
+  },
+  "bugs": {
+    "url": "https://github.com/bertolo1988/flight-scrappper/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "chromedriver": "2.24.1",
+    "debug": "2.2.0",
+    "file-system": "2.2.1",
+    "moment": "2.15.1",
+    "mongodb": "2.2.11",
+    "progress-barzz": "1.0.1",
+    "selenium-webdriver": "2.53.2"
+  },
+  "devDependencies": {
+    "jshint": "2.9.4",
+    "mocha": "3.1.2",
+    "should": "11.1.1"
+  },
+  "scripts": {
+    "mongo-mac": "mkdir mongo-db; mongod --dbpath mongo-db",
+    "mongo-win": "mkdir mongo-db & \"C:/Program Files/MongoDb/Server/3.2/bin/mongod.exe\" --dbpath=mongo-db",
+    "mongo-linux": "sudo service mongod restart",
+    "lint": "jshint --show-non-errors --exclude ./node_modules .",
+    "test": "npm run lint && mocha test --recursive",
+    "debug": "npm run lint && set DEBUG=* && npm start",
+    "start": "node flight-scrappper-app.js"
+  }
 }
