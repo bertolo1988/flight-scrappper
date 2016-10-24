@@ -27,7 +27,7 @@
     "chromedriver": "2.24.1",
     "debug": "2.2.0",
     "file-system": "2.2.1",
-    "moment": "2.15.1",
+    "moment": "2.15.2",
     "mongodb": "2.2.11",
     "progress-barzz": "1.0.2",
     "selenium-webdriver": "2.53.2"
