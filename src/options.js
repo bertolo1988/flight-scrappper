@@ -13,6 +13,7 @@ function getDefaultOptions() {
         collection: 'flight-data',
         timeout: 60000,
         browser: 'chrome',
+        chromedriverArgs: [],
         maximize: false,
         routes: [{
             from: 'LIS',

@@ -15,8 +15,8 @@ let options = {
     //browser: 'chrome',
     //maximize: false
     routes: [{
-        from: 'LIS',
-        to: 'AKL'
+        from: 'MAD',
+        to: 'LON'
     }, {
         from: 'LIS',
         to: 'MAA'
