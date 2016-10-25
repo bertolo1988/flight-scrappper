@@ -16,7 +16,6 @@ function momondoScrappper() {
     const SCRAPPED_VALUES = 11;
 
     function startBrowser(browser, args) {
-        console.log(args);
         chromedriver.start(args);
         driver = new Webdriver.Builder()
             .forBrowser(browser)
