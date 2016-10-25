@@ -10,6 +10,7 @@ class Flight {
             duration: data.duration,
             stops: data.stops,
             flightClass: data.flightClass,
+            airline: data.airline,
             price: {
                 amount: data.amount,
                 currency: data.currency
