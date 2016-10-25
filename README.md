@@ -26,11 +26,13 @@ FlightScrappper.run().then((flights) => {
  - [chrome](https://www.google.com/chrome/browser/desktop/index.html)
  - [mongodb](https://www.mongodb.com/)
 
+
 ## Installation
 
 ```bash
 $ npm install --save flight-scrappper
 ```
+
 
 ## Options
 
@@ -81,6 +83,7 @@ If you want to run with diferent options just add arguments as specified in [Opt
 
 If you want to get feedback in the console please check  [Debugging](#debugging).
 
+
 ## Output
 
 `FlightScrappper.run` will return a promise which will resolve into the number of inserted documents or into an error.
@@ -98,6 +101,7 @@ The output data that will look like this:
     "duration" : 2080,
     "stops" : 2,
     "flightClass" : 0,
+    "airline": "TAP",
     "price" : {
         "amount" : 778,
         "currency" : "EUR"
@@ -125,6 +129,7 @@ The output data that will look like this:
 }
 ```
 
+
 ## Tests
 
   To run the test suite, first install the dependencies, then run `npm test`:
@@ -134,9 +139,11 @@ $ npm install
 $ npm test
 ```
 
+
 ## Debugging or Verbose
 
 `$ npm run debug` to have console output.
+
 
 ## Contributing
 
