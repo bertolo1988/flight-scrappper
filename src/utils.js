@@ -1,5 +1,5 @@
 var Moment = require('moment');
-var FlightTime = require('../src/flight-time');
+var FlightTime = require('../src/flight').FlightTime;
 
 module.exports = {
 

@@ -1,7 +1,8 @@
 const debug = require('debug')('momondo-scrappper');
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
-var Flight = require('../src/flight');
+var Flight = require('../src/flight').Flight;
+var FlightClass = require('../src/flight').FlightClass;
 var Utils = require('../src/utils');
 var Webdriver = require('selenium-webdriver');
 var Moment = require('moment');
@@ -12,7 +13,7 @@ var driver;
 
 function momondoScrappper() {
 
-    const SCRAPPED_VALUES = 10;
+    const SCRAPPED_VALUES = 11;
 
     function startBrowser(browser, args) {
         console.log(args);
@@ -63,6 +64,19 @@ function momondoScrappper() {
         return Utils.momentToFlightTime(myMoment);
     }
 
+    function getFlightClass(fClass) {
+        switch (fClass) {
+            case 'Premium economy':
+                return FlightClass.PREMIUM;
+            case 'Business class':
+                return FlightClass.BUSINESS;
+            case 'First class':
+                return FlightClass.FIRST;
+            default:
+                return FlightClass.ECONOMY;
+        }
+    }
+
     function parseFlightPromises(args, date, dateFormat, from, to) {
         if (args.length != null && args.length % SCRAPPED_VALUES != 0) {
             throw new Error('Invalid number of scrapped values!');
@@ -83,6 +97,7 @@ function momondoScrappper() {
                 arrivalAirport: args[i + 7],
                 duration: parseDuration(args[i + 8]),
                 stops: getFlightStops(args[i + 9]),
+                flightClass: getFlightClass(args[i + 10])
             };
             result.push(new Flight(data));
         }
@@ -114,6 +129,8 @@ function momondoScrappper() {
             resultBoxData.push(element.findElement(By.css('.travel-time')).getText());
             //stops
             resultBoxData.push(element.findElement(By.css('div.travel-stops > .total')).getText());
+            //class
+            resultBoxData.push(element.findElement(By.css('div.info div.class')).getText());
         });
         return resultBoxData;
     }
