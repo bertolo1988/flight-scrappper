@@ -55,6 +55,7 @@ database: 'localhost:27017/flight-scrappper',
 collection: 'flight-data',
 timeout: 60000,
 browser: 'chrome',
+chromedriverArgs: [],
 maximize: false,
 routes: [{
     from: 'LIS',

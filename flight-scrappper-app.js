@@ -13,10 +13,11 @@ let options = {
     //collection: 'flight-data',
     //timeout: 60000,
     //browser: 'chrome',
+    //chromedriverArgs: ['--verbose', '--log-path=chromedriver.log'],
     //maximize: false
     routes: [{
-        from: 'LIS',
-        to: 'AKL'
+        from: 'MAD',
+        to: 'LON'
     }, {
         from: 'LIS',
         to: 'MAA'

@@ -68,6 +68,7 @@ describe('momondoScrappper test', function() {
     function checkFlightData(data) {
         data.duration.should.be.above(0);
         data.stops.should.be.aboveOrEqual(0);
+        data.flightClass.should.be.aboveOrEqual(0);
 
         data.price.amount.should.be.aboveOrEqual(1);
         data.price.currency.should.not.be.null().and.be.a.String();

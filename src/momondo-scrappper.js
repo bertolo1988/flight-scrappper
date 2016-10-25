@@ -1,10 +1,9 @@
 const debug = require('debug')('momondo-scrappper');
 var chromedriver = require('chromedriver');
 var MomondoQueryString = require('../src/momondo-query-string');
-var Flight = require('../src/flight');
+var MomondoFlightBuilder = require('../src/momondo-flight-builder');
 var Utils = require('../src/utils');
 var Webdriver = require('selenium-webdriver');
-var Moment = require('moment');
 var By = Webdriver.By;
 var fs = require('fs');
 var path = require('path');
@@ -12,9 +11,10 @@ var driver;
 
 function momondoScrappper() {
 
-    const SCRAPPED_VALUES = 10;
+    const SCRAPPED_VALUES = 11;
 
-    function startBrowser(browser) {
+    function startBrowser(browser, args) {
+        chromedriver.start(args);
         driver = new Webdriver.Builder()
             .forBrowser(browser)
             .build();
@@ -25,64 +25,13 @@ function momondoScrappper() {
         chromedriver.stop();
     }
 
-    function getFlightStops(value) {
-        if (Utils.isNumeric(value[0])) {
-            return parseInt(value[0]);
-        } else {
-            return 0;
-        }
-    }
-
-    function parseDuration(duration) {
-        let durationMinutes = 0;
-        let splittedDuration = duration.split(' ');
-        for (let unit of splittedDuration) {
-            switch (unit[unit.length - 1]) {
-                case 'h':
-                    durationMinutes += Utils.retrieveDigit(unit) * 60;
-                    break;
-                case 'm':
-                    durationMinutes += Utils.retrieveDigit(unit);
-                    break;
-                default:
-                    durationMinutes += Utils.retrieveDigit(unit);
-                    break;
-            }
-        }
-        return durationMinutes;
-    }
-
-    function retrieveFlightMoment(date, dateFormat, hourMinute, daysLater) {
-        let myMoment = new Moment(date);
-        let hourMinuteSplitted = hourMinute.split(':');
-        myMoment.hour(parseInt(hourMinuteSplitted[0]));
-        myMoment.minute(parseInt(hourMinuteSplitted[1]));
-        myMoment.add(parseInt(daysLater), 'days');
-        return Utils.momentToFlightTime(myMoment);
-    }
-
     function parseFlightPromises(args, date, dateFormat, from, to) {
         if (args.length != null && args.length % SCRAPPED_VALUES != 0) {
             throw new Error('Invalid number of scrapped values!');
         }
         let result = [];
         for (let i = 0; i + SCRAPPED_VALUES <= args.length; i += SCRAPPED_VALUES) {
-            let data = {
-                from,
-                to,
-                source: 'momondo',
-                airline: args[i],
-                queried: new Date(),
-                amount: Utils.retrieveDigit(args[i + 1]),
-                currency: args[i + 2],
-                departureTime: retrieveFlightMoment(date, dateFormat, args[i + 3], 0),
-                arrivalTime: retrieveFlightMoment(date, dateFormat, args[i + 4], args[i + 5]),
-                departureAirport: args[i + 6],
-                arrivalAirport: args[i + 7],
-                duration: parseDuration(args[i + 8]),
-                stops: getFlightStops(args[i + 9]),
-            };
-            result.push(new Flight(data));
+            result.push(MomondoFlightBuilder.buildFlight(i, args, date, dateFormat, from, to));
         }
         return result;
     }
@@ -112,6 +61,8 @@ function momondoScrappper() {
             resultBoxData.push(element.findElement(By.css('.travel-time')).getText());
             //stops
             resultBoxData.push(element.findElement(By.css('div.travel-stops > .total')).getText());
+            //class
+            resultBoxData.push(element.findElement(By.css('div.info div.class')).getText());
         });
         return resultBoxData;
     }

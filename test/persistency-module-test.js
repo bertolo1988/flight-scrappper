@@ -14,6 +14,7 @@ describe('persistencyModule test', () => {
         "flight": {
             "duration": 720,
             "stops": 1,
+            "flightClass": 'FST',
             "price": {
                 "amount": 85,
                 "currency": "EUR"
@@ -49,6 +50,7 @@ describe('persistencyModule test', () => {
         "data": {
             "duration": 2384,
             "stops": 2,
+            "flightClass": 'ECO',
             "price": {
                 "amount": 793,
                 "currency": "EUR"
