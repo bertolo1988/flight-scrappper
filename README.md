@@ -97,6 +97,7 @@ The output data that will look like this:
 "data" : {
     "duration" : 2080,
     "stops" : 2,
+    "flightClass" : 0,
     "price" : {
         "amount" : 778,
         "currency" : "EUR"
