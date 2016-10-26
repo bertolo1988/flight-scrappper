@@ -59,7 +59,7 @@ function momondoFlightBuilder() {
 			from,
 			to,
 			source: 'momondo',
-			airline: args[cursor],
+			airline: args[cursor].split(', '),
 			queried: new Date(),
 			amount: Utils.retrieveDigit(args[cursor + 1]),
 			currency: args[cursor + 2],
