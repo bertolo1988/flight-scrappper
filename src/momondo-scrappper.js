@@ -12,6 +12,7 @@ var driver;
 function momondoScrappper() {
 
     const SCRAPPED_VALUES = 11;
+    const TIMEOUT_DEFAULT = 50000;
 
     function startBrowser(browser, args) {
         chromedriver.start(args);
@@ -132,7 +133,7 @@ function momondoScrappper() {
         });
     }
 
-    function retrieveFlightPage(route, targetDate, dateFormat, currency, directFlight, maximize) {
+    function retrieveFlightPage(route, targetDate, dateFormat, currency, directFlight, maximize, timeout) {
         let fullUrl = buildUrl(route.from, route.to, targetDate.format(dateFormat), currency, directFlight);
         if (maximize) {
             driver.manage().window().maximize();
@@ -143,7 +144,7 @@ function momondoScrappper() {
             return driver.findElement(By.id('searchProgressText')).getText().then((text) => {
                 return text === 'Search complete';
             });
-        });
+        }, timeout);
         return retrieveFlightData(inProgressPromise, route, targetDate, dateFormat);
     }
 
@@ -152,16 +153,17 @@ function momondoScrappper() {
         return Promise.resolve([]);
     }
 
-    function scrap(route, date, dateFormat, currency, directFlight, maximize) {
-        var retries = 1;
+    function scrap(route, date, dateFormat, currency, directFlight, maximize, timeout) {
+        let retries = 1;
+        timeout = timeout || TIMEOUT_DEFAULT;
         try {
-            return retrieveFlightPage(route, date, dateFormat, currency, directFlight, maximize).catch((error) => {
+            return retrieveFlightPage(route, date, dateFormat, currency, directFlight, maximize, timeout).catch((error) => {
                 takeScreenShot(route, date, dateFormat);
                 if (retries > 0) {
                     retries--;
                     debug(error);
                     debug('Retrying...');
-                    return retrieveFlightPage(route, date, dateFormat, currency, directFlight).catch(handleError);
+                    return retrieveFlightPage(route, date, dateFormat, currency, directFlight, maximize, timeout).catch(handleError);
                 } else {
                     return handleError(error);
                 }
