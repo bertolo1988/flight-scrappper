@@ -47,10 +47,10 @@ function persistencyModule() {
 
     return {
         NO_DATABASE,
-        insertFlights: function(database, collection, docs) {
+        insertFlights(database, collection, docs) {
             return executeAction(database, collection, docs, insertData);
         },
-        removeFlights: function(database, collection, ids) {
+        removeFlights(database, collection, ids) {
             return executeAction(database, collection, ids, removeData);
         }
     };
