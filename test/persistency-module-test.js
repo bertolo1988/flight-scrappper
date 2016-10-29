@@ -15,7 +15,7 @@ describe('persistencyModule test', () => {
             "duration": 720,
             "stops": 1,
             "flightClass": 3,
-            "airline": 'TAP',
+            "airline": ['TAP', 'Ryanair'],
             "price": {
                 "amount": 85,
                 "currency": "EUR"
@@ -52,7 +52,7 @@ describe('persistencyModule test', () => {
             "duration": 2384,
             "stops": 2,
             "flightClass": 0,
-            "airline": 'TAP',
+            "airline": ['TAP', 'Ryanair'],
             "price": {
                 "amount": 793,
                 "currency": "EUR"

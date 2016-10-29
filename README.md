@@ -101,7 +101,7 @@ The output data that will look like this:
     "duration" : 2080,
     "stops" : 2,
     "flightClass" : 0,
-    "airline": "TAP",
+    "airline": ["TAP","Ryanair"],
     "price" : {
         "amount" : 778,
         "currency" : "EUR"

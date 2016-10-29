@@ -4,17 +4,17 @@ let Utils = require('./src/utils');
 
 let options = {
     periods: 3,
-    interval: 96,
-    //currency: 'EUR',
-    //directFlight: false,
-    //dateFormat: 'DD-MM-YYYY',
-    //targetDate: Utils.getDefaultDateString('DD-MM-YYYY'),
-    //database: 'localhost:27017/flight-scrappper',
-    //collection: 'flight-data',
-    //timeout: 60000,
-    //browser: 'chrome',
-    //chromedriverArgs: ['--verbose', '--log-path=chromedriver.log'],
-    //maximize: false
+    interval: 48,
+    currency: 'EUR',
+    directFlight: false,
+    dateFormat: 'DD-MM-YYYY',
+    targetDate: Utils.getDefaultDateString('DD-MM-YYYY'),
+    database: 'localhost:27017/flight-scrappper',
+    collection: 'flight-data',
+    timeout: 60000,
+    browser: 'chrome',
+    chromedriverArgs: ['--verbose', '--log-path=chromedriver.log'],
+    maximize: false,
     routes: [{
         from: 'MAD',
         to: 'LON'
