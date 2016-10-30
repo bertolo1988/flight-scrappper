@@ -10,7 +10,7 @@ function persistencyModule() {
             return Promise.resolve(data);
         }
         if (!data || data.length <= 0) {
-            debug('No data to be changed');
+            debug('No data to be added/removed!');
             return Promise.resolve([]);
         }
         let connection = MongoClient.connect('mongodb://' + database);

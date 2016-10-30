@@ -22,28 +22,6 @@ describe('momondoScrappper test', function() {
         return new Moment(new Date().toISOString()).add(2, 'days');
     }
 
-    it('should generate a valid momondo-query-string', (done) => {
-        let query = new MomondoQueryString('LON', 'PAR', '23-05-2016', 'USD').toString();
-        should.exist(query);
-        (query.includes('USD')).should.be.true();
-        (query.includes('23-05-2016')).should.be.true();
-        (query.includes('LON')).should.be.true();
-        (query.includes('PAR')).should.be.true();
-        let attributes = query.split('&');
-        (attributes.length).should.be.exactly(11);
-        done();
-    });
-
-    it('should retrieve [] if there are no flights', () => {
-        let scrapPromise = MomondoScrappper.scrap({
-            from: 'POR',
-            to: 'PHI'
-        }, getDefaultMoment(), options.dateFormat, 'EUR', false, false);
-        return scrapPromise.then((flights) => {
-            (flights.length).should.be.exactly(0);
-        });
-    });
-
     function compareFlightTime(flightTime, dateMoment) {
         flightTime.day.should.be.eql(parseInt(dateMoment.format('DD')));
         flightTime.month.should.be.eql(parseInt(dateMoment.format('MM')));
@@ -88,6 +66,34 @@ describe('momondoScrappper test', function() {
             checkFlightData(flight.data);
         }
     }
+    it('should generate a valid momondo-query-string', (done) => {
+        let query = new MomondoQueryString('LON', 'PAR', '23-05-2016', 'USD').toString();
+        should.exist(query);
+        (query.includes('USD')).should.be.true();
+        (query.includes('23-05-2016')).should.be.true();
+        (query.includes('LON')).should.be.true();
+        (query.includes('PAR')).should.be.true();
+        let attributes = query.split('&');
+        (attributes.length).should.be.exactly(11);
+        done();
+    });
+
+    it('should retrieve [] if there are no flights', () => {
+        let scrapPromise = MomondoScrappper.scrap({
+            route: {
+                from: 'POR',
+                to: 'PHI'
+            },
+            date: getDefaultMoment(),
+            dateFormat: options.dateFormat,
+            currency: 'EUR',
+            directFlight: false,
+            maximize: false
+        });
+        return scrapPromise.then((flights) => {
+            (flights.length).should.be.exactly(0);
+        });
+    });
 
     it('should retrieve several flights from diverse routes', () => {
         let days = 2;
@@ -103,7 +109,14 @@ describe('momondoScrappper test', function() {
         let scrapPromise = [];
         for (let route of routes) {
             for (let date of dates) {
-                scrapPromise.push(MomondoScrappper.scrap(route, date, options.dateFormat, 'EUR', false, false));
+                scrapPromise.push(MomondoScrappper.scrap({
+                    route,
+                    date,
+                    dateFormat: options.dateFormat,
+                    currency: 'EUR',
+                    directFlight: false,
+                    maximize: false
+                }));
             }
         }
         return Promise.all(scrapPromise).then((flights) => {

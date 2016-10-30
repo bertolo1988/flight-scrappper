@@ -11,10 +11,11 @@ let options = {
     targetDate: Utils.getDefaultDateString('DD-MM-YYYY'),
     database: 'localhost:27017/flight-scrappper',
     collection: 'flight-data',
-    timeout: 60000,
+    timeout: 50000,
     browser: 'chrome',
     chromedriverArgs: ['--verbose', '--log-path=chromedriver.log'],
     maximize: false,
+    retries: 1,
     routes: [{
         from: 'MAD',
         to: 'LON'
