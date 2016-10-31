@@ -47,21 +47,22 @@ These are the default values:
 ```js
 const defaultDateFormat = 'DD-MM-YYYY';
 let defaultOptions = {
-periods: 1,
-interval: 48,
-currency: 'EUR',
-directFlight: false,
-dateFormat: defaultDateFormat,
-targetDate: Utils.getDefaultDateString(defaultDateFormat),
-database: 'localhost:27017/flight-scrappper',
-collection: 'flight-data',
-timeout: 60000,
-browser: 'chrome',
-chromedriverArgs: [],
-maximize: false,
-routes: [{
-    from: 'LIS',
-    to: 'PAR'
+    periods: 1,
+    interval: 48,
+    currency: 'EUR',
+    directFlight: false,
+    dateFormat: defaultDateFormat,
+    targetDate: Utils.getDefaultDateString(defaultDateFormat),
+    database: 'localhost:27017/flight-scrappper',
+    collection: 'flight-data',
+    timeout: 50000,
+    browser: 'chrome',
+    chromedriverArgs: [],
+    maximize: false,
+    retries: 1,
+    routes: [{
+        from: 'LIS',
+        to: 'PAR'
     }]
 };
 ```
@@ -148,6 +149,8 @@ $ npm test
 ## Contributing
 
 Contributions, requests or pull requests are welcome & appreciated!
+
+Send your pull requests to the [developing branch](https://github.com/bertolo1988/flight-scrappper/tree/developing) please!
 
 Send [me](https://github.com/bertolo1988/) an email if you have questions regarding possible contributions.
 

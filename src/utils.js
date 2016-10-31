@@ -7,6 +7,10 @@ module.exports = {
         return new Moment(new Date().toISOString()).add(2, 'days').format(dateFormat);
     },
 
+    getTodayDateString(dateFormat) {
+        return new Moment(new Date().toISOString()).format(dateFormat);
+    },
+
     prettifyObject(obj) {
         return JSON.stringify(obj, null, 4);
     },
