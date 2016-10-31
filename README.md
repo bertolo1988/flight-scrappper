@@ -150,7 +150,7 @@ $ npm test
 
 Contributions, requests or pull requests are welcome & appreciated!
 
-Send your pull requests to the developing branch please!
+Send your pull requests to the [developing branch](https://github.com/bertolo1988/flight-scrappper/tree/developing) please!
 
 Send [me](https://github.com/bertolo1988/) an email if you have questions regarding possible contributions.
 
