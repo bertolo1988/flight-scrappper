@@ -174,7 +174,7 @@ function momondoScrappper() {
         let dateFormat = args.dateFormat;
         let currency = args.currency;
         let directFlight = args.directFlight;
-        let maximize = args.maximize;
+        let maximize = args.maximize || false;
         let timeout = args.timeout || 40000;
         let retries = args.retries || 1;
         try {
