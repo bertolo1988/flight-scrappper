@@ -16,8 +16,8 @@ function momondoScrappper() {
     let driver;
 
     function startBrowser(browserName, cdriverArgs) {
-        browser = browserName || browser || 'chrome';
-        chromedriverArgs = cdriverArgs || chromedriverArgs || [];
+        browser = browserName || browser;
+        chromedriverArgs = cdriverArgs || chromedriverArgs;
         chromedriver.start(chromedriverArgs);
         driver = new Webdriver.Builder()
             .forBrowser(browser)
@@ -174,7 +174,7 @@ function momondoScrappper() {
         let dateFormat = args.dateFormat;
         let currency = args.currency;
         let directFlight = args.directFlight;
-        let maximize = args.maximize || false;
+        let maximize = args.maximize;
         let timeout = args.timeout || 40000;
         let retries = args.retries || 1;
         try {
