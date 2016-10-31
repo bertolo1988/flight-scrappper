@@ -80,7 +80,7 @@ If you want to scrap flights, without storing data, you can set database to `'no
 
 To start the flight-scrappper with the default values just type `$ npm start`.
 
-If you want to run with diferent options just add arguments as specified in [Options](#options).
+If you want to run with different options just add arguments as specified in [Options](#options).
 
 If you want to get feedback in the console please check  [Debugging](#debugging).
 
