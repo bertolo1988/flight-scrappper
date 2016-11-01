@@ -134,21 +134,26 @@ function momondoScrappper() {
         });
     }
 
-    function retrieveFlightPage(route, targetDate, dateFormat, currency, directFlight, maximize, timeout) {
-        let fullUrl = buildUrl(route.from, route.to, targetDate.format(dateFormat), currency, directFlight);
+    function resizeWindow(maximize) {
         if (maximize) {
-            driver.manage().window().maximize();
+            return driver.manage().window().maximize();
+        } else {
+            return Promise.resolve();
         }
-        driver.get(fullUrl);
+    }
 
-        let inProgressPromise = driver.wait(() => {
-            return driver.findElement(By.id('searchProgressText')).getText().then((text) => {
-                return text === 'Search complete';
+    function retrieveFlightPage(route, targetDate, dateFormat, currency, directFlight, maximize, timeout) {
+        return resizeWindow(maximize).then(() => {
+            let fullUrl = buildUrl(route.from, route.to, targetDate.format(dateFormat), currency, directFlight);
+            driver.get(fullUrl);
+            let inProgressPromise = driver.wait(() => {
+                return driver.findElement(By.id('searchProgressText')).getText().then((text) => {
+                    return text === 'Search complete';
+                });
+            }, timeout);
+            return inProgressPromise.then(() => {
+                return retrieveFlightData(route, targetDate, dateFormat);
             });
-        }, timeout);
-
-        return inProgressPromise.then(() => {
-            return retrieveFlightData(route, targetDate, dateFormat);
         });
     }
 
