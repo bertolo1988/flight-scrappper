@@ -29,26 +29,13 @@ function flightScrappper() {
         return Utils.flattenArray(args);
     }
 
-    function launchScrapper(route, date) {
-        debug('Query: from:' + route.from + ' to:' + route.to + ' date:' + date.format(options.dateFormat));
-        return MomondoScrappper.scrap({
-            route,
-            date,
-            dateFormat: options.dateFormat,
-            currency: options.currency,
-            directFlight: options.directFlight,
-            maximize: options.maximize,
-            timeout: options.timeout,
-            retries: options.retries
-        });
-    }
-
     function run(args) {
         let dates = init(args);
         let persistPromises = [];
         for (let route of options.routes) {
             for (let date of dates) {
-                let scrapPromise = launchScrapper(route, date);
+                debug('Query: from:' + route.from + ' to:' + route.to + ' date:' + date.format(options.dateFormat));
+                let scrapPromise = MomondoScrappper.scrap(route, date, options.dateFormat, options.currency, options.directFlight, options.maximize, options.timeout, options.retries);
                 persistPromises.push(scrapPromise.then(persistData));
             }
         }
