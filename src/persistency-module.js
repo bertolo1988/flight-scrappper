@@ -27,6 +27,7 @@ function persistencyModule() {
         let insertion = db.collection(collection).insertMany(docs);
         return insertion.then((res) => {
             debug('Persisted ' + res.insertedIds.length + ' results');
+            debug(res.insertedIds);
             db.close();
             return res.insertedIds;
         });

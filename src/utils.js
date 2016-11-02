@@ -1,4 +1,5 @@
 var Moment = require('moment');
+const util = require('util');
 var FlightTime = require('../src/flight').FlightTime;
 
 module.exports = {
@@ -12,7 +13,11 @@ module.exports = {
     },
 
     prettifyObject(obj) {
-        return JSON.stringify(obj, null, 4);
+        return util.inspect(obj, {
+            depth: null,
+            colors: true,
+            breakLength: 90
+        });
     },
 
     isNumeric(str) {
