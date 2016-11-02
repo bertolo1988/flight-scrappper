@@ -3,7 +3,7 @@ let debug = require('debug')('flight-scrappper-app.js');
 let Utils = require('./src/utils');
 
 let options = {
-    periods: 3,
+    periods: 40,
     interval: 48,
     currency: 'EUR',
     directFlight: false,
@@ -11,7 +11,7 @@ let options = {
     targetDate: Utils.getDefaultDateString('DD-MM-YYYY'),
     database: 'localhost:27017/flight-scrappper',
     collection: 'flight-data',
-    timeout: 50000,
+    timeout: 80000,
     browser: 'chrome',
     chromedriverArgs: ['--verbose', '--log-path=chromedriver.log'],
     maximize: false,
