@@ -76,16 +76,6 @@ function momondoScrappper() {
         return 'http://www.momondo.co.uk/flightsearch/?' + momondo.toString();
     }
 
-    function takeScreenShot(route, targetDate) {
-        return driver.takeScreenshot().then((data) => {
-            let todayDate = Utils.getTodayDateString('DD-MM-YYYY_HH_mm');
-            let imgName = todayDate + '_' + route.from + '_' + route.to + '_' + targetDate + '.png';
-            let ssPath = 'screenshots' + path.sep;
-            fs.writeFileSync(ssPath + imgName, data, 'base64');
-            debug('Screenshot saved at ' + ssPath + imgName + ' !');
-        });
-    }
-
     function filterSucessfullPromises(promisesMap) {
         var results = [];
         for (let p of promisesMap) {
@@ -145,32 +135,46 @@ function momondoScrappper() {
     function retrieveFlightPage(route, targetDate, dateFormat, currency, directFlight, maximize, timeout) {
         return resizeWindow(maximize).then(() => {
             let fullUrl = buildUrl(route.from, route.to, targetDate.format(dateFormat), currency, directFlight);
-            driver.get(fullUrl);
-            let inProgressPromise = driver.wait(() => {
-                return driver.findElement(By.id('searchProgressText')).getText().then((text) => {
-                    return text === 'Search complete';
+            let getPromise = driver.get(fullUrl);
+            return getPromise.then(() => {
+                let inProgressPromise = driver.wait(() => {
+                    return driver.findElement(By.id('searchProgressText')).getText().then((text) => {
+                        return text === 'Search complete';
+                    });
+                }, timeout);
+                return inProgressPromise.then(() => {
+                    return retrieveFlightData(route, targetDate, dateFormat);
                 });
-            }, timeout);
-            return inProgressPromise.then(() => {
-                return retrieveFlightData(route, targetDate, dateFormat);
             });
         });
     }
 
-    function handleError(error) {
-        debug(error);
-        return Promise.resolve([]);
+    function takeScreenShot(route, targetDate) {
+        return driver.takeScreenshot().then((data) => {
+            let todayDate = Utils.getTodayDateString('DD-MM-YYYY_HH_mm');
+            let imgName = todayDate + '_' + route.from + '_' + route.to + '_' + targetDate + '.png';
+            let ssPath = 'screenshots' + path.sep;
+            fs.writeFileSync(ssPath + imgName, data, 'base64');
+            debug('Screenshot saved at ' + ssPath + imgName + ' !');
+        });
     }
 
-    function launchRetry(retries, error, route, date, dateFormat, currency, directFlight, maximize, timeout) {
-        if (retries > 0) {
-            retries--;
+    function scrapFlights(route, date, dateFormat, currency, directFlight, maximize, timeout, retries) {
+        return retrieveFlightPage(route, date, dateFormat, currency, directFlight, maximize, timeout).catch((error) => {
+            debug('Caught an error while trying to retrieve the flights');
             debug(error);
-            debug('Retrying...');
-            return retrieveFlightPage(route, date, dateFormat, currency, directFlight, maximize, timeout).catch(handleError);
-        } else {
-            return handleError(error);
-        }
+            return takeScreenShot(route, date, dateFormat).then(() => {
+                debug('Retrying...');
+                return scrapFlights(route, date, dateFormat, currency, directFlight, maximize, timeout, retries - 1);
+            }).catch((err) => {
+                debug('Failed to take screenshot');
+                debug(err);
+                stopBrowser();
+                startBrowser();
+                debug('Retrying...');
+                return scrapFlights(route, date, dateFormat, currency, directFlight, maximize, timeout, retries - 1);
+            });
+        });
     }
 
     function scrap(args) {
@@ -180,26 +184,9 @@ function momondoScrappper() {
         let currency = args.currency;
         let directFlight = args.directFlight;
         let maximize = args.maximize;
-        let timeout = args.timeout || 40000;
+        let timeout = args.timeout || 80000;
         let retries = args.retries || 1;
-        try {
-            return retrieveFlightPage(route, date, dateFormat, currency, directFlight, maximize, timeout).catch((error) => {
-                return takeScreenShot(route, date, dateFormat).then(() => {
-                    return launchRetry(retries, error, route, date, dateFormat, currency, directFlight, maximize, timeout);
-                }).catch((err) => {
-                    debug(err);
-                    debug('Driver crashed');
-                    stopBrowser();
-                    startBrowser();
-                    return launchRetry(retries, error, route, date, dateFormat, currency, directFlight, maximize, timeout);
-                });
-
-            });
-        } catch (error) {
-            return takeScreenShot(route, date).then(() => {
-                return handleError(error);
-            });
-        }
+        return scrapFlights(route, date, dateFormat, currency, directFlight, maximize, timeout, retries);
     }
 
     return {

@@ -11,7 +11,7 @@ function getDefaultOptions() {
         targetDate: Utils.getDefaultDateString(defaultDateFormat),
         database: 'localhost:27017/flight-scrappper',
         collection: 'flight-data',
-        timeout: 50000,
+        timeout: 80000,
         browser: 'chrome',
         chromedriverArgs: [],
         maximize: false,
