@@ -159,34 +159,22 @@ function momondoScrappper() {
         });
     }
 
-    function scrapFlights(route, date, dateFormat, currency, directFlight, maximize, timeout, retries) {
+    function scrap(route, date, dateFormat, currency, directFlight, maximize, timeout, retries) {
         return retrieveFlightPage(route, date, dateFormat, currency, directFlight, maximize, timeout).catch((error) => {
             debug('Caught an error while trying to retrieve the flights');
             debug(error);
             return takeScreenShot(route, date, dateFormat).then(() => {
                 debug('Retrying...');
-                return scrapFlights(route, date, dateFormat, currency, directFlight, maximize, timeout, retries - 1);
+                return scrap(route, date, dateFormat, currency, directFlight, maximize, timeout, retries - 1);
             }).catch((err) => {
                 debug('Failed to take screenshot');
                 debug(err);
                 stopBrowser();
                 startBrowser();
                 debug('Retrying...');
-                return scrapFlights(route, date, dateFormat, currency, directFlight, maximize, timeout, retries - 1);
+                return scrap(route, date, dateFormat, currency, directFlight, maximize, timeout, retries - 1);
             });
         });
-    }
-
-    function scrap(args) {
-        let route = args.route;
-        let date = args.date;
-        let dateFormat = args.dateFormat;
-        let currency = args.currency;
-        let directFlight = args.directFlight;
-        let maximize = args.maximize;
-        let timeout = args.timeout || 80000;
-        let retries = args.retries || 1;
-        return scrapFlights(route, date, dateFormat, currency, directFlight, maximize, timeout, retries);
     }
 
     return {

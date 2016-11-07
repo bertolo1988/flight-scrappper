@@ -79,17 +79,11 @@ describe('momondoScrappper test', function() {
     });
 
     it('should retrieve [] if there are no flights', () => {
-        let scrapPromise = MomondoScrappper.scrap({
-            route: {
-                from: 'POR',
-                to: 'PHI'
-            },
-            date: getDefaultMoment(),
-            dateFormat: options.dateFormat,
-            currency: 'EUR',
-            directFlight: false,
-            maximize: false
-        });
+        let route = {
+            from: 'POR',
+            to: 'PHI'
+        };
+        let scrapPromise = MomondoScrappper.scrap(route, getDefaultMoment(), options.dateFormat, 'EUR', false, false, options.timeout, 1);
         return scrapPromise.then((flights) => {
             (flights.length).should.be.exactly(0);
         });
@@ -109,14 +103,7 @@ describe('momondoScrappper test', function() {
         let scrapPromise = [];
         for (let route of routes) {
             for (let date of dates) {
-                scrapPromise.push(MomondoScrappper.scrap({
-                    route,
-                    date,
-                    dateFormat: options.dateFormat,
-                    currency: 'EUR',
-                    directFlight: false,
-                    maximize: false
-                }));
+                scrapPromise.push(MomondoScrappper.scrap(route, date, options.dateFormat, 'EUR', false, false, options.timeout, 1));
             }
         }
         return Promise.all(scrapPromise).then((flights) => {
